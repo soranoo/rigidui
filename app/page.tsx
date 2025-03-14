@@ -1,6 +1,5 @@
 import * as React from "react"
 import { OpenInV0Button } from "@/components/open-in-v0-button"
-import { LocationPicker } from "@/registry/new-york/location-picker/location-picker"
 import { LocationPickerExamples } from "@/examples/location-picker-example"
 
 export default function Home() {
@@ -21,7 +20,6 @@ export default function Home() {
             <OpenInV0Button name="location-locator" className="w-fit" />
           </div>
           <div className="flex items-center justify-center min-h-[400px] relative">
-            {/* <LocationPicker /> */}
            <LocationPickerExamples />
           </div>
         </div>

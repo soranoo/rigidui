@@ -219,15 +219,71 @@ interface LocationPickerTriggerProps {
   className?: string;
   children?: ReactNode;
   icon?: ReactNode;
+  displayLocationIn?: string;
+  loadingText?: string;
+  defaultText?: string;
 }
 
 const LocationPickerTrigger = React.forwardRef<
   HTMLDivElement,
   LocationPickerTriggerProps
->(({ className, children, icon = <MapPin size={16} className="text-swadeyellow" /> }, ref) => {
+>(({
+  className,
+  children,
+  icon = <MapPin size={16} className="text-swadeyellow" />,
+  displayLocationIn,
+  loadingText = "Locating...",
+  defaultText = "Select Location"
+}, ref) => {
   const { activeCity, isLoading } = useLocationContext();
 
   if (children) {
+    if (displayLocationIn) {
+      const injectLocationIntoChildren = (child: React.ReactElement): React.ReactElement => {
+        // @ts-expect-error-ignore
+        if (child.props && child.props['data-location-display'] === displayLocationIn) {
+          const displayText = isLoading
+            ? loadingText
+            : (activeCity || defaultText);
+
+          const newProps = { ...child.props };
+
+          return React.cloneElement(
+            child,
+            newProps,
+            displayText
+          );
+        }
+        // @ts-expect-error-ignore
+        if (child.props && child.props.children) {
+        // @ts-expect-error-ignore
+          const newChildren = React.Children.map(child.props.children, (nestedChild) => {
+            if (React.isValidElement(nestedChild)) {
+              return injectLocationIntoChildren(nestedChild);
+            }
+            return nestedChild;
+          });
+
+          return React.cloneElement(child, child.props, newChildren);
+        }
+
+        return child;
+      };
+
+      const processedChildren = React.Children.map(children as React.ReactElement, (child) => {
+        if (React.isValidElement(child)) {
+          return injectLocationIntoChildren(child);
+        }
+        return child;
+      });
+
+      return (
+        <PopoverTrigger asChild>
+          <div ref={ref}>{processedChildren}</div>
+        </PopoverTrigger>
+      );
+    }
+
     return (
       <PopoverTrigger asChild>
         <div ref={ref}>{children}</div>
@@ -245,11 +301,11 @@ const LocationPickerTrigger = React.forwardRef<
         {isLoading ? (
           <div className="flex items-center gap-1">
             <LoaderCircle size={14} className="animate-spin" />
-            <span className="text-sm">Locating...</span>
+            <span className="text-sm">{loadingText}</span>
           </div>
         ) : (
           <span className="text-sm font-medium">
-            {activeCity.length > 15 ? activeCity.slice(0, 15) + '...' : activeCity || 'Select Location'}
+            {activeCity.length > 15 ? activeCity.slice(0, 15) + '...' : activeCity || defaultText}
           </span>
         )}
       </div>
@@ -388,32 +444,76 @@ interface LocationPickerSearchProps {
   className?: string;
   placeholder?: string;
   buttonClassName?: string;
+  buttonText?: string;
+  children?: ReactNode;
+  searchIconClassName?: string;
+  searchIcon?: ReactNode;
+  loadingIcon?: ReactNode;
+  inputClassName?: string;
+  containerClassName?: string;
 }
 
 const LocationPickerSearch = React.forwardRef<
   HTMLDivElement,
   LocationPickerSearchProps
->(({ className, placeholder = "Search for location", buttonClassName }, ref) => {
+>(({
+  className,
+  placeholder = "Search for location",
+  buttonClassName,
+  buttonText = "Search",
+  children,
+  searchIconClassName,
+  searchIcon = <Search className={`h-4 w-4 ${searchIconClassName}`} />,
+  loadingIcon = <LoaderCircle className="h-4 w-4 animate-spin" />,
+  inputClassName,
+  containerClassName
+}, ref) => {
   const { locationSearch, setLocationSearch, searchLocation, isLoading } = useLocationContext();
 
+  if (children) {
+    return (
+      <div ref={ref} className={containerClassName}>
+        {React.cloneElement(children as React.ReactElement, {
+        // @ts-expect-error-ignore
+          value: locationSearch,
+          onChange: (e: React.ChangeEvent<HTMLInputElement>) => setLocationSearch(e.target.value),
+          onKeyUp: (e: React.KeyboardEvent) => e.key === 'Enter' && searchLocation(),
+          onSearch: searchLocation,
+          isLoading,
+          clearSearch: () => setLocationSearch(''),
+        })}
+      </div>
+    );
+  }
+
   return (
-    <div ref={ref} className="flex items-center gap-2">
+    <div ref={ref} className={`flex items-center gap-2 ${containerClassName}`}>
       <div className="relative flex-1">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+          {searchIcon}
+        </div>
         <Input
           placeholder={placeholder}
           value={locationSearch}
           onChange={(e) => setLocationSearch(e.target.value)}
           onKeyUp={(e) => e.key === 'Enter' && searchLocation()}
-          className={`pl-10 ${className}`}
+          className={`pl-10 ${className} ${inputClassName}`}
         />
+        {locationSearch && (
+          <button
+            className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 p-0 text-gray-400 hover:text-gray-600"
+            onClick={() => setLocationSearch('')}
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
       </div>
       <button
         onClick={searchLocation}
         disabled={isLoading || !locationSearch.trim()}
         className={`p-2 bg-primary text-white rounded-md ${buttonClassName}`}
       >
-        {isLoading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : "Search"}
+        {isLoading ? loadingIcon : buttonText}
       </button>
     </div>
   );
