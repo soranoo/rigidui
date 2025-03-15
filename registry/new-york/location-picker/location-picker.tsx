@@ -1,14 +1,15 @@
 "use client"
 
 import * as React from "react"
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import { useState, useEffect } from 'react'
 import { Input } from '@/components/ui/input'
-import { MapPin, LoaderCircle, Search, X, MapPinned, Locate } from 'lucide-react'
+import { MapPin, LoaderCircle, Search, MapPinned, Locate } from 'lucide-react'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { Button } from "@/components/ui/button"
 
 type LocationSuggestion = {
   display_name: string;
@@ -22,60 +23,35 @@ type LocationSuggestion = {
   };
 }
 
-type LocationContextType = {
-  activeCity: string;
-  isLoading: boolean;
-  locationSearch: string;
-  setLocationSearch: (value: string) => void;
-  suggestions: LocationSuggestion[];
-  isFetchingSuggestions: boolean;
-  searchLocation: () => void;
-  getCurrentLocation: () => void;
-  selectSuggestion: (suggestion: LocationSuggestion) => void;
-  formatLocationName: (suggestion: LocationSuggestion) => string;
-  isPopoverOpen: boolean;
-  setIsPopoverOpen: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const LocationContext = createContext<LocationContextType | undefined>(undefined);
-
-function useLocationContext() {
-  const context = useContext(LocationContext);
-  if (!context) {
-    throw new Error("Location components must be used within a LocationPicker");
-  }
-  return context;
-}
-
 interface LocationPickerProps {
-  children?: ReactNode;
-  defaultLocation?: string;
-  onLocationChange?: (location: string) => void;
   className?: string;
+  autoDetectOnLoad?: boolean;
+  defaultLocation?: string;
 }
 
-function LocationPicker({
-  children,
+export function LocationPicker({
+  className,
+  autoDetectOnLoad = false,
   defaultLocation = "",
-  onLocationChange,
 }: LocationPickerProps) {
   const [activeCity, setActiveCity] = useState(defaultLocation)
-  const [isLoading, setIsLoading] = useState(!defaultLocation)
+  const [isLoading, setIsLoading] = useState(false)
   const [locationSearch, setLocationSearch] = useState('')
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   const [suggestions, setSuggestions] = useState<LocationSuggestion[]>([])
   const [isFetchingSuggestions, setIsFetchingSuggestions] = useState(false)
 
+  const API_URL = "https://nominatim.openstreetmap.org"
+
   const getLocation = async (lat: number, long: number) => {
     setIsLoading(true)
     try {
-      const res = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${long}&format=json`)
+      const res = await fetch(`${API_URL}/reverse?lat=${lat}&lon=${long}&format=json`)
       const data = await res.json()
       const city = data.address?.county || data.address?.city || data.address?.state || ''
 
       if (city) {
         setActiveCity(city)
-        onLocationChange?.(city)
       }
     } catch (error) {
       console.log("Error fetching location:", error)
@@ -90,7 +66,7 @@ function LocationPicker({
     setIsLoading(true)
     try {
       const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(locationSearch)}&format=json&addressdetails=1`
+        `${API_URL}/search?q=${encodeURIComponent(locationSearch)}&format=json&addressdetails=1`
       )
       const data = await res.json()
 
@@ -99,7 +75,6 @@ function LocationPicker({
         const city = place.address?.city || place.address?.county || place.address?.state || ''
 
         setActiveCity(city)
-        onLocationChange?.(city)
         setIsPopoverOpen(false)
       } else {
         console.log("No location found")
@@ -134,7 +109,7 @@ function LocationPicker({
     setIsFetchingSuggestions(true);
     try {
       const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&addressdetails=1&limit=5`
+        `${API_URL}/search?q=${encodeURIComponent(query)}&format=json&addressdetails=1&limit=5`
       );
       const data = await res.json();
       setSuggestions(data);
@@ -151,7 +126,6 @@ function LocationPicker({
     setActiveCity(city);
     setLocationSearch(city);
     setSuggestions([]);
-    onLocationChange?.(city);
   };
 
   const formatLocationName = (suggestion: LocationSuggestion) => {
@@ -164,11 +138,6 @@ function LocationPicker({
     return mainName || suggestion.display_name.split(',')[0];
   };
 
-  useEffect(() => {
-    if (!defaultLocation) {
-      getCurrentLocation()
-    }
-  }, [defaultLocation])
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -186,225 +155,75 @@ function LocationPicker({
     }
   }, [isPopoverOpen]);
 
-  const contextValue = {
-    activeCity,
-    isLoading,
-    locationSearch,
-    setLocationSearch,
-    suggestions,
-    isFetchingSuggestions,
-    searchLocation,
-    getCurrentLocation,
-    selectSuggestion,
-    formatLocationName,
-    isPopoverOpen,
-    setIsPopoverOpen
-  };
-
-  return (
-    <LocationContext.Provider value={contextValue}>
-      <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-        {children || (
-          <>
-            <LocationPickerTrigger />
-            <LocationPickerContent />
-          </>
-        )}
-      </Popover>
-    </LocationContext.Provider>
-  );
-}
-
-interface LocationPickerTriggerProps {
-  className?: string;
-  children?: ReactNode;
-  icon?: ReactNode;
-  displayLocationIn?: string;
-  loadingText?: string;
-  defaultText?: string;
-}
-
-const LocationPickerTrigger = React.forwardRef<
-  HTMLDivElement,
-  LocationPickerTriggerProps
->(({
-  className,
-  children,
-  icon = <MapPin size={16} className="text-swadeyellow" />,
-  displayLocationIn,
-  loadingText = "Locating...",
-  defaultText = "Select Location"
-}, ref) => {
-  const { activeCity, isLoading } = useLocationContext();
-
-  if (children) {
-    if (displayLocationIn) {
-      const injectLocationIntoChildren = (child: React.ReactElement): React.ReactElement => {
-        // @ts-expect-error-ignore
-        if (child.props && child.props['data-location-display'] === displayLocationIn) {
-          const displayText = isLoading
-            ? loadingText
-            : (activeCity || defaultText);
-
-          const newProps = { ...child.props };
-
-          return React.cloneElement(
-            child,
-            newProps,
-            displayText
-          );
-        }
-        // @ts-expect-error-ignore
-        if (child.props && child.props.children) {
-        // @ts-expect-error-ignore
-          const newChildren = React.Children.map(child.props.children, (nestedChild) => {
-            if (React.isValidElement(nestedChild)) {
-              return injectLocationIntoChildren(nestedChild);
-            }
-            return nestedChild;
-          });
-
-          return React.cloneElement(child, child.props, newChildren);
-        }
-
-        return child;
-      };
-
-      const processedChildren = React.Children.map(children as React.ReactElement, (child) => {
-        if (React.isValidElement(child)) {
-          return injectLocationIntoChildren(child);
-        }
-        return child;
-      });
-
-      return (
-        <PopoverTrigger asChild>
-          <div ref={ref}>{processedChildren}</div>
-        </PopoverTrigger>
-      );
+  useEffect(() => {
+    if (autoDetectOnLoad && !activeCity) {
+      getCurrentLocation();
     }
+  }, [autoDetectOnLoad]);
 
-    return (
+
+  return (
+    <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
-        <div ref={ref}>{children}</div>
+        <div className={`flex items-center gap-2 text-gray-700 hover:text-gray-900 border border-transparent hover:border-b-black cursor-pointer px-2 py-1 hover:bg-gray-50 transition-colors ${className}`}>
+          <MapPin size={16} className="text-swadeyellow" />
+          {isLoading ? (
+            <div className="flex items-center gap-1">
+              <LoaderCircle size={14} className="animate-spin" />
+              <span className="text-sm">Locating...</span>
+            </div>
+          ) : (
+            <span className="text-sm font-medium">
+              {activeCity.length > 15 ? activeCity.slice(0, 15) + '...' : activeCity || 'Select Location'}
+            </span>
+          )}
+        </div>
       </PopoverTrigger>
-    );
-  }
+      <PopoverContent className="w-80 p-0 shadow-lg border-0 border-swade border-t-2" side="bottom" align="start" sideOffset={20}>
+        <div className="p-4 border-b">
+          <h4 className="font-medium text-lg mb-1">Change location</h4>
+          <p className="text-sm text-gray-500">Find products near you</p>
+        </div>
 
-  return (
-    <PopoverTrigger asChild>
-      <div
-        ref={ref}
-        className={`flex items-center gap-2 text-gray-700 hover:text-gray-900 border border-transparent hover:border-b-black cursor-pointer px-2 py-1 hover:bg-gray-50 transition-colors ${className}`}
-      >
-        {icon}
-        {isLoading ? (
-          <div className="flex items-center gap-1">
-            <LoaderCircle size={14} className="animate-spin" />
-            <span className="text-sm">{loadingText}</span>
-          </div>
-        ) : (
-          <span className="text-sm font-medium">
-            {activeCity.length > 15 ? activeCity.slice(0, 15) + '...' : activeCity || defaultText}
-          </span>
-        )}
-      </div>
-    </PopoverTrigger>
-  );
-});
-LocationPickerTrigger.displayName = "LocationPickerTrigger";
-
-interface LocationPickerContentProps {
-  className?: string;
-  children?: ReactNode;
-  title?: string;
-  description?: string;
-  placeholder?: string;
-}
-
-const LocationPickerContent = React.forwardRef<
-  HTMLDivElement,
-  LocationPickerContentProps
->(({
-  className,
-  children,
-  title = "Change Location",
-  description = "Select your location to see relevant content",
-  placeholder = "Enter city, district, or area"
-}, ref) => {
-  const {
-    locationSearch,
-    setLocationSearch,
-    searchLocation,
-    getCurrentLocation,
-    suggestions,
-    isFetchingSuggestions,
-    selectSuggestion,
-    formatLocationName,
-    isLoading
-  } = useLocationContext();
-
-  if (children) {
-    return (
-      <PopoverContent className={className} ref={ref} side="bottom" align="start" sideOffset={20}>
-        {children}
-      </PopoverContent>
-    );
-  }
-
-  return (
-    <PopoverContent
-      className={`w-80 p-0 shadow-lg border-0 border-swade border-t-2 ${className}`}
-      ref={ref}
-      side="bottom"
-      align="start"
-      sideOffset={20}
-    >
-      <div className="p-4 border-b">
-        <h4 className="font-medium text-lg mb-1">{title}</h4>
-        <p className="text-sm text-gray-500">{description}</p>
-      </div>
-
-      <div className="p-4">
-        <div className="relative mb-4">
-          <div className="flex items-center gap-2">
+        <div className="p-4">
+          <div className="flex items-center gap-2 mb-4">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
               <Input
-                placeholder={placeholder}
+                placeholder="Enter city, district, or area"
                 value={locationSearch}
                 onChange={(e) => setLocationSearch(e.target.value)}
                 onKeyUp={(e) => e.key === 'Enter' && suggestions.length === 0 && searchLocation()}
                 className="pl-10 pr-10 rounded-full border-gray-300 focus:border-swadeyellow focus:ring-1 focus:ring-swadeyellow"
               />
-              {locationSearch && (
-                <button
-                  className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 p-0 text-gray-400 hover:text-gray-600"
-                  onClick={() => setLocationSearch('')}
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              )}
             </div>
 
-            <button
+            <Button
+              className="rounded-full h-10 w-10 p-0"
+              variant="outline"
               onClick={searchLocation}
               disabled={isLoading || !locationSearch.trim()}
-              className="h-9 w-9 rounded-full text-black border border-gray-300 cursor-pointer hover:bg-gray-50 flex items-center justify-center transition-colors"
+              title="Search Location"
             >
-              {isLoading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
-            </button>
+              {isLoading ? (
+                <LoaderCircle className="h-4 w-4 animate-spin" />
+              ) : (
+                <Search className="h-4 w-4" />
+              )}
+            </Button>
 
-            <button
+            <Button
+              variant="outline"
               onClick={getCurrentLocation}
-              className="h-9 w-9 rounded-full border border-gray-300 hover:bg-gray-50 hover:text-swadeyellow flex items-center justify-center transition-colors"
+              className="rounded-full h-10 w-10 p-0"
+              title="Use Current Location"
             >
               <Locate className="h-4 w-4" />
-            </button>
+            </Button>
           </div>
 
           {suggestions.length > 0 && (
-            <div className="absolute z-50 mt-1 w-full bg-white rounded-md border border-gray-200 shadow-lg max-h-60 overflow-y-auto">
+            <div className="z-50 w-full bg-white rounded-md border border-gray-200 shadow-lg max-h-60 overflow-y-auto mt-1 mb-4">
               {suggestions.map((suggestion) => (
                 <div
                   key={suggestion.place_id}
@@ -428,130 +247,13 @@ const LocationPickerContent = React.forwardRef<
           )}
 
           {isFetchingSuggestions && locationSearch.length >= 2 && suggestions.length === 0 && (
-            <div className="absolute z-50 mt-1 w-full bg-white rounded-md border border-gray-200 shadow-md p-4 text-center">
+            <div className="z-50 w-full bg-white rounded-md border border-gray-200 shadow-md p-4 text-center mt-1 mb-4">
               <LoaderCircle size={20} className="animate-spin mx-auto text-swadeyellow" />
               <p className="text-sm text-gray-500 mt-1">Searching locations...</p>
             </div>
           )}
         </div>
-      </div >
-    </PopoverContent >
+      </PopoverContent>
+    </Popover>
   );
-});
-LocationPickerContent.displayName = "LocationPickerContent";
-
-interface LocationPickerSearchProps {
-  className?: string;
-  placeholder?: string;
-  buttonClassName?: string;
-  buttonText?: string;
-  children?: ReactNode;
-  searchIconClassName?: string;
-  searchIcon?: ReactNode;
-  loadingIcon?: ReactNode;
-  inputClassName?: string;
-  containerClassName?: string;
 }
-
-const LocationPickerSearch = React.forwardRef<
-  HTMLDivElement,
-  LocationPickerSearchProps
->(({
-  className,
-  placeholder = "Search for location",
-  buttonClassName,
-  buttonText = "Search",
-  children,
-  searchIconClassName,
-  searchIcon = <Search className={`h-4 w-4 ${searchIconClassName}`} />,
-  loadingIcon = <LoaderCircle className="h-4 w-4 animate-spin" />,
-  inputClassName,
-  containerClassName
-}, ref) => {
-  const { locationSearch, setLocationSearch, searchLocation, isLoading } = useLocationContext();
-
-  if (children) {
-    return (
-      <div ref={ref} className={containerClassName}>
-        {React.cloneElement(children as React.ReactElement, {
-        // @ts-expect-error-ignore
-          value: locationSearch,
-          onChange: (e: React.ChangeEvent<HTMLInputElement>) => setLocationSearch(e.target.value),
-          onKeyUp: (e: React.KeyboardEvent) => e.key === 'Enter' && searchLocation(),
-          onSearch: searchLocation,
-          isLoading,
-          clearSearch: () => setLocationSearch(''),
-        })}
-      </div>
-    );
-  }
-
-  return (
-    <div ref={ref} className={`flex items-center gap-2 ${containerClassName}`}>
-      <div className="relative flex-1">
-        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
-          {searchIcon}
-        </div>
-        <Input
-          placeholder={placeholder}
-          value={locationSearch}
-          onChange={(e) => setLocationSearch(e.target.value)}
-          onKeyUp={(e) => e.key === 'Enter' && searchLocation()}
-          className={`pl-10 ${className} ${inputClassName}`}
-        />
-        {locationSearch && (
-          <button
-            className="absolute right-3 top-1/2 -translate-y-1/2 h-5 w-5 p-0 text-gray-400 hover:text-gray-600"
-            onClick={() => setLocationSearch('')}
-          >
-            <X className="h-4 w-4" />
-          </button>
-        )}
-      </div>
-      <button
-        onClick={searchLocation}
-        disabled={isLoading || !locationSearch.trim()}
-        className={`p-2 bg-primary text-white rounded-md ${buttonClassName}`}
-      >
-        {isLoading ? loadingIcon : buttonText}
-      </button>
-    </div>
-  );
-});
-LocationPickerSearch.displayName = "LocationPickerSearch";
-
-interface LocationPickerCurrentProps {
-  className?: string;
-  children?: ReactNode;
-}
-
-const LocationPickerCurrent = React.forwardRef<
-  HTMLButtonElement,
-  LocationPickerCurrentProps
->(({ className, children }, ref) => {
-  const { getCurrentLocation } = useLocationContext();
-
-  return (
-    <button
-      ref={ref}
-      onClick={getCurrentLocation}
-      className={`flex items-center gap-2 ${className}`}
-    >
-      {children || (
-        <>
-          <Locate className="h-4 w-4" />
-          <span>Use my location</span>
-        </>
-      )}
-    </button>
-  );
-});
-LocationPickerCurrent.displayName = "LocationPickerCurrent";
-
-export {
-  LocationPicker,
-  LocationPickerTrigger,
-  LocationPickerContent,
-  LocationPickerSearch,
-  LocationPickerCurrent
-};
