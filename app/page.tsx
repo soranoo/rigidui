@@ -43,9 +43,9 @@ export default function Home() {
               <div className="space-y-2">
                 <h2 className="text-lg font-medium">Example Values</h2>
                 <div className="grid gap-2">
-                  <p>Product A: <CurrencyDisplay value={9.99} /></p>
-                  <p>Product B: <CurrencyDisplay value={24.99} /></p>
-                  <p>Product C: <CurrencyDisplay value={99.99} /></p>
+                  <p>Product A (USD): <CurrencyDisplay value={9.99} sourceCurrency="USD" /></p>
+                  <p>Product B (EUR): <CurrencyDisplay value={24.99} sourceCurrency="EUR" /></p>
+                  <p>Product C (GBP): <CurrencyDisplay value={99.99} sourceCurrency="GBP" /></p>
                 </div>
               </div>
             </div>
