@@ -1,6 +1,7 @@
 import * as React from "react"
 import { OpenInV0Button } from "@/components/open-in-v0-button"
 import { LocationPickerExamples } from "@/examples/location-picker-example"
+import { CurrencyDisplay, CurrencySelector } from "@/registry/new-york/currency-manager/currency-manager"
 
 export default function Home() {
   return (
@@ -20,7 +21,34 @@ export default function Home() {
             <OpenInV0Button name="location-locator" className="w-fit" />
           </div>
           <div className="flex items-center justify-center min-h-[400px] relative">
-           <LocationPickerExamples />
+            <LocationPickerExamples />
+          </div>
+        </div>
+        <div className="flex flex-col gap-4 border rounded-lg p-4 min-h-[450px] relative">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm text-muted-foreground sm:pl-3">
+              A currency manager component
+            </h2>
+            <OpenInV0Button name="location-locator" className="w-fit" />
+          </div>
+          <div className="flex items-center justify-center min-h-[400px] relative">
+            <div className="space-y-4">
+              <h1 className="text-2xl font-bold">Currency Manager</h1>
+
+              <div className="space-y-2">
+                <h2 className="text-lg font-medium">Currency Selection</h2>
+                <CurrencySelector />
+              </div>
+
+              <div className="space-y-2">
+                <h2 className="text-lg font-medium">Example Values</h2>
+                <div className="grid gap-2">
+                  <p>Product A: <CurrencyDisplay value={9.99} /></p>
+                  <p>Product B: <CurrencyDisplay value={24.99} /></p>
+                  <p>Product C: <CurrencyDisplay value={99.99} /></p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </main>
