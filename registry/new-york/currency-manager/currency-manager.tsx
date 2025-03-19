@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useState, ReactNode, useEffect } from 'react'
+import { createContext, useContext, useState, ReactNode, useEffect, ComponentType } from 'react'
 import {
   Select,
   SelectContent,
@@ -24,6 +24,8 @@ export const currencies: Currency[] = [
   { code: 'INR', symbol: '₹', name: 'Indian Rupee' },
 ]
 
+const DefaultLoader = () => <Loader className='w-4 h-4 animate-spin' />;
+
 type CurrencyContextType = {
   currency: Currency
   setCurrency: (currency: Currency) => void
@@ -32,6 +34,7 @@ type CurrencyContextType = {
   rates: Record<string, number>
   loading: boolean
   error: string | null
+  LoaderComponent: ComponentType
 }
 
 const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined)
@@ -40,11 +43,13 @@ interface CurrencyProviderProps {
   children: ReactNode;
   apiKey?: string;
   position?: 'left' | 'right';
+  loaderComponent?: ComponentType;
 }
 
 export function CurrencyProvider({
   children,
-  apiKey = "fb4a1b3c17c74a147b758edb"
+  apiKey = "fb4a1b3c17c74a147b758edb",
+  loaderComponent = DefaultLoader
 }: CurrencyProviderProps) {
   const [currency, setCurrency] = useState<Currency>(currencies[4])
   const [rates, setRates] = useState<Record<string, number>>({})
@@ -123,7 +128,8 @@ export function CurrencyProvider({
       convertValue,
       rates,
       loading,
-      error
+      error,
+      LoaderComponent: loaderComponent
     }}>
       {children}
     </CurrencyContext.Provider>
@@ -177,14 +183,14 @@ export function CurrencyDisplay({
   className,
   sourceCurrency = "USD"
 }: CurrencyDisplayProps) {
-  const { formatValue, convertValue, loading } = useCurrency()
+  const { formatValue, convertValue, loading, LoaderComponent } = useCurrency()
 
   const effectiveSourceCurrency = sourceCurrency || "USD";
   const convertedValue = convertValue(value, effectiveSourceCurrency);
 
   return (
     <span className={className}>
-      {loading ? <span className='inline'><Loader className='w-4 h-4 animate-spin' /></span> : formatValue(convertedValue)}
+      {loading ? <span className='inline'><LoaderComponent /></span> : formatValue(convertedValue)}
     </span>
   );
 }
