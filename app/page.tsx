@@ -3,6 +3,7 @@ import { OpenInV0Button } from "@/components/open-in-v0-button"
 import { LocationPickerExamples } from "@/examples/location-picker-example"
 import { CurrencyDisplay, CurrencyProvider, CurrencySelector } from "@/registry/new-york/currency-manager/currency-manager"
 import { CustomLoaderExample } from "@/examples/custom-loader-example"
+import { LanguageTranslatorExamples } from "@/examples/language-translator-example"
 
 export default function Home() {
   return (
@@ -57,6 +58,17 @@ export default function Home() {
                 </div>
               </div>
             </CurrencyProvider>
+          </div>
+        </div>
+        <div className="flex flex-col gap-4 border rounded-lg p-4 min-h-[450px] relative">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm text-muted-foreground sm:pl-3">
+              A language translator component
+            </h2>
+            <OpenInV0Button name="language-translator" className="w-fit" />
+          </div>
+          <div className="flex items-center justify-center min-h-[400px] relative">
+            <LanguageTranslatorExamples />
           </div>
         </div>
       </main>
