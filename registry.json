@@ -19,6 +19,33 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "currency-manager",
+      "type": "registry:component",
+      "title": "Currency Manager",
+      "description": "A currency manager component",
+      "registryDependencies": [
+        "select"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/currency-manager/currency-manager.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "language-switcher",
+      "type": "registry:component",
+      "title": "Language Switcher",
+      "description": "A language switcher component",
+      "files": [
+        {
+          "path": "registry/new-york/language-switcher/language-switcher.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }
