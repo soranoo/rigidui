@@ -29,6 +29,9 @@ const navigationItems: NavigationItem[] = [
       { title: 'Dropdown', href: '/docs/components/dropdown' },
       { title: 'Tabs', href: '/docs/components/tabs' },
       { title: 'Form', href: '/docs/components/form' },
+      { title: 'Location Picker', href: '/docs/components/location-picker' },
+      { title: 'Currency Manager', href: '/docs/components/currency-manager' },
+      { title: 'Language Switcher', href: '/docs/components/language-switcher' },
     ]
   },
   {
