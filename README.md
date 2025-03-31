@@ -1,26 +1,20 @@
-# rigid
+# registry-template
 
-This is a Next.js application generated with
-[Create Fumadocs](https://github.com/fuma-nama/fumadocs).
+You can use the `shadcn` CLI to run your own component registry. Running your own
+component registry allows you to distribute your custom components, hooks, pages, and
+other files to any React project.
 
-Run development server:
+## Getting Started
 
-```bash
-npm run dev
-# or
-pnpm dev
-# or
-yarn dev
-```
+This is a template for creating a custom registry using Next.js.
 
-Open http://localhost:3000 with your browser to see the result.
+- The template uses a `registry.json` file to define components and their files.
+- The `shadcn build` command is used to build the registry.
+- The registry items are served as static files under `public/r/[name].json`.
+- The template also includes a route handler for serving registry items.
+- Every registry item are compatible with the `shadcn` CLI.
+- We have also added v0 integration using the `Open in v0` api.
 
-## Learn More
+## Documentation
 
-To learn more about Next.js and Fumadocs, take a look at the following
-resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js
-  features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [Fumadocs](https://fumadocs.vercel.app) - learn about Fumadocs
+Visit the [shadcn documentation](https://ui.shadcn.com/docs/registry) to view the full documentation.

@@ -6,7 +6,7 @@
     {
       "name": "location-picker",
       "type": "registry:component",
-      "title": "Location Locator",
+      "title": "Location Picker",
       "description": "A location locator component",
       "registryDependencies": [
         "button",
