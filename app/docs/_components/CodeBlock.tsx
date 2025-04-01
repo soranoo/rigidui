@@ -1,6 +1,8 @@
 'use client'
-import React, { useState} from 'react'
+import React, { useState } from 'react'
 import { Check, Copy } from 'lucide-react'
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { tomorrowNightBright as theme } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 interface CodeBlockProps {
   code: string
@@ -34,9 +36,9 @@ export function CodeBlock({
         </div>
       )}
       <div className="relative">
-        <pre className="overflow-x-auto p-4 text-sm leading-relaxed">
-          <code className={`language-${language}`}>{code}</code>
-        </pre>
+        <SyntaxHighlighter language="javascript" style={theme}>
+          {code}
+        </SyntaxHighlighter>
         {showCopyButton && (
           <button
             onClick={handleCopy}

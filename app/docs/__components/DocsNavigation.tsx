@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { PanelLeft, Moon, Sun, ChevronDown, ChevronRight, PanelRight } from "lucide-react"
-import Image from 'next/image'
-import { cn } from '@/lib/utils'
 
 interface NavigationItem {
   title: string
@@ -25,6 +23,12 @@ const navigationItems: NavigationItem[] = [
     title: 'Components',
     href: '/docs/components',
     items: [
+      { title: 'Button', href: '/docs/components/button' },
+      { title: 'Card', href: '/docs/components/card' },
+      { title: 'Modal', href: '/docs/components/modal' },
+      { title: 'Dropdown', href: '/docs/components/dropdown' },
+      { title: 'Tabs', href: '/docs/components/tabs' },
+      { title: 'Form', href: '/docs/components/form' },
       { title: 'Location Picker', href: '/docs/components/location-picker' },
       { title: 'Currency Manager', href: '/docs/components/currency-manager' },
       { title: 'Language Switcher', href: '/docs/components/language-switcher' },
@@ -134,13 +138,12 @@ export function DocsNavigation({
 
   return (
     <nav className={`p-4 bg-white dark:bg-gray-900 transition-colors duration-200 ${className} ${collapsed && !isMobile ? 'px-2' : ''}`}>
-      <div className={`flex items-center ${collapsed && !isMobile ? 'justify-center flex-col space-y-4' : 'justify-between'} mb-8`}>
-        <Link href="/" className="flex items-center">
-          <span className={cn('p-2 bg-gradient-to-tr from-blue-50 to-blue-100 rounded-md shadow-sm dark:from-blue-900/20 dark:to-blue-800/20 mr-2', collapsed && "mr-0")}>
-            <Image src="/logo.png" className='dark:invert' alt="Logo" width={14} height={14} />
-          </span>
-          <span className={cn("font-bold text-xl text-gray-900 dark:text-white", collapsed && 'hidden')}>RigidUI</span>
-        </Link>
+      <div className={`flex items-center ${collapsed && !isMobile ? 'justify-center' : 'justify-between'} mb-8`}>
+        {(!collapsed || isMobile) && (
+          <Link href="/" className="flex items-center">
+            <span className="font-bold text-xl text-gray-900 dark:text-white">RigidUI</span>
+          </Link>
+        )}
         <div className={`flex items-center ${collapsed && !isMobile ? 'flex-col space-y-4' : 'space-x-2'}`}>
           <button
             onClick={toggleTheme}
