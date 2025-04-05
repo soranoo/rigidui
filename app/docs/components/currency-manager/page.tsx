@@ -5,12 +5,6 @@ import { CurrencyDisplay, CurrencyProvider, CurrencySelector } from '@/registry/
 export default function CurrencyManagerPage() {
   const providerPropsData = [
     {
-      name: 'defaultCurrency',
-      type: 'string',
-      defaultValue: "'USD'",
-      description: 'The default currency to use',
-    },
-    {
       name: 'children',
       type: 'React.ReactNode',
       description: 'The content to wrap with the currency provider',
@@ -36,6 +30,7 @@ export default function CurrencyManagerPage() {
     {
       name: 'sourceCurrency',
       type: 'string',
+      defaultValue: 'INR',
       description: 'The source currency of the value',
       required: true,
     },
@@ -158,15 +153,22 @@ export default function MyComponent() {
               </div>
             </div>
 
-            <div className="space-y-2 pt-4 border-t">
+            <div className="space-y-4 pt-6 border-t">
               <h2 className="text-lg font-medium">Exchange Rate Information</h2>
-              <div className="grid gap-2">
-                <p>USD → EUR: <CurrencyDisplay value={1} sourceCurrency="USD" className="font-mono" /></p>
-                <p>EUR → USD: <CurrencyDisplay value={1} sourceCurrency="EUR" className="font-mono" /></p>
-                <p>GBP → USD: <CurrencyDisplay value={1} sourceCurrency="GBP" className="font-mono" /></p>
+              <div className="grid gap-3">
+              {["USD", "EUR", "GBP", "JPY", "INR"].map((currency) => (
+                <div key={currency} className="flex items-center justify-between border-b pb-2">
+                <span className="font-medium">{currency}:</span>
+                <CurrencyDisplay
+                  value={1}
+                  sourceCurrency={currency}
+                  className="font-mono text-right"
+                />
+                </div>
+              ))}
               </div>
-              <p className="text-sm text-gray-500 mt-4">
-                Change your preferred currency using the selector in the header to see all values update automatically.
+              <p className="text-sm text-gray-500 mt-2">
+              Change your preferred currency using the selector in the header to see all values update automatically.
               </p>
             </div>
           </div>

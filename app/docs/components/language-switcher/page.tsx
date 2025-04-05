@@ -3,36 +3,139 @@ import ComponentDocTemplate from '../../_components/ComponentDocTemplate'
 import { LanguageProvider, LanguageSwitcher, Translate } from '@/registry/new-york/language-switcher/language-switcher';
 
 export default function LanguageSwitcherPage() {
-  const propsData = [
+  const providerPropsData = [
     {
-      name: 'defaultLanguage',
+      name: 'children',
+      type: 'ReactNode',
+      description: 'The content to wrap with the language provider',
+      required: true,
+    },
+    {
+      name: 'initialLanguage',
       type: 'string',
       defaultValue: "'en'",
-      description: 'The default language to use',
+      description: 'The initial language to use',
     },
     {
-      name: 'onLanguageChange',
-      type: '(language: string) => void',
-      description: 'Callback that fires when the language changes',
+      name: 'supportedLanguages',
+      type: 'Language[]',
+      defaultValue: "[{ code: 'en', name: 'English', flag: '🇺🇸' }, ...]",
+      description: 'List of supported languages with their codes, names, and optional flags',
     },
     {
-      name: 'availableLanguages',
-      type: 'string[]',
-      defaultValue: "['en', 'es', 'fr', 'de', 'ja']",
-      description: 'List of available language codes',
+      name: 'translations',
+      type: 'TranslationMap',
+      defaultValue: '{}',
+      description: 'Map of translations for each language',
+    },
+    {
+      name: 'persistLanguage',
+      type: 'boolean',
+      defaultValue: 'true',
+      description: 'Whether to persist language selection in localStorage',
+    },
+    {
+      name: 'storageKey',
+      type: 'string',
+      defaultValue: "'preferred-language'",
+      description: 'Key to use for storing language preference in localStorage',
+    },
+    {
+      name: 'detectBrowserLanguage',
+      type: 'boolean',
+      defaultValue: 'true',
+      description: 'Whether to detect and use browser language on first load',
+    }
+  ]
+
+  const switcherPropsData = [
+    {
+      name: 'type',
+      type: "'dropdown' | 'select' | 'buttons'",
+      defaultValue: "'dropdown'",
+      description: 'The display type of the language switcher',
+    },
+    {
+      name: 'showFlags',
+      type: 'boolean',
+      defaultValue: 'true',
+      description: 'Whether to show flag emojis next to language names',
     },
     {
       name: 'className',
       type: 'string',
+      defaultValue: "''",
       description: 'Additional CSS class for the language switcher',
+    },
+    {
+      name: 'onLanguageChange',
+      type: '(language: string) => void',
+      description: 'Callback function triggered when language is changed',
+    },
+    {
+      name: 'availableLanguages',
+      type: 'string[]',
+      description: 'Array of language codes to display in the switcher (defaults to all supported)',
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      defaultValue: 'false',
+      description: 'Whether the language switcher is disabled',
     }
   ]
+
+  const translatePropsData = [
+    {
+      name: 'translations',
+      type: '{[languageCode: string]: string}',
+      description: 'Object mapping language codes to translated strings',
+      required: true,
+    },
+    {
+      name: 'fallback',
+      type: 'string',
+      defaultValue: "''",
+      description: 'Fallback text to display if no translation is found',
+    },
+    {
+      name: 'className',
+      type: 'string',
+      defaultValue: "''",
+      description: 'Additional CSS class for the translated text',
+    },
+    {
+      name: 'variables',
+      type: 'Record<string, string>',
+      defaultValue: '{}',
+      description: 'Variables to substitute in translation strings using {varName} syntax',
+    }
+  ]
+
+  const propsData = [
+    {
+      name: 'LanguageProvider',
+      description: 'Provides language context to child components',
+      propsData: providerPropsData,
+    },
+    {
+      name: 'LanguageSwitcher',
+      description: 'UI component for switching between languages',
+      propsData: switcherPropsData,
+    },
+    {
+      name: 'Translate',
+      description: 'Component for rendering translated text',
+      propsData: translatePropsData,
+    },
+  ]
+
 
   const features = [
     {
       icon: (
         <svg className="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
         </svg>
       ),
       title: "Language Selection",
@@ -223,10 +326,11 @@ export default function MyApp() {
       githubPath="registry/new-york/language-switcher/language-switcher.tsx"
       usageCode={usageCode}
       usageDescription="The Language Switcher component provides an interface for changing the language in your application. The example below demonstrates how it can translate an entire page."
-      propsData={propsData}
+      propsData={[]}
       features={features}
       bestPractices={bestPractices}
       componentName="language-switcher"
+      subComponents={propsData}
     />
   )
 }

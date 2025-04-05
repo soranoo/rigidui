@@ -9,6 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Loader } from 'lucide-react'
+import { cn } from '@/lib/utils'
 
 export type Currency = {
   code: string
@@ -144,7 +145,7 @@ function useCurrency() {
   return context
 }
 
-export function CurrencySelector() {
+export function CurrencySelector({ className }: { className?: string }) {
   const { currency, setCurrency, loading } = useCurrency()
 
   return (
@@ -158,7 +159,7 @@ export function CurrencySelector() {
       }}
       disabled={loading}
     >
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className={cn("w-[180px]", className)}>
         <SelectValue placeholder="Select currency" />
       </SelectTrigger>
       <SelectContent>
@@ -181,11 +182,11 @@ interface CurrencyDisplayProps {
 export function CurrencyDisplay({
   value,
   className,
-  sourceCurrency = "USD"
+  sourceCurrency = "INR"
 }: CurrencyDisplayProps) {
   const { formatValue, convertValue, loading, LoaderComponent } = useCurrency()
 
-  const effectiveSourceCurrency = sourceCurrency || "USD";
+  const effectiveSourceCurrency = sourceCurrency || "INR";
   const convertedValue = convertValue(value, effectiveSourceCurrency);
 
   return (
