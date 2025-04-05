@@ -67,7 +67,6 @@ export default function ComponentDocTemplate({
       <ComponentHeader
         title={title}
         description={description}
-        previewComponent={previewComponent}
         githubPath={githubPath}
       />
 

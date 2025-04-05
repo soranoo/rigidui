@@ -1,5 +1,6 @@
 import React from 'react'
 import ComponentDocTemplate from '../../_components/ComponentDocTemplate'
+import { LanguageProvider, LanguageSwitcher, Translate } from '@/registry/new-york/language-switcher/language-switcher';
 
 export default function LanguageSwitcherPage() {
   const propsData = [
@@ -40,7 +41,7 @@ export default function LanguageSwitcherPage() {
     {
       icon: (
         <svg className="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 11.955 0 0112 2.944a11.955 11.955 11.955 0 01-8.618 3.04A12.02 12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
         </svg>
       ),
       title: "Language Detection",
@@ -83,37 +84,145 @@ export default function LanguageSwitcherPage() {
     }
   ]
 
-  const usageCode = `import { LanguageSwitcher } from "@/components/ui/language-switcher"
+  const usageCode = `import { LanguageProvider, LanguageSwitcher, Translate } from "@/components/ui/language-switcher"
 
-export default function MyComponent() {
+export default function MyApp() {
   const handleLanguageChange = (language) => {
-    console.log("Selected language:", language)
-    // Update your i18n configuration here
+    console.log("Language changed to:", language)
+    // Any additional logic when language changes
   }
 
   return (
-    <LanguageSwitcher
-      defaultLanguage="en"
-      onLanguageChange={handleLanguageChange}
-      availableLanguages={['en', 'es', 'fr', 'de', 'ja']}
-    />
+    <LanguageProvider>
+      {/* Your app header */}
+      <header className="flex justify-between items-center p-4 border-b">
+        <h1 className="text-xl font-bold">
+          <Translate
+            translations={{
+              en: "My Application",
+              es: "Mi Aplicación",
+              fr: "Mon Application",
+              de: "Meine Anwendung"
+            }}
+          />
+        </h1>
+
+        <LanguageSwitcher
+          type="select"
+          showFlags={true}
+          onLanguageChange={handleLanguageChange}
+          availableLanguages={['en', 'es', 'fr', 'de']}
+          className="w-40"
+        />
+      </header>
+
+      {/* Your app content with translations */}
+      <main className="p-4">
+        <h2 className="text-2xl mb-4">
+          <Translate
+            translations={{
+              en: "Welcome to our platform",
+              es: "Bienvenido a nuestra plataforma",
+              fr: "Bienvenue sur notre plateforme",
+              de: "Willkommen auf unserer Plattform"
+            }}
+          />
+        </h2>
+
+        <p className="mb-6">
+          <Translate
+            translations={{
+              en: "Choose your language preference above",
+              es: "Elija su preferencia de idioma arriba",
+              fr: "Choisissez votre préférence de langue ci-dessus",
+              de: "Wählen Sie oben Ihre Spracheinstellung"
+            }}
+          />
+        </p>
+
+        <button className="px-4 py-2 bg-blue-600 text-white rounded">
+          <Translate
+            translations={{
+              en: "Get Started",
+              es: "Comenzar",
+              fr: "Commencer",
+              de: "Loslegen"
+            }}
+          />
+        </button>
+      </main>
+    </LanguageProvider>
   )
 }`
+
+  const previewComponent = (
+    <LanguageProvider>
+      <div className="border rounded-lg shadow-sm overflow-hidden max-w-3xl mx-auto">
+        <header className="flex justify-between items-center p-4 border-b bg-gray-50 dark:bg-gray-800/50">
+          <h1 className="text-xl font-bold">
+            <Translate
+              translations={{
+                en: "My Application",
+                es: "Mi Aplicación",
+                fr: "Mon Application",
+                de: "Meine Anwendung"
+              }}
+            />
+          </h1>
+
+          <LanguageSwitcher
+            type="select"
+            showFlags={true}
+            className="w-40"
+          />
+        </header>
+
+        <main className="p-6 bg-white dark:bg-gray-950">
+          <h2 className="text-2xl mb-4">
+            <Translate
+              translations={{
+                en: "Welcome to our platform",
+                es: "Bienvenido a nuestra plataforma",
+                fr: "Bienvenue sur notre plateforme",
+                de: "Willkommen auf unserer Plattform"
+              }}
+            />
+          </h2>
+
+          <p className="mb-6 text-gray-600 dark:text-gray-400">
+            <Translate
+              translations={{
+                en: "Choose your language preference above",
+                es: "Elija su preferencia de idioma arriba",
+                fr: "Choisissez votre préférence de langue ci-dessus",
+                de: "Wählen Sie oben Ihre Spracheinstellung"
+              }}
+            />
+          </p>
+
+          <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+            <Translate
+              translations={{
+                en: "Get Started",
+                es: "Comenzar",
+                fr: "Commencer",
+                de: "Loslegen"
+              }}
+            />
+          </button>
+        </main>
+      </div>
+    </LanguageProvider>
+  );
 
   return (
     <ComponentDocTemplate
       title="Language Switcher"
       description="A component for switching between different languages in your application."
-      previewComponent={
-        <div className="flex flex-col items-center justify-center gap-2">
-          <div className="rounded-md border border-gray-300 px-3 py-1 text-center text-sm">
-            English (EN)
-          </div>
-        </div>
-      }
+      previewComponent={previewComponent}
       githubPath="registry/new-york/language-switcher/language-switcher.tsx"
       usageCode={usageCode}
-      usageDescription="The Language Switcher component provides an interface for changing the language in your application."
+      usageDescription="The Language Switcher component provides an interface for changing the language in your application. The example below demonstrates how it can translate an entire page."
       propsData={propsData}
       features={features}
       bestPractices={bestPractices}

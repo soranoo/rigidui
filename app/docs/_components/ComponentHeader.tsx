@@ -5,7 +5,6 @@ import Link from 'next/link'
 interface ComponentHeaderProps {
   title: string
   description: string
-  previewComponent: React.ReactNode
   githubPath?: string
   npm?: string
 }
@@ -13,9 +12,8 @@ interface ComponentHeaderProps {
 export function ComponentHeader({
   title,
   description,
-  previewComponent,
   githubPath,
-  npm
+  npm,
 }: ComponentHeaderProps) {
   return (
     <div className="mb-10">
@@ -54,12 +52,6 @@ export function ComponentHeader({
             </div>
           )}
         </div>
-
-        {previewComponent && (
-          <div className="flex-shrink-0 w-full lg:w-80 h-32 flex items-center justify-center p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-100 dark:border-gray-700 shadow-sm">
-            {previewComponent}
-          </div>
-        )}
       </div>
       <div className="mt-10 border-b border-gray-200 dark:border-gray-800"></div>
     </div>

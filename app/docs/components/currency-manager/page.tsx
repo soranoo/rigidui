@@ -1,5 +1,6 @@
 import React from 'react'
 import ComponentDocTemplate from '../../_components/ComponentDocTemplate'
+import { CurrencyDisplay, CurrencyProvider, CurrencySelector } from '@/registry/new-york/currency-manager/currency-manager'
 
 export default function CurrencyManagerPage() {
   const providerPropsData = [
@@ -66,26 +67,113 @@ export default function CurrencyManagerPage() {
     }
   ]
 
-  const usageCode = `import {
-  CurrencyProvider,
-  CurrencySelector,
-  CurrencyDisplay
-} from "@/components/ui/currency-manager"
+  const usageCode = `import { CurrencyDisplay, CurrencyProvider, CurrencySelector } from "@/components/ui/currency-manager"
 
 export default function MyComponent() {
   return (
     <CurrencyProvider defaultCurrency="USD">
-      <div>
-        <h2>Select Currency</h2>
-        <CurrencySelector />
+      <div className="space-y-4">
+        <header className="flex justify-between items-center">
+          <h1 className="text-xl font-bold">My Store</h1>
+          <CurrencySelector className="w-32" />
+        </header>
 
-        <h2>Product Prices</h2>
-        <p>Product A: <CurrencyDisplay value={99.99} sourceCurrency="USD" /></p>
-        <p>Product B: <CurrencyDisplay value={89.99} sourceCurrency="EUR" /></p>
+        <div className="space-y-4">
+          <h2 className="text-lg font-medium">Product Catalog</h2>
+          <div className="grid gap-4 md:grid-cols-2">
+            <div className="border p-4 rounded-md">
+              <h3>Premium Headphones</h3>
+              <p className="text-lg font-bold">
+                <CurrencyDisplay value={129.99} sourceCurrency="USD" />
+              </p>
+            </div>
+            <div className="border p-4 rounded-md">
+              <h3>Wireless Keyboard</h3>
+              <p className="text-lg font-bold">
+                <CurrencyDisplay value={79.99} sourceCurrency="EUR" />
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t pt-4">
+          <h3 className="font-medium">Cart Total</h3>
+          <p className="text-xl font-bold">
+            <CurrencyDisplay value={209.98} sourceCurrency="USD" />
+          </p>
+        </div>
       </div>
     </CurrencyProvider>
   )
 }`
+
+  const previewComponent = (
+    <CurrencyProvider>
+      <div className="border rounded-lg shadow-sm overflow-hidden max-w-3xl mx-auto">
+        <header className="flex justify-between items-center p-4 border-b bg-gray-50 dark:bg-gray-800/50">
+          <h1 className="text-xl font-bold">E-commerce Store</h1>
+          <CurrencySelector />
+        </header>
+
+        <main className="p-6 bg-white dark:bg-gray-950">
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-xl font-medium mb-4">Featured Products</h2>
+              <div className="grid gap-6 md:grid-cols-3">
+                <div className="border rounded-lg overflow-hidden">
+                  <div className="bg-gray-100 dark:bg-gray-800 h-32 flex items-center justify-center">
+                    <div className="text-gray-400">Product Image</div>
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-medium">Premium Headphones</h3>
+                    <p className="text-lg font-bold mt-1">
+                      <CurrencyDisplay value={129.99} sourceCurrency="USD" />
+                    </p>
+                  </div>
+                </div>
+
+                <div className="border rounded-lg overflow-hidden">
+                  <div className="bg-gray-100 dark:bg-gray-800 h-32 flex items-center justify-center">
+                    <div className="text-gray-400">Product Image</div>
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-medium">Wireless Keyboard</h3>
+                    <p className="text-lg font-bold mt-1">
+                      <CurrencyDisplay value={79.99} sourceCurrency="EUR" />
+                    </p>
+                  </div>
+                </div>
+
+                <div className="border rounded-lg overflow-hidden">
+                  <div className="bg-gray-100 dark:bg-gray-800 h-32 flex items-center justify-center">
+                    <div className="text-gray-400">Product Image</div>
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-medium">Smart Watch</h3>
+                    <p className="text-lg font-bold mt-1">
+                      <CurrencyDisplay value={199.99} sourceCurrency="GBP" />
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-2 pt-4 border-t">
+              <h2 className="text-lg font-medium">Exchange Rate Information</h2>
+              <div className="grid gap-2">
+                <p>USD → EUR: <CurrencyDisplay value={1} sourceCurrency="USD" className="font-mono" /></p>
+                <p>EUR → USD: <CurrencyDisplay value={1} sourceCurrency="EUR" className="font-mono" /></p>
+                <p>GBP → USD: <CurrencyDisplay value={1} sourceCurrency="GBP" className="font-mono" /></p>
+              </div>
+              <p className="text-sm text-gray-500 mt-4">
+                Change your preferred currency using the selector in the header to see all values update automatically.
+              </p>
+            </div>
+          </div>
+        </main>
+      </div>
+    </CurrencyProvider>
+  );
 
   const subComponents = [
     {
@@ -109,17 +197,10 @@ export default function MyComponent() {
     <ComponentDocTemplate
       title="Currency Manager"
       description="A set of components for managing currency display and selection in your application."
-      previewComponent={
-        <div className="flex flex-col items-center justify-center gap-2">
-          <div className="text-sm font-medium">USD $100.00</div>
-          <div className="rounded-md border border-gray-300 px-3 py-1 text-center text-xs">
-            Change Currency
-          </div>
-        </div>
-      }
+      previewComponent={previewComponent}
       githubPath="registry/new-york/currency-manager/currency-manager.tsx"
       usageCode={usageCode}
-      usageDescription="The Currency Manager provides a set of components for currency management and display."
+      usageDescription="The Currency Manager provides a set of components for currency management and display. It allows users to select their preferred currency and automatically converts all displayed values."
       propsData={[]}
       bestPractices={bestPractices}
       componentName="currency-manager"
