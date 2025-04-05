@@ -102,7 +102,7 @@ export default function MyComponent() {
       propsData={propsData}
       features={features}
       bestPractices={bestPractices}
-      componentName="location-picker"
+      componentName="https://rigidui.vercel.app/registry/location-picker"
     />
   )
 }

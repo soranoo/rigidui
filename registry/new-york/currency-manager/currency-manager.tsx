@@ -25,7 +25,7 @@ export const currencies: Currency[] = [
   { code: 'INR', symbol: '₹', name: 'Indian Rupee' },
 ]
 
-const DefaultLoader = () => <Loader className='w-4 h-4 animate-spin' />;
+const DefaultLoader = () => <Loader className='w-4 h-4 animate-spin dark:text-gray-300' />;
 
 type CurrencyContextType = {
   currency: Currency
@@ -159,12 +159,12 @@ export function CurrencySelector({ className }: { className?: string }) {
       }}
       disabled={loading}
     >
-      <SelectTrigger className={cn("w-[180px]", className)}>
+      <SelectTrigger className={cn("w-[180px] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100", className)}>
         <SelectValue placeholder="Select currency" />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className="dark:bg-gray-900 dark:border-gray-700">
         {currencies.map((c) => (
-          <SelectItem key={c.code} value={c.code}>
+          <SelectItem key={c.code} value={c.code} className="dark:text-gray-100 dark:data-[highlighted]:bg-gray-800 dark:focus:bg-gray-800">
             {c.symbol} {c.name} ({c.code})
           </SelectItem>
         ))}
@@ -190,8 +190,8 @@ export function CurrencyDisplay({
   const convertedValue = convertValue(value, effectiveSourceCurrency);
 
   return (
-    <span className={className}>
-      {loading ? <span className='inline'><LoaderComponent /></span> : formatValue(convertedValue)}
+    <span className={cn("dark:text-gray-100", className)}>
+      {loading ? <span className='inline dark:text-gray-300'><LoaderComponent /></span> : formatValue(convertedValue)}
     </span>
   );
 }

@@ -205,7 +205,7 @@ export default function MyComponent() {
       usageDescription="The Currency Manager provides a set of components for currency management and display. It allows users to select their preferred currency and automatically converts all displayed values."
       propsData={[]}
       bestPractices={bestPractices}
-      componentName="currency-manager"
+      componentName="https://rigidui.vercel.app/registry/currency-manager"
       subComponents={subComponents}
     />
   )

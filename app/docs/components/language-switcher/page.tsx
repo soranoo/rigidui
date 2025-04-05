@@ -329,7 +329,7 @@ export default function MyApp() {
       propsData={[]}
       features={features}
       bestPractices={bestPractices}
-      componentName="language-switcher"
+      componentName="https://rigidui.vercel.app/registry/language-switcher"
       subComponents={propsData}
     />
   )

@@ -1,6 +1,14 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { cn } from "@/lib/utils";
 
 export type Language = {
   code: string;
@@ -59,7 +67,7 @@ export function LanguageProvider({
   translations = {},
 }: LanguageProviderProps) {
   const [currentLanguage, setCurrentLanguage] = useState<string>(initialLanguage);
-  const [translationsMap, ] = useState<TranslationMap>(translations);
+  const [translationsMap,] = useState<TranslationMap>(translations);
 
   useEffect(() => {
     const savedLanguage = typeof window !== 'undefined'
@@ -148,27 +156,43 @@ export function LanguageSwitcher({
 
   if (type === 'select') {
     return (
-      <select
+      <Select
         value={currentLanguage}
-        onChange={(e) => setLanguage(e.target.value)}
-        className={`language-selector ${className}`}
+        onValueChange={(value) => setLanguage(value)}
       >
-        {languages.map((language) => (
-          <option key={language.code} value={language.code}>
-            {showFlags && language.flag ? `${language.flag} ` : ''}
-            {language.name}
-          </option>
-        ))}
-      </select>
+        <SelectTrigger className={cn("w-[180px] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100", className)}>
+          <SelectValue>
+            {showFlags && currentLanguageObj?.flag ? `${currentLanguageObj.flag} ` : ''}
+            {currentLanguageObj?.name || currentLanguage}
+          </SelectValue>
+        </SelectTrigger>
+        <SelectContent className="dark:bg-gray-900 dark:border-gray-700">
+          {languages.map((language) => (
+            <SelectItem
+              key={language.code}
+              value={language.code}
+              className="dark:text-gray-100 dark:data-[highlighted]:bg-gray-800 dark:focus:bg-gray-800"
+            >
+              {showFlags && language.flag ? `${language.flag} ` : ''}
+              {language.name}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     );
   } else if (type === 'buttons') {
     return (
-      <div className={`language-buttons ${className}`}>
+      <div className={cn("flex gap-2", className)}>
         {languages.map((language) => (
           <button
             key={language.code}
             onClick={() => setLanguage(language.code)}
-            className={`language-button ${currentLanguage === language.code ? 'active' : ''}`}
+            className={cn(
+              "px-3 py-1 rounded-md text-sm transition-colors",
+              currentLanguage === language.code
+                ? "bg-primary text-primary-foreground dark:bg-gray-700 dark:text-white"
+                : "bg-secondary text-secondary-foreground hover:bg-secondary/80 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+            )}
           >
             {showFlags && language.flag ? `${language.flag} ` : ''}
             {language.name}
@@ -178,9 +202,9 @@ export function LanguageSwitcher({
     );
   } else {
     return (
-      <div className={`language-dropdown ${className}`}>
+      <div className={cn("relative", className)}>
         <button
-          className="dropdown-toggle"
+          className="flex items-center gap-2 px-3 py-2 rounded-md text-sm bg-background dark:bg-gray-800 border border-input dark:border-gray-700 hover:bg-accent dark:hover:bg-gray-700 transition-colors"
           onClick={() => setIsOpen(!isOpen)}
         >
           {showFlags && currentLanguageObj?.flag ? `${currentLanguageObj.flag} ` : ''}
@@ -188,7 +212,7 @@ export function LanguageSwitcher({
         </button>
 
         {isOpen && (
-          <div className="dropdown-menu">
+          <div className="absolute top-full left-0 mt-1 w-full bg-background dark:bg-gray-900 rounded-md border border-input dark:border-gray-700 shadow-md z-10">
             {languages.map((language) => (
               <button
                 key={language.code}
@@ -196,7 +220,10 @@ export function LanguageSwitcher({
                   setLanguage(language.code);
                   setIsOpen(false);
                 }}
-                className={`dropdown-item ${currentLanguage === language.code ? 'active' : ''}`}
+                className={cn(
+                  "w-full text-left px-3 py-2 text-sm hover:bg-accent dark:hover:bg-gray-800 transition-colors",
+                  currentLanguage === language.code && "bg-accent/50 dark:bg-gray-800/90 font-medium"
+                )}
               >
                 {showFlags && language.flag ? `${language.flag} ` : ''}
                 {language.name}
