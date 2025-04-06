@@ -136,10 +136,12 @@ export function DocsNavigation({
     <nav className={`p-4 bg-white dark:bg-gray-900 transition-colors duration-200 ${className} ${collapsed && !isMobile ? 'px-2' : ''}`}>
       <div className={`flex items-center ${collapsed && !isMobile ? 'justify-center flex-col space-y-4' : 'justify-between'} mb-8`}>
         <Link href="/" className="flex items-center">
-          <span className={cn('p-2 bg-gradient-to-tr from-blue-50 to-blue-100 rounded-md shadow-sm dark:from-blue-900/20 dark:to-blue-800/20 mr-2', collapsed && "mr-0")}>
-            <Image src="/logo.png" className='dark:invert' alt="Logo" width={14} height={14} />
+          <span className={cn('p-2 rounded-md mr-2', collapsed && "mr-0")}>
+            {collapsed ? <Image src="/short-logo.png" width={100} height={100} alt="Short Logo" />:
+              <Image src="/logo.png" alt="Logo" width={100} height={100} />
+            }
           </span>
-          <span className={cn("font-bold text-xl text-gray-900 dark:text-white", collapsed && 'hidden')}>RigidUI</span>
+          {/* <span className={cn("font-bold text-xl text-gray-900 dark:text-white", collapsed && 'hidden')}>RigidUI</span> */}
         </Link>
         <div className={`flex items-center ${collapsed && !isMobile ? 'flex-col space-y-4' : 'space-x-2'}`}>
           <button
