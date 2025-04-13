@@ -46,6 +46,21 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "multi-step-form-wrapper",
+      "type": "registry:component",
+      "title": "Multi Step Form Wrapper",
+      "description": "A multi step form wrapper component",
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/multi-step-form-wrapper/multi-step-form-wrapper.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }

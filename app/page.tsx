@@ -8,7 +8,6 @@ import Image from "next/image"
 export default function Home() {
   return (
     <div className="flex flex-col min-h-svh relative overflow-hidden">
-      {/* Decorative elements */}
       <div className="absolute top-40 right-10 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />
       <div className="absolute bottom-40 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
 
@@ -39,17 +38,16 @@ export default function Home() {
       </nav>
 
       <section className="py-28 px-4 bg-gradient-to-br from-background via-background to-muted relative overflow-hidden">
-        {/* Decorative grid background */}
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none" />
 
-        {/* Hero content */}
         <div className="max-w-6xl mx-auto flex flex-col items-center text-center gap-8 relative z-10">
           <div className="inline-block animate-pulse bg-primary/15 text-primary px-4 py-1.5 rounded-full text-sm font-medium mb-2 shadow-glow">
             Now in beta
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-br from-primary via-primary to-primary/60 py-2 animate-gradient">
-            RigidUI
-          </h1>
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-primary to-purple-600 dark:from-blue-400 dark:via-primary dark:to-violet-500 py-2 animate-gradient relative z-10">
+              RigidUI
+              <span className="absolute -inset-1 blur-xl bg-gradient-to-r from-indigo-600/20 via-primary/20 to-purple-600/20 dark:from-blue-400/20 dark:via-primary/20 dark:to-violet-500/20 -z-10"></span>
+            </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl leading-relaxed">
             A collection of sophisticated, <span className="text-foreground font-medium">highly customizable</span> UI components built with shadcn
           </p>
@@ -68,9 +66,8 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* Floating component examples */}
           <div className="relative mt-16 w-full max-w-4xl">
-            <div className="absolute -top-6 -left-6 md:top-auto md:-left-16 md:-bottom-12 transform rotate-3 bg-background rounded-lg border shadow-lg w-32 h-32 md:w-48 md:h-48 flex items-center justify-center animate-float-slow z-10">
+            <div className="absolute -top-6 -left-6 md:top-auto md:-left-24 md:-bottom-20 transform rotate-3 bg-background rounded-lg border shadow-lg w-32 h-32 md:w-48 md:h-48 flex items-center justify-center animate-float-slow z-10">
               <div className="w-5/6 h-5/6 rounded-md bg-gradient-to-br from-primary/5 to-primary/20 flex items-center justify-center">
                 <Layers className="h-6 w-6 text-primary/70" />
               </div>

@@ -79,15 +79,8 @@ export default function LocationPickerPage() {
   const usageCode = `import { LocationPicker } from "@/components/ui/location-picker"
 
 export default function MyComponent() {
-  const handleLocationChange = (location) => {
-    console.log("Selected location:", location)
-  }
-
   return (
-    <LocationPicker
-      onLocationChange={handleLocationChange}
-      placeholder="Enter your location"
-    />
+    <LocationPicker />
   )
 }`
 
