@@ -1,7 +1,6 @@
 "use client"
 
-import * as React from "react"
-import { useState } from "react"
+import React, { useState } from "react"
 import { z } from "zod"
 import { Input } from "@/components/ui/input"
 import { toast } from "sonner"
@@ -29,7 +28,6 @@ const messageSchema = z.object({
   message: z.string().min(5, { message: "Message is too short" }),
 })
 
-// Combined schema for the entire form
 const formSchema = z.object({
   ...basicInfoSchema.shape,
   ...messageSchema.shape,
@@ -38,7 +36,14 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>
 
 export function MultiStepFormDemo() {
-  const [result, setResult] = useState<FormValues | null>(null)
+  const [, setResult] = useState<FormValues | null>(null)
+
+  const initialValues: Partial<FormValues> = {
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  };
 
   const handleComplete = (data: FormValues) => {
     setResult(data)
@@ -47,40 +52,26 @@ export function MultiStepFormDemo() {
 
   return (
     <div className="max-w-sm mx-auto">
-      {result ? (
-        <div className="p-4 border rounded-md">
-          <h2 className="font-medium mb-2">Form Submitted</h2>
-          <pre className="text-xs bg-gray-100 p-2 rounded dark:bg-gray-800">
-            {JSON.stringify(result, null, 2)}
-          </pre>
-          <button
-            onClick={() => setResult(null)}
-            className="mt-2 text-sm bg-primary text-white px-3 py-1 rounded"
-          >
-            Reset
-          </button>
-        </div>
-      ) : (
-        <MultiStepFormWrapper<FormValues>
-          onComplete={handleComplete}
-          completeButtonText="Submit"
-          className="border rounded p-4"
-          schema={formSchema}
+      <MultiStepFormWrapper
+        onComplete={handleComplete}
+        completeButtonText="Submit"
+        className="border rounded p-4"
+        schema={formSchema}
+        initialData={initialValues}
+      >
+        <Step
+          title="Basic Info"
+          schema={basicInfoSchema}
         >
-          <Step<FormValues>
-            title="Basic Info"
-            schema={basicInfoSchema}
-          >
-            <BasicInfoStep />
-          </Step>
-          <Step<FormValues>
-            title="Message"
-            schema={messageSchema}
-          >
-            <MessageStep />
-          </Step>
-        </MultiStepFormWrapper>
-      )}
+          <BasicInfoStep />
+        </Step>
+        <Step<FormValues>
+          title="Message"
+          schema={messageSchema}
+        >
+          <MessageStep />
+        </Step>
+      </MultiStepFormWrapper>
     </div>
   );
 }

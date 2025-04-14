@@ -129,75 +129,181 @@ export default function MultiStepFormWrapperPage() {
     }
   ]
 
-  const usageCode = `import { MultiStepFormWrapper, Step } from "@/components/ui/multi-step-form-wrapper"
+  const usageCode = `"use client"
 
-export default function MyForm() {
+import React, { useState } from "react"
+import { z } from "zod"
+import { Input } from "@/components/ui/input"
+import { toast } from "sonner"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import {
+  MultiStepFormWrapper,
+  Step,
+  useMultiStepForm
+} from "./multi-step-form-wrapper"
+
+const basicInfoSchema = z.object({
+  name: z.string().min(1, { message: "Name is required" }),
+  email: z.string().email({ message: "Invalid email format" }),
+})
+
+const messageSchema = z.object({
+  subject: z.string().min(1, { message: "Subject is required" }),
+  message: z.string().min(5, { message: "Message is too short" }),
+})
+
+const formSchema = z.object({
+  ...basicInfoSchema.shape,
+  ...messageSchema.shape,
+})
+
+type FormValues = z.infer<typeof formSchema>
+
+export function MultiStepFormDemo() {
+  const [result, setResult] = useState<FormValues | null>(null)
+
+  const initialValues: Partial<FormValues> = {
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  };
+
+  const handleComplete = (data: FormValues) => {
+    setResult(data)
+    toast.success("Form submitted!")
+  }
+
   return (
-    <MultiStepFormWrapper
-      onComplete={(data) => console.log("Form completed with:", data)}
-    >
-      <Step title="Personal Information" description="Enter your personal details">
-        <div className="space-y-4">
-          {/* Step 1 form fields */}
-          <input type="text" placeholder="Full Name" />
-        </div>
-      </Step>
-      <Step title="Contact Information" description="How can we reach you?">
-        <div className="space-y-4">
-          {/* Step 2 form fields */}
-          <input type="email" placeholder="Email Address" />
-        </div>
-      </Step>
-      <Step title="Confirmation" description="Review and submit">
-        <div>
-          {/* Step 3 confirmation content */}
-          <p>Please review your information before submitting.</p>
-        </div>
-      </Step>
-    </MultiStepFormWrapper>
-  )
-}`
+    <div className="max-w-sm mx-auto">
+      <MultiStepFormWrapper
+        onComplete={handleComplete}
+        completeButtonText="Submit"
+        className="border rounded p-4"
+        schema={formSchema}
+        initialData={initialValues}
+      >
+        <Step
+          title="Basic Info"
+          schema={basicInfoSchema}
+        >
+          <BasicInfoStep />
+        </Step>
+        <Step<FormValues>
+          title="Message"
+          schema={messageSchema}
+        >
+          <MessageStep />
+        </Step>
+      </MultiStepFormWrapper>
+    </div>
+  );
+}
 
-  const FormPreview = () => (
-    // <MultiStepFormWrapper className="w-full" >
-    //   <Step title="Personal Details" description="Enter your personal information">
-    //     <div className="space-y-4">
-    //       <div>
-    //         <label className="block text-sm font-medium mb-1">Full Name</label>
-    //         <input
-    //           type="text"
-    //           className="w-full p-2 border rounded-md dark:bg-gray-800 dark:border-gray-700"
-    //           placeholder="John Doe"
-    //         />
-    //       </div>
-    //     </div>
-    //   </Step>
-    //   <Step title="Contact" description="How can we reach you?">
-    //     <div className="space-y-4">
-    //       <div>
-    //         <label className="block text-sm font-medium mb-1">Email Address</label>
-    //         <input
-    //           type="email"
-    //           className="w-full p-2 border rounded-md dark:bg-gray-800 dark:border-gray-700"
-    //           placeholder="john@example.com"
-    //         />
-    //       </div>
-    //     </div>
-    //   </Step>
-    //   <Step title="Finish" description="Complete your submission">
-    //     <div className="py-4">
-    //       <p>Thank you for your information! Click Complete to submit.</p>
-    //     </div>
-    //   </Step>
-    // </MultiStepFormWrapper>
-    <MultiStepFormDemo  />
+function BasicInfoStep() {
+  const { form } = useMultiStepForm<FormValues>()
+
+  return (
+    <Form {...form}>
+      <div className="space-y-3">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  placeholder="Enter your name"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  type="email"
+                  placeholder="Enter your email"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+    </Form>
   )
+}
+
+function MessageStep() {
+  const { form } = useMultiStepForm<FormValues>()
+
+  return (
+    <Form {...form}>
+      <div className="space-y-3">
+        <FormField
+          control={form.control}
+          name="subject"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Subject</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  placeholder="Message subject"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="message"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Your Message</FormLabel>
+              <FormControl>
+                <textarea
+                  {...field}
+                  placeholder="Type your message here"
+                  className="w-full p-2 text-sm border rounded min-h-[80px] dark:bg-gray-800"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
+    </Form>
+  )
+}
+  `
+
 
   return (
     <ComponentDocTemplate
       title="Multi-Step Form Wrapper"
       description="A multi-step form wrapper component that breaks complex forms into manageable steps."
-      previewComponent={<FormPreview />}
+      previewComponent={<MultiStepFormDemo />}
       githubPath="registry/new-york/multi-step-form-wrapper/multi-step-form-wrapper.tsx"
       usageCode={usageCode}
       usageDescription="The Multi-Step Form Wrapper component simplifies the creation of step-by-step forms with validation and progress tracking."

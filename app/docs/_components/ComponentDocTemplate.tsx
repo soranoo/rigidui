@@ -53,7 +53,7 @@ export default function ComponentDocTemplate({
   githubPath,
   usageCode,
   usageDescription = `The ${title} component provides an interface for users.`,
-  codeFilename = "BasicUsage.jsx",
+  codeFilename = "BasicUsage.tsx",
   propsData,
   features,
   bestPractices,
@@ -148,7 +148,7 @@ export default function ComponentDocTemplate({
 
         <CodeBlock
           code={usageCode}
-          language='jsx'
+          language='tsx'
           filename={codeFilename}
         />
       </section>

@@ -39,7 +39,7 @@ export interface StepProps<T extends FormData = FormData> {
   title?: string
   description?: string
   validate?: (data: T) => Promise<boolean> | boolean
-  schema?: z.ZodType<unknown, z.ZodTypeDef, unknown>
+  schema?: z.ZodObject<any>
 }
 
 export interface MultiStepFormWrapperProps<T extends FormData = FormData> {
@@ -88,7 +88,7 @@ export function MultiStepFormWrapper<T extends FormData = FormData>({
   const [isComplete, setIsComplete] = useState<boolean>(false)
 
   const form = useForm<T>({
-    defaultValues: initialData as unknown as DefaultValues<T>,
+    defaultValues: prepareDefaultValues(initialData, schema),
     resolver: schema ? zodResolver(schema) : undefined,
     mode: "onChange"
   })
@@ -101,16 +101,19 @@ export function MultiStepFormWrapper<T extends FormData = FormData>({
   React.useEffect(() => {
     if (stepSchema) {
       form.clearErrors()
-      form.setFocus(Object.keys(stepSchema.shape)[0])
+      const firstFieldName = Object.keys(stepSchema.shape)[0] as keyof T;
+      if (firstFieldName) {
+        form.setFocus(firstFieldName as any);
+      }
     }
   }, [currentStep, form, stepSchema])
 
   const updateFormData = useCallback((stepData: Partial<T>): void => {
-    setFormData((prev) => ({ ...prev, ...stepData }))
+    setFormData((prev) => ({ ...prev, ...stepData }));
 
     Object.entries(stepData).forEach(([key, value]) => {
-      form.setValue(key as any, value)
-    })
+      form.setValue(key as keyof T as any, value === undefined ? '' : value);
+    });
   }, [form])
 
   const goToNextStep = useCallback(async (): Promise<void> => {
@@ -120,19 +123,16 @@ export function MultiStepFormWrapper<T extends FormData = FormData>({
     if (stepSchema) {
       setIsValidating(true)
       try {
-        // Validate the current step using the schema
         const stepFields = Object.keys(stepSchema.shape)
-        const stepValues = Object.fromEntries(
-          stepFields.map(field => [field, formData[field]])
-        )
-
         const result = await form.trigger(stepFields as any[])
         if (!result) return
+      } catch (error) {
+        console.error("Step schema validation error:", error)
+        return
       } finally {
         setIsValidating(false)
       }
     } else if (validate) {
-      // Use the traditional validate function if provided
       setIsValidating(true)
       try {
         const isValid = await validate(formData)
@@ -147,7 +147,6 @@ export function MultiStepFormWrapper<T extends FormData = FormData>({
 
     if (isLastStep) {
       if (schema) {
-        // Final validation with the full schema if provided
         const isValid = await form.trigger()
         if (!isValid) return
       }
@@ -247,6 +246,21 @@ export function MultiStepFormWrapper<T extends FormData = FormData>({
       ))}
     </div>
   )
+
+  function prepareDefaultValues(initialData: Partial<T>, schema?: z.ZodType<T>): DefaultValues<T> {
+    const defaultValues = { ...initialData } as Record<string, any>;
+
+    if (schema && 'shape' in schema) {
+      const shapes = (schema as any).shape;
+      Object.keys(shapes).forEach(key => {
+        if (defaultValues[key] === undefined) {
+          defaultValues[key] = '';
+        }
+      });
+    }
+
+    return defaultValues as DefaultValues<T>;
+  }
 
   return (
     <div className={cn("max-w-2xl mx-auto", className)}>
