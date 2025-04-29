@@ -1,4 +1,5 @@
-'use client'
+"use client"
+
 import React, { useState } from 'react'
 import { ChevronDown, ChevronRight, Folder, FolderOpen, FileText, X, Copy, Check, ChevronsUp, Search } from 'lucide-react'
 import { Card } from '@/components/ui/card'
@@ -26,7 +27,17 @@ type FolderType = {
 
 type FileSystemItemType = FileType | FolderType
 
-const fileSystemData: FolderType = {
+interface FileExplorerProps {
+  initialData?: FolderType
+  className?: string
+  cardClassName?: string
+  title?: string
+  showTitle?: boolean
+  height?: string
+  fileContentHeight?: string
+}
+
+const defaultFileSystemData: FolderType = {
   id: 'root',
   name: 'project-root',
   type: 'folder',
@@ -128,161 +139,10 @@ export default function HomePage() {
     </div>
   );
 }`
-            },
-            {
-              id: 'about.tsx',
-              name: 'about.tsx',
-              type: 'file',
-              language: 'tsx',
-              content: `import React from 'react';
-
-export default function AboutPage() {
-  return (
-    <div className="container">
-      <h1>About Us</h1>
-      <p>This is the about page of our application.</p>
-    </div>
-  );
-}`
-            }
-          ]
-        },
-        {
-          id: 'styles',
-          name: 'styles',
-          type: 'folder',
-          children: [
-            {
-              id: 'global.css',
-              name: 'global.css',
-              type: 'file',
-              language: 'css',
-              content: `/* Global styles */
-body {
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f5f5f5;
-  color: #333;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-.button {
-  border: none;
-  border-radius: 0.375rem;
-  padding: 0.5rem 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.button.primary {
-  background-color: #3b82f6;
-  color: white;
-}
-
-.button.secondary {
-  background-color: #6b7280;
-  color: white;
-}
-
-.button.outline {
-  background-color: transparent;
-  border: 1px solid #d1d5db;
-  color: #374151;
-}`
             }
           ]
         }
       ]
-    },
-    {
-      id: 'public',
-      name: 'public',
-      type: 'folder',
-      children: [
-        {
-          id: 'favicon.ico',
-          name: 'favicon.ico',
-          type: 'file',
-          language: 'binary',
-          content: '[Binary content not displayed]'
-        },
-        {
-          id: 'robots.txt',
-          name: 'robots.txt',
-          type: 'file',
-          language: 'txt',
-          content: `# Allow all web crawlers
-User-agent: *
-Allow: /
-
-# Disallow sensitive directories
-Disallow: /api/
-Disallow: /admin/`
-        }
-      ]
-    },
-    {
-      id: 'package.json',
-      name: 'package.json',
-      type: 'file',
-      language: 'json',
-      content: `{
-  "name": "my-project",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "next": "^13.4.19",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "lucide-react": "^0.279.0"
-  },
-  "devDependencies": {
-    "@types/node": "20.5.9",
-    "@types/react": "18.2.21",
-    "typescript": "5.2.2"
-  }
-}`
-    },
-    {
-      id: 'README.md',
-      name: 'README.md',
-      type: 'file',
-      language: 'markdown',
-      content: `# My Project
-
-This is a sample project to demonstrate a file explorer UI.
-
-## Getting Started
-
-First, run the development server:
-
-\`\`\`bash
-npm run dev
-# or
-yarn dev
-\`\`\`
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## Features
-
-- React components
-- TypeScript support
-- File system demonstration
-`
     }
   ]
 }
@@ -355,8 +215,16 @@ const FileTreeItem = ({
   }
 }
 
-const FileBrowserDemo = () => {
-  const [fileSystem, setFileSystem] = useState<FolderType>(fileSystemData)
+export function FileExplorer({
+  initialData = defaultFileSystemData,
+  className = "",
+  cardClassName = "",
+  title = "File Explorer",
+  showTitle = true,
+  height = "calc(100vh-200px)",
+  fileContentHeight = "100%"
+}: FileExplorerProps) {
+  const [fileSystem, setFileSystem] = useState<FolderType>(initialData)
   const [selectedFile, setSelectedFile] = useState<FileType | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [copied, setCopied] = useState(false)
@@ -391,6 +259,7 @@ const FileBrowserDemo = () => {
       setTimeout(() => setCopied(false), 2000)
     }
   }
+
   const filterFileSystem = (items: FileSystemItemType[], query: string): FileSystemItemType[] => {
     if (!query) return items
 
@@ -418,14 +287,14 @@ const FileBrowserDemo = () => {
     : fileSystem
 
   return (
-    <div className="container mx-auto p-6 max-w-6xl">
-      <h1 className="text-3xl font-bold mb-6 text-center">File Explorer UI</h1>
+    <div className={cn("container p-0", className)}>
+      {showTitle && <h1 className="text-3xl font-bold mb-6 text-center">{title}</h1>}
 
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-6">
-        <Card className="lg:col-span-2 p-4 overflow-auto h-[calc(100vh-200px)]">
+        <Card className={cn("lg:col-span-2 p-4 overflow-auto", cardClassName)} style={{ height }}>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold">Files</h2>
-            <Button variant="ghost" size="icon" onClick={() => setFileSystem(fileSystemData)}>
+            <Button variant="ghost" size="icon" onClick={() => setFileSystem(initialData)}>
               <ChevronsUp className="h-4 w-4" />
             </Button>
           </div>
@@ -468,7 +337,7 @@ const FileBrowserDemo = () => {
           </div>
         </Card>
 
-        <Card className="lg:col-span-4 overflow-hidden h-[calc(100vh-200px)] flex flex-col">
+        <Card className={cn("lg:col-span-4 overflow-hidden flex flex-col", cardClassName)} style={{ height }}>
           {selectedFile ? (
             <>
               <div className="flex items-center justify-between border-b p-4">
@@ -491,22 +360,21 @@ const FileBrowserDemo = () => {
               </div>
 
               <div className="flex-grow overflow-auto p-0">
-                    <SyntaxHighlighter
-                      language={selectedFile.language || 'text'}
-                      style={atomOneDark}
-                      customStyle={{
-                        margin: 0,
-                        padding: '1rem',
-                        height: '100%',
-                        borderRadius: 0,
-                        fontSize: '0.9rem',
-                        backgroundColor: 'hsl(var(--background))',
-                      }}
-                      showLineNumbers={true}
-                    >
-                      {selectedFile.content}
-                    </SyntaxHighlighter>
-
+                <SyntaxHighlighter
+                  language={selectedFile.language || 'text'}
+                  style={atomOneDark}
+                  customStyle={{
+                    margin: 0,
+                    padding: '1rem',
+                    height: fileContentHeight,
+                    borderRadius: 0,
+                    fontSize: '0.9rem',
+                    backgroundColor: 'hsl(var(--background))',
+                  }}
+                  showLineNumbers={true}
+                >
+                  {selectedFile.content}
+                </SyntaxHighlighter>
               </div>
             </>
           ) : (
@@ -523,5 +391,3 @@ const FileBrowserDemo = () => {
     </div>
   )
 }
-
-export default FileBrowserDemo
