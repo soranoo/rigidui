@@ -36,6 +36,27 @@
       ]
     },
     {
+      "name": "file-explorer",
+      "type": "registry:component",
+      "title": "File Explorer",
+      "description": "A file system explorer component with code preview",
+      "registryDependencies": [
+        "button",
+        "card",
+        "input"
+      ],
+      "dependencies": [
+        "react-syntax-highlighter",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/file-explorer/file-explorer.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
       "name": "language-switcher",
       "type": "registry:component",
       "title": "Language Switcher",
