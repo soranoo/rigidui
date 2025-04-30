@@ -394,7 +394,7 @@ export function FileExplorer({
                     fontSize: '0.9rem',
                     backgroundColor: 'hsl(var(--background))',
                   }}
-                  showLineNumbers={true}
+                  // showLineNumbers={true}
                 >
                   {selectedFile.content}
                 </SyntaxHighlighter>

@@ -141,16 +141,36 @@ export default function ComponentDocTemplate({
         <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl">
           {usageDescription}
         </p>
-        <div className="mt-8 p-8 bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm flex flex-col justify-start">
-          <div className="mb-4 text-sm font-medium text-gray-500 dark:text-gray-400">Live Preview</div>
-          {previewComponent}
-        </div>
 
-        <CodeBlock
-          code={usageCode}
-          language='tsx'
-          filename={codeFilename}
-        />
+        <div className="mt-8 pb-4 bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+          <Tabs defaultValue="preview" className="w-full">
+            <TabsList className="flex justify-start border-b border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-800/50">
+              <TabsTrigger
+                value="preview"
+                className="px-6 py-1 text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 transition-all duration-200"
+              >
+                Preview
+              </TabsTrigger>
+              <TabsTrigger
+                value="code"
+                className="px-6 py-1 text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 transition-all duration-200"
+              >
+                Code
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="preview" className="px-8 flex flex-col justify-start">
+              <div className="mb-4 mt-4 text-sm font-medium text-gray-500 dark:text-gray-400">Live Preview</div>
+              {previewComponent}
+            </TabsContent>
+            <TabsContent value="code" className="max-h-[500px] overflow-auto">
+              <CodeBlock
+                code={usageCode}
+                language='typescript'
+                filename={codeFilename}
+              />
+            </TabsContent>
+          </Tabs>
+        </div>
       </section>
 
       {features && features.length > 0 && (
