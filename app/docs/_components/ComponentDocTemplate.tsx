@@ -141,7 +141,7 @@ export default function ComponentDocTemplate({
         <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl">
           {usageDescription}
         </p>
-        <div className="mt-8 p-8 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm flex flex-col justify-start">
+        <div className="mt-8 p-8 bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm flex flex-col justify-start">
           <div className="mb-4 text-sm font-medium text-gray-500 dark:text-gray-400">Live Preview</div>
           {previewComponent}
         </div>

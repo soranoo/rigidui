@@ -31,6 +31,7 @@ const navigationItems: NavigationItem[] = [
       { title: 'File Explorer', href: '/docs/components/file-explorer' },
       {title: 'Multi-Step Form Wrapper', href: '/docs/components/multi-step-form-wrapper'},
       {title: 'Password Strength Meter', href: '/docs/components/strength-meter'},
+      {title: 'File Uploader', href: '/docs/components/file-uploader'},
     ]
   },
   {
