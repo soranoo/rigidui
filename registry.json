@@ -18,7 +18,8 @@
           "path": "registry/new-york/location-picker/location-picker.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "author": "Nitish Singh <devxnitish@gmail.com>"
     },
     {
       "name": "currency-manager",
@@ -33,7 +34,8 @@
           "path": "registry/new-york/currency-manager/currency-manager.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "author": "Nitish Singh <devxnitish@gmail.com>"
     },
     {
       "name": "file-explorer",
@@ -54,7 +56,9 @@
           "path": "registry/new-york/file-explorer/file-explorer.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "author": "Nitish Singh <devxnitish@gmail.com>"
+
     },
     {
       "name": "language-switcher",
@@ -81,7 +85,9 @@
           "path": "registry/new-york/multi-step-form-wrapper/multi-step-form-wrapper.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "author": "Nitish Singh <devxnitish@gmail.com>"
+
     },
     {
       "name": "strength-meter",
@@ -96,7 +102,8 @@
           "path": "registry/new-york/strength-meter/strength-meter.tsx",
           "type": "registry:component"
         }
-      ]
+      ],
+      "author": "Nitish Singh <devxnitish@gmail.com>"
     }
   ]
 }

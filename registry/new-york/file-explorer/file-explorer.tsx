@@ -15,6 +15,7 @@ type FileType = {
   type: 'file'
   language?: string
   content: string
+  icon?: React.ReactNode
 }
 
 type FolderType = {
@@ -23,6 +24,8 @@ type FolderType = {
   type: 'folder'
   children: (FileType | FolderType)[]
   expanded?: boolean
+  icon?: React.ReactNode
+  expandedIcon?: React.ReactNode
 }
 
 type FileSystemItemType = FileType | FolderType
@@ -35,6 +38,9 @@ interface FileExplorerProps {
   showTitle?: boolean
   height?: string
   fileContentHeight?: string
+  defaultFileIcon?: React.ReactNode
+  defaultFolderIcon?: React.ReactNode
+  defaultFolderOpenIcon?: React.ReactNode
 }
 
 const defaultFileSystemData: FolderType = {
@@ -60,7 +66,6 @@ const defaultFileSystemData: FolderType = {
               type: 'file',
               language: 'tsx',
               content: `import React from 'react';
-
 interface ButtonProps {
   children: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'outline';
@@ -152,17 +157,27 @@ const FileTreeItem = ({
   level = 0,
   onToggleExpand,
   onSelectFile,
-  selectedFileId
+  selectedFileId,
+  defaultFileIcon,
+  defaultFolderIcon,
+  defaultFolderOpenIcon
 }: {
   item: FileSystemItemType
   level?: number
   onToggleExpand: (id: string) => void
   onSelectFile: (file: FileType) => void
   selectedFileId: string | null
+  defaultFileIcon: React.ReactNode
+  defaultFolderIcon: React.ReactNode
+  defaultFolderOpenIcon: React.ReactNode
 }) => {
   const indent = level * 16
 
   if (item.type === 'folder') {
+    const folderIcon = item.expanded
+      ? (item.expandedIcon || defaultFolderOpenIcon)
+      : (item.icon || defaultFolderIcon);
+
     return (
       <>
         <div
@@ -178,10 +193,7 @@ const FileTreeItem = ({
             <ChevronRight className="h-4 w-4 mr-1 text-muted-foreground" />
           }
           <span className="mr-1">
-            {item.expanded ?
-              <FolderOpen className="h-4 w-4 text-yellow-500" /> :
-              <Folder className="h-4 w-4 text-yellow-500" />
-            }
+            {folderIcon}
           </span>
           <span className="text-sm">{item.name}</span>
         </div>
@@ -194,11 +206,16 @@ const FileTreeItem = ({
             onToggleExpand={onToggleExpand}
             onSelectFile={onSelectFile}
             selectedFileId={selectedFileId}
+            defaultFileIcon={defaultFileIcon}
+            defaultFolderIcon={defaultFolderIcon}
+            defaultFolderOpenIcon={defaultFolderOpenIcon}
           />
         ))}
       </>
     )
   } else {
+    const fileIcon = item.icon || defaultFileIcon;
+
     return (
       <div
         className={cn(
@@ -208,7 +225,7 @@ const FileTreeItem = ({
         style={{ paddingLeft: `${indent + 20}px` }}
         onClick={() => onSelectFile(item as FileType)}
       >
-        <FileText className="h-4 w-4 mr-2 text-muted-foreground" />
+        <span className="mr-2">{fileIcon}</span>
         <span className="text-sm">{item.name}</span>
       </div>
     )
@@ -222,7 +239,10 @@ export function FileExplorer({
   title = "File Explorer",
   showTitle = true,
   height = "calc(100vh-200px)",
-  fileContentHeight = "100%"
+  fileContentHeight = "100%",
+  defaultFileIcon = <FileText className="h-4 w-4 text-muted-foreground" />,
+  defaultFolderIcon = <Folder className="h-4 w-4 text-yellow-500" />,
+  defaultFolderOpenIcon = <FolderOpen className="h-4 w-4 text-yellow-500" />
 }: FileExplorerProps) {
   const [fileSystem, setFileSystem] = useState<FolderType>(initialData)
   const [selectedFile, setSelectedFile] = useState<FileType | null>(null)
@@ -327,6 +347,9 @@ export function FileExplorer({
                 onToggleExpand={handleToggleExpand}
                 onSelectFile={handleSelectFile}
                 selectedFileId={selectedFile?.id || null}
+                defaultFileIcon={defaultFileIcon}
+                defaultFolderIcon={defaultFolderIcon}
+                defaultFolderOpenIcon={defaultFolderOpenIcon}
               />
             ))}
             {filteredFileSystem.children.length === 0 && (
@@ -342,7 +365,7 @@ export function FileExplorer({
             <>
               <div className="flex items-center justify-between border-b p-4">
                 <div className="flex items-center">
-                  <FileText className="h-4 w-4 mr-2 text-muted-foreground" />
+                  <span className="mr-2">{selectedFile.icon || defaultFileIcon}</span>
                   <span className="font-medium">{selectedFile.name}</span>
                 </div>
                 <Button

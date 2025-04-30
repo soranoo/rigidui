@@ -46,6 +46,24 @@ export default function FileExplorerPage() {
       defaultValue: "'100%'",
       description: 'Height of the file content display area',
     },
+    {
+      name: 'defaultFileIcon',
+      type: 'React.ReactNode',
+      defaultValue: '<FileText className="h-4 w-4 text-muted-foreground" />',
+      description: 'Default icon to use for all files without a custom icon',
+    },
+    {
+      name: 'defaultFolderIcon',
+      type: 'React.ReactNode',
+      defaultValue: '<Folder className="h-4 w-4 text-yellow-500" />',
+      description: 'Default icon to use for closed folders without a custom icon',
+    },
+    {
+      name: 'defaultFolderOpenIcon',
+      type: 'React.ReactNode',
+      defaultValue: '<FolderOpen className="h-4 w-4 text-yellow-500" />',
+      description: 'Default icon to use for open folders without a custom icon',
+    },
   ]
 
   const features = [
@@ -109,21 +127,41 @@ export default function FileExplorerPage() {
   ]
 
   const usageCode = `import { FileExplorer } from "@/components/ui/file-explorer"
+import { FileCode, FolderClosed, FolderOpen, ImageIcon, FileText } from "lucide-react"
 
-// Define your file system structure
+// Define your file system structure with custom icons
 const myFileSystem = {
   id: 'root',
   name: 'my-project',
   type: 'folder',
   expanded: true,
+  icon: <FolderClosed className="h-4 w-4 text-blue-500" />,
+  expandedIcon: <FolderOpen className="h-4 w-4 text-blue-500" />,
   children: [
     {
       id: 'file1',
       name: 'example.ts',
       type: 'file',
       language: 'typescript',
-      content: 'console.log("Hello world!");'
+      content: 'console.log("Hello world!");',
+      icon: <FileCode className="h-4 w-4 text-green-500" />
     },
+    {
+      id: 'images',
+      name: 'images',
+      type: 'folder',
+      icon: <FolderClosed className="h-4 w-4 text-purple-500" />,
+      expandedIcon: <FolderOpen className="h-4 w-4 text-purple-500" />,
+      children: [
+        {
+          id: 'logo.png',
+          name: 'logo.png',
+          type: 'file',
+          content: '// Binary content not shown',
+          icon: <ImageIcon className="h-4 w-4 text-orange-500" />
+        }
+      ]
+    }
     // Add more files and folders
   ]
 }
@@ -134,47 +172,69 @@ export default function MyComponent() {
       initialData={myFileSystem}
       height="500px"
       showTitle={false}
+      // You can also customize default icons used for files without custom icons
+      defaultFileIcon={<FileText className="h-4 w-4 text-gray-500" />}
+      defaultFolderIcon={<FolderClosed className="h-4 w-4 text-amber-500" />}
+      defaultFolderOpenIcon={<FolderOpen className="h-4 w-4 text-amber-500" />}
     />
   )
 }`
 
   const previewFileSystem = {
     id: 'root',
-    name: 'project',
+    name: 'my-project',
     type: 'folder' as const,
     expanded: true,
+    icon: <svg className="h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+    </svg>,
+    expandedIcon: <svg className="h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z" />
+    </svg>,
     children: [
       {
         id: 'src',
         name: 'src',
         type: 'folder' as const,
-        expanded: true,
         children: [
           {
-            id: 'index.ts',
-            name: 'index.ts',
+            id: 'file1',
+            name: 'example.ts',
             type: 'file' as const,
             language: 'typescript',
-            content: 'export { Button } from "./components/Button";\nexport { Card } from "./components/Card";'
+            content: 'console.log("Hello world!");',
+            icon: <svg className="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+            </svg>
           },
           {
-            id: 'components',
-            name: 'components',
+            id: 'images',
+            name: 'images',
             type: 'folder' as const,
+            icon: <svg className="h-4 w-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+            </svg>,
+            expandedIcon: <svg className="h-4 w-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z" />
+            </svg>,
             children: [
               {
-                id: 'Button.tsx',
-                name: 'Button.tsx',
+                id: 'logo.png',
+                name: 'logo.png',
                 type: 'file' as const,
-                language: 'tsx',
-                content: 'export const Button = () => <button>Click me</button>;'
+                content: '// Binary content not shown',
+                icon: <svg className="h-4 w-4 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
               }
             ]
           }
         ]
       }
     ]
+
   }
+
 
   return (
     <ComponentDocTemplate
