@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import React, { useContext, createContext, useCallback, useState } from "react"
@@ -24,7 +25,7 @@ interface MultiStepFormContextType<T extends FormData = FormData> {
   form: UseFormReturn<T>
 }
 
-const MultiStepFormContext = createContext<MultiStepFormContextType | undefined>(undefined)
+const MultiStepFormContext = createContext<MultiStepFormContextType<any> | undefined>(undefined)
 
 export function useMultiStepForm<T extends FormData = FormData>() {
   const context = useContext(MultiStepFormContext) as MultiStepFormContextType<T>

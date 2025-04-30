@@ -56,6 +56,12 @@ const componentsData = [
         description: 'Interactive checkbox component with support for indeterminate state',
         image: '/images/components/checkbox.png'
       },
+      {
+        name: 'Password Strength Meter',
+        href: '/docs/components/strength-meter',
+        description: 'Interactive password strength meter with customizable requirements and visual feedback',
+        image: '/images/components/strength-meter.png'
+      },
     ]
   },
   {

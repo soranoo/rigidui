@@ -82,6 +82,21 @@
           "type": "registry:component"
         }
       ]
+    },
+    {
+      "name": "strength-meter",
+      "type": "registry:component",
+      "title": "Strength Meter",
+      "description": "A password strength meter component",
+      "registryDependencies": [
+        "button"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/strength-meter/strength-meter.tsx",
+          "type": "registry:component"
+        }
+      ]
     }
   ]
 }

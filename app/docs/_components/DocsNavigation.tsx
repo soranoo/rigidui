@@ -30,6 +30,7 @@ const navigationItems: NavigationItem[] = [
       { title: 'Language Switcher', href: '/docs/components/language-switcher' },
       { title: 'File Explorer', href: '/docs/components/file-explorer' },
       {title: 'Multi-Step Form Wrapper', href: '/docs/components/multi-step-form-wrapper'},
+      {title: 'Password Strength Meter', href: '/docs/components/strength-meter'},
     ]
   },
   {

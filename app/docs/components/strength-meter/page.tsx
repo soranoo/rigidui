@@ -1,0 +1,291 @@
+"use client"
+import React from 'react'
+import { PasswordStrengthMeter } from '@/registry/new-york/strength-meter/strength-meter'
+import ComponentDocTemplate from '../../_components/ComponentDocTemplate'
+import { Card, CardContent } from '@/components/ui/card'
+
+export default function StrengthMeterPage() {
+  const propsData = [
+    {
+      name: 'value',
+      type: 'string',
+      defaultValue: "''",
+      description: 'The current password value',
+    },
+    {
+      name: 'onValueChange',
+      type: 'function',
+      defaultValue: 'undefined',
+      description: 'Function called when the password value changes',
+    },
+    {
+      name: 'showText',
+      type: 'boolean',
+      defaultValue: 'true',
+      description: 'Whether to show the strength text label',
+    },
+    {
+      name: 'showRequirements',
+      type: 'boolean',
+      defaultValue: 'true',
+      description: 'Whether to show the password requirements list',
+    },
+    {
+      name: 'segments',
+      type: 'number',
+      defaultValue: '4',
+      description: 'Number of segments in the strength meter',
+    },
+    {
+      name: 'strengthThresholds',
+      type: 'Record<StrengthLevel, number>',
+      defaultValue: '{ empty: 0, weak: 1, fair: 40, good: 70, strong: 90 }',
+      description: 'Score thresholds for each strength level',
+    },
+    {
+      name: 'requirements',
+      type: 'PasswordStrengthRequirement[]',
+      defaultValue: 'defaultRequirements',
+      description: 'Array of password requirements with validators',
+    },
+    {
+      name: 'customCalculateStrength',
+      type: '(password: string) => number',
+      defaultValue: 'undefined',
+      description: 'Custom function to calculate password strength score (0-100)',
+    },
+    {
+      name: 'showPasswordToggle',
+      type: 'boolean',
+      defaultValue: 'true',
+      description: 'Whether to show the password visibility toggle',
+    },
+    {
+      name: 'strengthLabels',
+      type: 'Record<StrengthLevel, string>',
+      defaultValue: '{ empty: "Empty", weak: "Weak", fair: "Fair", good: "Good", strong: "Strong" }',
+      description: 'Custom labels for each strength level',
+    },
+    {
+      name: 'meterClassName',
+      type: 'string',
+      defaultValue: "''",
+      description: 'Additional class names for the meter element',
+    },
+    {
+      name: 'inputClassName',
+      type: 'string',
+      defaultValue: "''",
+      description: 'Additional class names for the input element',
+    },
+    {
+      name: 'placeholder',
+      type: 'string',
+      defaultValue: "'Enter password'",
+      description: 'Placeholder text for the password input',
+    },
+    {
+      name: 'size',
+      type: "'default' | 'sm' | 'lg'",
+      defaultValue: "'default'",
+      description: 'Size of the strength meter',
+    },
+    {
+      name: 'animated',
+      type: 'boolean',
+      defaultValue: 'true',
+      description: 'Whether to animate the strength meter segments',
+    },
+  ]
+
+  const features = [
+    {
+      icon: (
+        <svg className="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+      ),
+      title: "Visual Strength Indicator",
+      description: "Provides visual feedback on password strength with colored segments."
+    },
+    {
+      icon: (
+        <svg className="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+        </svg>
+      ),
+      title: "Customizable Segments",
+      description: "Adjust the number and appearance of the strength meter segments."
+    },
+    {
+      icon: (
+        <svg className="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        </svg>
+      ),
+      title: "Password Requirements",
+      description: "Shows a checklist of requirements that help users create stronger passwords."
+    },
+    {
+      icon: (
+        <svg className="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+        </svg>
+      ),
+      title: "Password Visibility Toggle",
+      description: "Allows users to show or hide their password with a toggle button."
+    },
+    {
+      icon: (
+        <svg className="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+      ),
+      title: "Animated Feedback",
+      description: "Provides animated visual feedback as the user types their password."
+    }
+  ]
+
+  const bestPractices = [
+    {
+      type: 'do' as const,
+      items: [
+        'Use clear, consistent color indicators for different strength levels',
+        'Provide specific feedback on what makes a password stronger',
+        'Allow users to toggle password visibility for better user experience',
+        'Use animations sparingly to enhance the experience without distraction',
+        'Customize requirements based on your application\'s security needs'
+      ]
+    },
+    {
+      type: 'dont' as const,
+      items: [
+        'Rely solely on colors to indicate password strength (consider accessibility)',
+        'Show too many requirements that might overwhelm users',
+        'Use confusing or technical terminology in strength indicators',
+        'Prevent form submission for "weak" passwords (warn instead)',
+        'Add excessive animations that might distract users'
+      ]
+    }
+  ]
+
+  const usageCode = `import { PasswordStrengthMeter } from "@/components/ui/password-strength-meter"
+
+export default function MyComponent() {
+  // Basic usage
+  return (
+    <PasswordStrengthMeter
+      placeholder="Enter your password"
+      className="max-w-md"
+    />
+  )
+}
+
+// With custom configuration
+export function CustomPasswordMeter() {
+  return (
+    <PasswordStrengthMeter
+      segments={5}
+      animated={true}
+      showRequirements={true}
+      strengthLabels={{
+        empty: "Begin typing",
+        weak: "Too weak",
+        fair: "Could be better",
+        good: "Pretty good",
+        strong: "Super secure!"
+      }}
+      requirements={[
+        {
+          label: "At least 12 characters",
+          validator: (password) => password.length >= 12,
+        },
+        {
+          label: "Mix of uppercase and lowercase",
+          validator: (password) =>
+            /[A-Z]/.test(password) && /[a-z]/.test(password),
+        },
+        {
+          label: "At least one number",
+          validator: (password) => /\\d/.test(password),
+        },
+        {
+          label: "At least one special character",
+          validator: (password) =>
+            /[!@#$%^&*(),.?":{}|<>]/.test(password),
+        },
+      ]}
+    />
+  )
+}`
+
+  const DemoComponent = () => {
+    return (
+      <div className="grid gap-6">
+        <Card>
+          <CardContent className="pt-6">
+            <PasswordStrengthMeter
+              placeholder="Type your password"
+              className="max-w-md"
+            />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="pt-6">
+            <PasswordStrengthMeter
+              placeholder="Custom styled password"
+              className="max-w-md"
+              segments={5}
+              size="lg"
+              meterClassName="bg-slate-300 dark:bg-slate-800 h-3 rounded-lg"
+              strengthLabels={{
+                empty: "Begin typing",
+                weak: "Too weak",
+                fair: "Getting there",
+                good: "Pretty good",
+                strong: "Excellent!"
+              }}
+              requirements={[
+                {
+                  label: "At least 12 characters",
+                  validator: (password) => password.length >= 12,
+                },
+                {
+                  label: "Mix of uppercase and lowercase",
+                  validator: (password) =>
+                    /[A-Z]/.test(password) && /[a-z]/.test(password),
+                },
+                {
+                  label: "At least one number",
+                  validator: (password) => /\d/.test(password),
+                },
+                {
+                  label: "At least one special character",
+                  validator: (password) =>
+                    /[!@#$%^&*(),.?":{}|<>]/.test(password),
+                },
+              ]}
+            />
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  return (
+    <ComponentDocTemplate
+      title="Password Strength Meter"
+      description="A customizable password strength meter component that provides real-time visual feedback on password security."
+      previewComponent={<DemoComponent />}
+      githubPath="registry/new-york/strength-meter/strength-meter.tsx"
+      usageCode={usageCode}
+      usageDescription="The Password Strength Meter component provides intuitive visual feedback about password strength with customizable segments, requirements, and animations."
+      propsData={propsData}
+      features={features}
+      bestPractices={bestPractices}
+      componentName="https://rigidui.vercel.app/registry/strength-meter"
+    />
+  )
+}
