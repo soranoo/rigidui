@@ -63,7 +63,7 @@ export default function ComponentDocTemplate({
   subComponents,
 }: ComponentDocProps) {
   return (
-    <div className="max-w-5xl mx-auto space-y-20 px-6 py-10">
+    <div className="max-w-5xl mx-auto space-y-10  md:space-y-20 md:px-6 md:py-10 py-4 px-4">
       <ComponentHeader
         title={title}
         description={description}
@@ -74,14 +74,14 @@ export default function ComponentDocTemplate({
         <section className="space-y-8">
           <div className="flex items-center space-x-3">
             <Package className="h-7 w-7 text-indigo-500 dark:text-indigo-400" />
-            <h2 id="installation" className="text-3xl font-bold text-gray-900 dark:text-white">Installation</h2>
+            <h2 id="installation" className="md:text-3xl text-2xl font-bold text-gray-900 dark:text-white">Installation</h2>
           </div>
-          <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl">
+          <p className="md:text-lg text-gray-700 dark:text-gray-300 max-w-3xl">
             Install the {title} component using your preferred package manager.
           </p>
 
           <div className="bg-gray-50 dark:bg-gray-900 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800">
-            <Tabs defaultValue="npm" className="w-full p-1">
+            <Tabs defaultValue="npm" className="w-full md:p-1">
               <TabsList className="flex justify-start border-b border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-800/50">
                 <TabsTrigger
                   value="npm"
@@ -102,7 +102,7 @@ export default function ComponentDocTemplate({
                   bun
                 </TabsTrigger>
               </TabsList>
-              <div className="p-4">
+              <div className="md:p-4">
                 <TabsContent value="npm">
                   <TerminalCommand
                     packageManager='npx'
@@ -133,12 +133,12 @@ export default function ComponentDocTemplate({
         </section>
       )}
 
-      <section className="space-y-8">
+      <section className="md:space-y-8 space-y-6">
         <div className="flex items-center space-x-3">
           <Code className="h-7 w-7 text-indigo-500 dark:text-indigo-400" />
-          <h2 id="usage" className="text-3xl font-bold text-gray-900 dark:text-white">Usage</h2>
+          <h2 id="usage" className="md:text-3xl text-2xl font-bold text-gray-900 dark:text-white">Usage</h2>
         </div>
-        <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl">
+        <p className="md:text-lg text-gray-700 dark:text-gray-300 max-w-3xl">
           {usageDescription}
         </p>
 
@@ -177,9 +177,9 @@ export default function ComponentDocTemplate({
         <section className="space-y-8">
           <div className="flex items-center space-x-3">
             <Layers className="h-7 w-7 text-indigo-500 dark:text-indigo-400" />
-            <h2 id="features" className="text-3xl font-bold text-gray-900 dark:text-white">Features</h2>
+            <h2 id="features" className="md:text-3xl text-2xl font-bold text-gray-900 dark:text-white">Features</h2>
           </div>
-          <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl">
+          <p className="md:text-lg text-gray-700 dark:text-gray-300 max-w-3xl">
             The {title} component offers several features to enhance the user experience.
           </p>
 
@@ -189,8 +189,8 @@ export default function ComponentDocTemplate({
                 <div className="rounded-full bg-indigo-100 dark:bg-indigo-900/30 w-12 h-12 flex items-center justify-center mb-4">
                   {feature.icon}
                 </div>
-                <h3 className="text-xl font-semibold mb-3 dark:text-white">{feature.title}</h3>
-                <p className="text-gray-600 dark:text-gray-400">
+                <h3 className="md:text-xl text-lg font-semibold mb-3 dark:text-white">{feature.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400 max-md:text-sm">
                   {feature.description}
                 </p>
               </div>
@@ -203,7 +203,7 @@ export default function ComponentDocTemplate({
         <section className="space-y-8">
           <div className="flex items-center space-x-3">
             <Zap className="h-7 w-7 text-indigo-500 dark:text-indigo-400" />
-            <h2 id="components" className="text-3xl font-bold text-gray-900 dark:text-white">Components</h2>
+            <h2 id="components" className="md:text-3xl text-2xl font-bold text-gray-900 dark:text-white">Components</h2>
           </div>
           <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl">
             The {title} consists of the following components:
@@ -226,7 +226,7 @@ export default function ComponentDocTemplate({
         <section className="space-y-8">
           <div className="flex items-center space-x-3">
             <Zap className="h-7 w-7 text-indigo-500 dark:text-indigo-400" />
-            <h2 id="api-reference" className="text-3xl font-bold text-gray-900 dark:text-white">API Reference</h2>
+            <h2 id="api-reference" className="md:text-3xl text-2xl font-bold text-gray-900 dark:text-white">API Reference</h2>
           </div>
           <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
             <PropsTable props={propsData} />
@@ -238,26 +238,26 @@ export default function ComponentDocTemplate({
 
       {bestPractices && bestPractices.length > 0 && (
         <section className="pt-8 mt-8 border-t border-gray-200 dark:border-gray-800 space-y-8">
-          <h2 id="best-practices" className="text-3xl font-bold text-gray-900 dark:text-white">Best Practices</h2>
+          <h2 id="best-practices" className="md:text-3xl text-2xl font-bold text-gray-900 dark:text-white">Best Practices</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {bestPractices.map((practice, index) => (
               practice.type === 'do' ? (
-                <div key={index} className="rounded-xl border border-green-100 dark:border-green-900/30 bg-green-50/50 dark:bg-green-900/10 p-8 shadow-sm">
+                <div key={index} className="rounded-xl border border-green-100 dark:border-green-900/30 bg-green-50/50 dark:bg-green-900/10 md:p-8 p-4 shadow-sm">
                   <h3 className="flex items-center text-lg font-semibold text-green-800 dark:text-green-400 mb-6">
                     <Check className="text-green-500 mr-3 h-6 w-6 bg-green-100 dark:bg-green-800/50 p-1 rounded-full" /> Do
                   </h3>
-                  <ul className="space-y-4 ml-10 list-disc text-green-800 dark:text-green-400 text-base">
+                  <ul className="space-y-4 md:ml-10 ml-6 list-disc text-green-800 dark:text-green-400 text-base">
                     {practice.items.map((item, i) => (
                       <li key={i}>{item}</li>
                     ))}
                   </ul>
                 </div>
               ) : (
-                <div key={index} className="rounded-xl border border-red-100 dark:border-red-900/30 bg-red-50/50 dark:bg-red-900/10 p-8 shadow-sm">
+                <div key={index} className="rounded-xl border border-red-100 dark:border-red-900/30 bg-red-50/50 dark:bg-red-900/10 md:p-8 p-4 shadow-sm">
                   <h3 className="flex items-center text-lg font-semibold text-red-800 dark:text-red-400 mb-6">
                     <X className="text-red-500 mr-3 h-6 w-6 bg-red-100 dark:bg-red-800/50 p-1 rounded-full" /> Don&apos;t
                   </h3>
-                  <ul className="space-y-4 ml-10 list-disc text-red-800 dark:text-red-400 text-base">
+                  <ul className="space-y-4 md:ml-10 ml-6 list-disc text-red-800 dark:text-red-400 text-base">
                     {practice.items.map((item, i) => (
                       <li key={i}>{item}</li>
                     ))}

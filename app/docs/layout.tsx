@@ -65,7 +65,7 @@ export default function DocsLayout({
         />
       </div>
 
-      <main className="flex-1 transition-all duration-300">
+      <main className="flex-1 transition-all duration-300 w-full">
         <div className="sticky top-0 z-10 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 p-3 md:hidden">
           <button
             onClick={toggleSidebar}
@@ -76,7 +76,7 @@ export default function DocsLayout({
           </button>
         </div>
 
-        <div className="px-4 py-8 max-w-7xl mx-auto">
+        <div className="md:px-4 px-2 py-8 max-w-7xl mx-auto">
           <div className="flex items-start">
             <div className={`w-full ${isComponentPage ? 'lg:max-w-4xl' : 'max-w-5xl mx-auto'}`}>
               {children}

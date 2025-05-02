@@ -19,10 +19,10 @@ export function ComponentHeader({
     <div className="mb-10">
       <div className="flex flex-col lg:flex-row lg:items-start gap-8">
         <div className="flex-1 space-y-4">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          <h1 className="md:text-3xl text-2xl font-bold text-gray-900 dark:text-white">
             {title}
           </h1>
-          <p className="text-gray-600 dark:text-gray-300 text-lg">
+          <p className="text-gray-600 dark:text-gray-300 md:text-lg">
             {description}
           </p>
 
