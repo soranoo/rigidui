@@ -137,7 +137,7 @@ export function DocsNavigation({
   }
 
   return (
-    <nav className={`p-4 bg-white dark:bg-gray-900 transition-colors duration-200 ${className} ${collapsed && !isMobile ? 'px-2' : ''}`}>
+    <nav className={`p-4 bg-white dark:bg-gray-950 transition-colors duration-200 ${className} ${collapsed && !isMobile ? 'px-2' : ''}`}>
       <div className={`flex items-center ${collapsed && !isMobile ? 'justify-center flex-col space-y-4' : 'justify-between'} mb-8`}>
         <Link href="/" className="flex items-center">
           <span className={cn('p-2 rounded-md mr-2', collapsed && "mr-0")}>

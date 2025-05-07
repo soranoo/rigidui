@@ -185,7 +185,7 @@ export default function ComponentDocTemplate({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {features.map((feature, index) => (
-              <div key={index} className="rounded-xl border border-gray-200 dark:border-gray-800 p-6 bg-white dark:bg-gray-800 shadow-sm hover:shadow-md transition-shadow duration-300">
+              <div key={index} className="rounded-xl border border-gray-200 dark:border-gray-800 p-6 bg-white dark:bg-gray-900 shadow-sm hover:shadow-md transition-shadow duration-300">
                 <div className="rounded-full bg-indigo-100 dark:bg-indigo-900/30 w-12 h-12 flex items-center justify-center mb-4">
                   {feature.icon}
                 </div>
