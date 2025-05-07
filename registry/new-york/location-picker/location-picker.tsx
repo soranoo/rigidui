@@ -165,7 +165,7 @@ export function LocationPicker({
   return (
     <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
-        <div className={`flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 border border-transparent hover:border-b-black dark:hover:border-b-white cursor-pointer px-2 py-1 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors ${className}`}>
+        <div className={`flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 border border-transparent hover:border-b-black dark:hover:border-b-white cursor-pointer px-2 py-1 hover:bg-transparent transition-colors ${className}`}>
           <MapPin size={16} className="text-swadeyellow" />
           {isLoading ? (
             <div className="flex items-center gap-1">
