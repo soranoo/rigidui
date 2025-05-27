@@ -29,9 +29,9 @@ const navigationItems: NavigationItem[] = [
       { title: 'Currency Manager', href: '/docs/components/currency-manager' },
       { title: 'Language Switcher', href: '/docs/components/language-switcher' },
       { title: 'File Explorer', href: '/docs/components/file-explorer' },
-      {title: 'Multi-Step Form Wrapper', href: '/docs/components/multi-step-form-wrapper'},
-      {title: 'Password Strength Meter', href: '/docs/components/strength-meter'},
-      {title: 'File Uploader', href: '/docs/components/file-uploader'},
+      { title: 'Multi-Step Form Wrapper', href: '/docs/components/multi-step-form-wrapper' },
+      { title: 'Password Strength Meter', href: '/docs/components/strength-meter' },
+      { title: 'File Uploader', href: '/docs/components/file-uploader' },
     ]
   },
   {
@@ -89,8 +89,11 @@ export function DocsNavigation({
 
   const NavItem = ({ item }: { item: NavigationItem }) => {
     const isActive = pathname === item.href
-    const hasActiveChild = item.items?.some(child => pathname === child.href)
-    const isExpanded = expandedSections[item.href] || hasActiveChild || false
+
+    const manualExpansionState = expandedSections[item.href];
+    // Auto-expand if item has children and current path is within this section
+    const autoExpandCondition = item.items && item.items.length > 0 && pathname.startsWith(item.href);
+    const isExpanded = manualExpansionState !== undefined ? manualExpansionState : autoExpandCondition;
 
     return (
       <div className="mb-2">
@@ -141,7 +144,7 @@ export function DocsNavigation({
       <div className={`flex items-center ${collapsed && !isMobile ? 'justify-center flex-col space-y-4' : 'justify-between'} mb-8`}>
         <Link href="/" className="flex items-center">
           <span className={cn('p-2 rounded-md mr-2', collapsed && "mr-0")}>
-            {collapsed ? <Image src="/short-logo.png" width={100} height={100} alt="Short Logo" />:
+            {collapsed ? <Image src="/short-logo.png" width={100} height={100} alt="Short Logo" /> :
               <Image src="/logo.png" alt="Logo" width={100} height={100} />
             }
           </span>
