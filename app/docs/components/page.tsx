@@ -81,7 +81,7 @@ const ComponentCard = ({ name, description, image, href }: ComponentCardProps) =
     switch (name) {
       case 'Password Strength Meter':
         return (
-          <div className="p-4 flex items-center justify-center bg-slate-50 dark:bg-slate-800/50 rounded-lg h-full">
+          <div>
             <PasswordStrengthMeter
               placeholder="Enter password"
               showRequirements={false}
@@ -93,8 +93,8 @@ const ComponentCard = ({ name, description, image, href }: ComponentCardProps) =
       case 'File Explorer':
         return (
           <div className="p-2 h-full">
-            <Card className="p-3 shadow-sm bg-white dark:bg-slate-900 h-full">
-              <div className="flex items-center justify-between mb-3 border-b border-slate-200 dark:border-slate-700 pb-2">
+            <Card className="p-3 shadow-sm bg-white dark:bg-transparent h-full">
+              <div className="flex items-center justify-between mb-3 border-b border-slate-200 dark:border-slate-700 pb-2 space-x-2">
                 <div className="flex items-center">
                   <FolderOpen className="h-4 w-4 mr-2 text-amber-500" />
                   <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Project Files</span>
@@ -121,7 +121,7 @@ const ComponentCard = ({ name, description, image, href }: ComponentCardProps) =
       case 'Multi-Step Form Wrapper':
         return (
           <div className="p-2 h-full">
-            <Card className="p-3 shadow-sm bg-white dark:bg-slate-900 h-full flex flex-col justify-between">
+            <Card className="p-3 shadow-sm bg-white dark:bg-transparent h-full flex flex-col justify-between">
               <div>
                 <div className="flex justify-between items-center mb-2.5">
                   {[1, 2, 3].map((step) => (
@@ -150,7 +150,7 @@ const ComponentCard = ({ name, description, image, href }: ComponentCardProps) =
       case 'File Uploader':
         return (
           <div className="p-3 h-full">
-            <Card className="flex items-center justify-center p-4 border-dashed border-2 border-slate-300 dark:border-slate-700 text-center hover:border-primary/70 transition-colors duration-200 bg-slate-50 dark:bg-slate-800/50 h-full">
+            <Card className="flex items-center justify-center p-4 border-dashed border-2 border-slate-300 dark:border-slate-700 text-center hover:border-primary/70 transition-colors duration-200 bg-slate-50 dark:bg-transparent h-full">
               <div>
                 <div className="mx-auto w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center mb-2 text-primary">
                   <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -167,9 +167,9 @@ const ComponentCard = ({ name, description, image, href }: ComponentCardProps) =
       case 'Currency Manager':
         return (
           <div className="p-3 h-full">
-            <Card className="p-3 shadow-sm bg-white dark:bg-slate-900 h-full">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-medium text-slate-700 dark:text-slate-200">Currency Dashboard</h3>
+            <Card className="p-3 shadow-sm bg-white dark:bg-transparent h-full">
+              <div className="flex items-center justify-between mb-3 space-x-2">
+                <h3 className="text-sm font-medium text-slate-700 dark:text-slate-200">Currency Manager</h3>
                 <div className="flex items-center space-x-1 bg-slate-100 dark:bg-slate-800 rounded-full px-2 py-0.5 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
                   <span className="text-xs font-medium text-slate-600 dark:text-slate-300">USD</span>
                   <svg className="w-3 h-3 text-slate-500 dark:text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -198,7 +198,7 @@ const ComponentCard = ({ name, description, image, href }: ComponentCardProps) =
       case 'Language Switcher':
         return (
           <div className="p-3 h-full">
-            <Card className="p-3 shadow-sm bg-white dark:bg-slate-900 h-full">
+            <Card className="p-3 shadow-sm bg-white dark:bg-transparent h-full">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center">
                   <Globe className="h-4 w-4 mr-2 text-slate-500 dark:text-slate-400" />
@@ -219,7 +219,7 @@ const ComponentCard = ({ name, description, image, href }: ComponentCardProps) =
       case 'Location Picker':
         return (
           <div className="p-3 h-full">
-            <Card className="p-3 shadow-sm bg-white dark:bg-slate-900 h-full">
+            <Card className="p-3 shadow-sm h-full bg-transparent">
               <div className="mb-2.5 text-sm font-medium flex items-center text-slate-700 dark:text-slate-200">
                 <MapPin className="h-4 w-4 mr-2 text-primary" />
                 Select Location
@@ -286,7 +286,6 @@ const Components = () => {
           <Input
             type="search"
             placeholder="Search components (e.g., 'File Uploader', 'Location Picker')"
-            className="w-full pr-12 py-2.5 text-sm shadow-sm border-slate-300 dark:border-slate-700 focus-visible:ring-primary/80 bg-white dark:bg-slate-800 placeholder-slate-400 dark:placeholder-slate-500 rounded-lg"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />

@@ -18,7 +18,7 @@ export function PropsTable({ props }: PropsTableProps) {
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="bg-gray-50 dark:bg-gray-800">
+            <tr className="bg-gray-50 dark:bg-gray-950">
               <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-700 dark:text-gray-300">
                 Prop
               </th>
@@ -35,7 +35,7 @@ export function PropsTable({ props }: PropsTableProps) {
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             {props.map((prop) => (
-              <tr key={prop.name} className="bg-white dark:bg-gray-900 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+              <tr key={prop.name} className="hover:bg-gray-50 dark:hover:bg-gray-950 transition-colors">
                 <td className="md:px-6 px-3 py-4 text-sm font-medium text-gray-900 dark:text-white whitespace-nowrap">
                   {prop.name}
                   {prop.required && <span className="ml-1 text-red-500">*</span>}

@@ -280,7 +280,7 @@ export default function MyApp() {
           />
         </header>
 
-        <main className="p-6 bg-white dark:bg-gray-950">
+        <main className="p-6 bg-white dark:bg-background">
           <h2 className="text-2xl mb-4">
             <Translate
               translations={{

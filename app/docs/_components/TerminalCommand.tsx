@@ -29,21 +29,21 @@ const TerminalCommand = ({
   }, [copied]);
 
   return (
-    <div className={cn('relative rounded-md bg-slate-950 ', className)}>
+    <div className={cn('relative rounded-md bg-gray-800 dark:bg-zinc-950 ', className)}>
       <div className="flex items-center space-x-1 p-4 overflow-x-auto md:text-sm text-xs whitespace-nowrap font-mono text-slate-200">
         <span className="text-cyan-400">{packageManager}</span>
         <span>{command}</span>
         <span className="text-amber-300">{component}</span>
-      <button
-        className="absolute right-2 top-3 text-slate-100 hover:text-slate-200 bg-slate-800 hover:bg-slate-800/60 transition p-1 rounded-md"
-        onClick={() => {
-          navigator.clipboard.writeText(`${packageManager} ${command} ${component}`);
-          setCopied(true);
-        }}
-        aria-label="Copy to clipboard"
-      >
-        <CopyIcon className="h-4 w-4" />
-      </button>
+        <button
+          className="absolute right-2 top-3 text-slate-100 hover:text-slate-200 bg-slate-800 hover:bg-slate-800/60 transition p-1 rounded-md"
+          onClick={() => {
+            navigator.clipboard.writeText(`${packageManager} ${command} ${component}`);
+            setCopied(true);
+          }}
+          aria-label="Copy to clipboard"
+        >
+          <CopyIcon className="h-4 w-4" />
+        </button>
       </div>
       {copied && (
         <div className="absolute bottom-2 right-4 text-xs font-medium text-green-400 bg-slate-900 px-2 py-1 rounded">

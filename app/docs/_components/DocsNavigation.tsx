@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { PanelLeft, Moon, Sun, ChevronDown, ChevronRight, PanelRight } from "lucide-react"
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
+import DocsSearch from './DocsSearch'
 
 interface NavigationItem {
   title: string
@@ -66,12 +67,30 @@ export function DocsNavigation({
   const pathname = usePathname()
   const [darkMode, setDarkMode] = useState(false)
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({})
+  const [isCommandPanelOpen, setIsCommandPanelOpen] = useState(false)
 
   useEffect(() => {
     const isDark = localStorage.getItem('theme') === 'dark'
     setDarkMode(isDark)
     document.documentElement.classList.toggle('dark', isDark)
   }, [])
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === 'k') {
+        event.preventDefault()
+        setIsCommandPanelOpen(prev => !prev)
+      }
+      if (event.key === 'Escape' && isCommandPanelOpen) {
+        setIsCommandPanelOpen(false)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isCommandPanelOpen])
 
   const toggleTheme = () => {
     const newDarkMode = !darkMode
@@ -91,7 +110,6 @@ export function DocsNavigation({
     const isActive = pathname === item.href
 
     const manualExpansionState = expandedSections[item.href];
-    // Auto-expand if item has children and current path is within this section
     const autoExpandCondition = item.items && item.items.length > 0 && pathname.startsWith(item.href);
     const isExpanded = manualExpansionState !== undefined ? manualExpansionState : autoExpandCondition;
 
@@ -140,15 +158,14 @@ export function DocsNavigation({
   }
 
   return (
-    <nav className={`p-4 bg-white dark:bg-gray-950 transition-colors duration-200 ${className} ${collapsed && !isMobile ? 'px-2' : ''}`}>
-      <div className={`flex items-center ${collapsed && !isMobile ? 'justify-center flex-col space-y-4' : 'justify-between'} mb-8`}>
+    <nav className={`p-4 bg-white dark:bg-background transition-colors duration-200 ${className} ${collapsed && !isMobile ? 'px-2' : ''}`}>
+      <div className={`flex items-center ${collapsed && !isMobile ? 'justify-center flex-col space-y-4' : 'justify-between'} mb-4`}>
         <Link href="/" className="flex items-center">
           <span className={cn('p-2 rounded-md mr-2', collapsed && "mr-0")}>
             {collapsed ? <Image src="/short-logo.png" width={100} height={100} alt="Short Logo" /> :
               <Image src="/logo.png" alt="Logo" width={100} height={100} />
             }
           </span>
-          {/* <span className={cn("font-bold text-xl text-gray-900 dark:text-white", collapsed && 'hidden')}>RigidUI</span> */}
         </Link>
         <div className={`flex items-center ${collapsed && !isMobile ? 'flex-col space-y-4' : 'space-x-2'}`}>
           <button
@@ -169,6 +186,9 @@ export function DocsNavigation({
           )}
         </div>
       </div>
+
+      <DocsSearch />
+
       {(!collapsed || isMobile) && (
         <div className="space-y-1">
           {navigationItems.map((item) => (

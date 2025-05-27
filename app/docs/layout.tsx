@@ -5,6 +5,7 @@ import { DocsNavigation } from './_components/DocsNavigation'
 import { TableOfContents } from './_components/TableOfContents'
 import { PanelLeft } from "lucide-react"
 
+
 export default function DocsLayout({
   children,
 }: {
@@ -40,12 +41,8 @@ export default function DocsLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50 dark:bg-[#111111] transition-colors duration-200" style={{
-      backgroundImage: `
-        radial-gradient(ellipse at right, rgba(75, 0, 130, 0.1) 0%, transparent 70%),
-        radial-gradient(ellipse at right, rgba(75, 0, 130, 0.05) 0%, transparent 70%)
-      `,
-    }}>
+    <div className="flex min-h-screen bg-gray-50 dark:bg-background transition-colors duration-200"
+    >
       {sidebarOpen && isMobile && (
         <div
           className="fixed inset-0 bg-black/20 dark:bg-black/50 z-10 md:hidden"
@@ -95,9 +92,6 @@ export default function DocsLayout({
           </div>
         </div>
       </main>
-      <div className='fixed top-0 right-0 '>
-        Nitish
-      </div>
     </div>
   )
 }

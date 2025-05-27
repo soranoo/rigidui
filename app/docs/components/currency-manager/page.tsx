@@ -110,7 +110,7 @@ export default function MyComponent() {
           <CurrencySelector />
         </header>
 
-        <main className="p-6 bg-white dark:bg-gray-950">
+        <main className="p-6 bg-white dark:bg-background">
           <div className="space-y-6">
             <div>
               <h2 className="text-xl font-medium mb-4">Featured Products</h2>
@@ -156,19 +156,19 @@ export default function MyComponent() {
             <div className="space-y-4 pt-6 border-t">
               <h2 className="text-lg font-medium">Exchange Rate Information</h2>
               <div className="grid gap-3">
-              {["USD", "EUR", "GBP", "JPY", "INR"].map((currency) => (
-                <div key={currency} className="flex items-center justify-between border-b pb-2">
-                <span className="font-medium">{currency}:</span>
-                <CurrencyDisplay
-                  value={1}
-                  sourceCurrency={currency}
-                  className="font-mono text-right"
-                />
-                </div>
-              ))}
+                {["USD", "EUR", "GBP", "JPY", "INR"].map((currency) => (
+                  <div key={currency} className="flex items-center justify-between border-b pb-2">
+                    <span className="font-medium">{currency}:</span>
+                    <CurrencyDisplay
+                      value={1}
+                      sourceCurrency={currency}
+                      className="font-mono text-right"
+                    />
+                  </div>
+                ))}
               </div>
               <p className="text-sm text-gray-500 mt-2">
-              Change your preferred currency using the selector in the header to see all values update automatically.
+                Change your preferred currency using the selector in the header to see all values update automatically.
               </p>
             </div>
           </div>

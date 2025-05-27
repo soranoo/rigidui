@@ -10,6 +10,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 type LocationSuggestion = {
   display_name: string;
@@ -27,12 +28,14 @@ interface LocationPickerProps {
   className?: string;
   autoDetectOnLoad?: boolean;
   defaultLocation?: string;
+  onChange?: (location: string) => void;
 }
 
 export function LocationPicker({
   className,
   autoDetectOnLoad = false,
   defaultLocation = "",
+  onChange,
 }: LocationPickerProps) {
   const [activeCity, setActiveCity] = useState(defaultLocation)
   const [isLoading, setIsLoading] = useState(false)
@@ -161,12 +164,21 @@ export function LocationPicker({
     }
   }, [autoDetectOnLoad]);
 
+  useEffect(() => {
+    if (onChange && activeCity) {
+      onChange(activeCity);
+    }
+  }, [activeCity, onChange]);
+
 
   return (
     <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
-        <div className={`flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 border border-transparent hover:border-b-black dark:hover:border-b-white cursor-pointer px-2 py-1 hover:bg-transparent transition-colors ${className}`}>
-          <MapPin size={16} className="text-swadeyellow" />
+        <div className={cn(
+          "flex items-center gap-2 text-muted-foreground hover:text-foreground border-b border-transparent hover:border-primary cursor-pointer px-3 py-2 transition-colors",
+          className
+        )}>
+          <MapPin size={16} className="text-primary" />
           {isLoading ? (
             <div className="flex items-center gap-1">
               <LoaderCircle size={14} className="animate-spin" />
@@ -179,27 +191,25 @@ export function LocationPicker({
           )}
         </div>
       </PopoverTrigger>
-      <PopoverContent className="w-80 p-0 shadow-lg border-0 border-swade border-t-2 dark:bg-gray-900" side="bottom" align="start" sideOffset={20}>
-        <div className="p-4 border-b dark:border-gray-700">
-          <h4 className="font-medium text-lg mb-1 dark:text-white">Change location</h4>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Find products near you</p>
+      <PopoverContent className="w-80 p-0 shadow-lg dark:bg-background" side="bottom" align="start" sideOffset={4}>
+        <div className="p-4 border-b dark:border-border">
+          <h4 className="font-medium text-lg mb-1 dark:text-foreground">Change location</h4>
+          <p className="text-sm text-muted-foreground">Find products near you</p>
         </div>
 
         <div className="p-4">
           <div className="flex items-center gap-2 mb-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 dark:text-gray-500" />
               <Input
                 placeholder="Enter city, district, or area"
                 value={locationSearch}
                 onChange={(e) => setLocationSearch(e.target.value)}
                 onKeyUp={(e) => e.key === 'Enter' && suggestions.length === 0 && searchLocation()}
-                className="pl-10 pr-10 rounded-full border-gray-300 dark:border-gray-700 focus:border-swadeyellow focus:ring-1 focus:ring-swadeyellow dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-400"
               />
             </div>
 
             <Button
-              className="rounded-full h-10 w-10 p-0"
+              className="rounded-md h-10 w-10 p-0"
               variant="outline"
               onClick={searchLocation}
               disabled={isLoading || !locationSearch.trim()}
@@ -215,7 +225,7 @@ export function LocationPicker({
             <Button
               variant="outline"
               onClick={getCurrentLocation}
-              className="rounded-full h-10 w-10 p-0"
+              className="rounded-md h-10 w-10 p-0"
               title="Use Current Location"
             >
               <Locate className="h-4 w-4" />
@@ -223,20 +233,20 @@ export function LocationPicker({
           </div>
 
           {suggestions.length > 0 && (
-            <div className="z-50 w-full bg-white dark:bg-gray-900 rounded-md border border-gray-200 dark:border-gray-700 shadow-lg max-h-60 overflow-y-auto mt-1 mb-4">
+            <div className="z-50 w-full bg-background rounded-md border border-border shadow-lg max-h-60 overflow-y-auto mt-1 mb-4">
               {suggestions.map((suggestion) => (
                 <div
                   key={suggestion.place_id}
-                  className="px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer border-b border-gray-100 dark:border-gray-800 last:border-0 transition-colors"
+                  className="px-4 py-2 hover:bg-muted cursor-pointer border-b border-border last:border-0 transition-colors"
                   onClick={() => selectSuggestion(suggestion)}
                 >
                   <div className="flex items-start">
-                    <MapPinned size={16} className="text-swadeyellow mt-0.5 mr-2 shrink-0" />
+                    <MapPinned size={16} className="text-primary mt-0.5 mr-2 shrink-0" />
                     <div>
-                      <p className="text-sm font-medium dark:text-white">
+                      <p className="text-sm font-medium text-foreground">
                         {formatLocationName(suggestion)}
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate max-w-[250px]">
+                      <p className="text-xs text-muted-foreground truncate max-w-[250px]">
                         {suggestion.display_name}
                       </p>
                     </div>
@@ -247,9 +257,9 @@ export function LocationPicker({
           )}
 
           {isFetchingSuggestions && locationSearch.length >= 2 && suggestions.length === 0 && (
-            <div className="z-50 w-full bg-white dark:bg-gray-900 rounded-md border border-gray-200 dark:border-gray-700 shadow-md p-4 text-center mt-1 mb-4">
-              <LoaderCircle size={20} className="animate-spin mx-auto text-swadeyellow" />
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Searching locations...</p>
+            <div className="z-50 w-full bg-background rounded-md border border-border shadow-md p-4 text-center mt-1 mb-4">
+              <LoaderCircle size={20} className="animate-spin mx-auto text-primary" />
+              <p className="text-sm text-muted-foreground mt-1">Searching locations...</p>
             </div>
           )}
         </div>

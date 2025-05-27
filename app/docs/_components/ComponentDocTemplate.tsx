@@ -2,9 +2,14 @@ import React from 'react'
 import { ComponentHeader } from './ComponentHeader'
 import { CodeBlock } from './CodeBlock'
 import { PropsTable } from './PropsTable'
-import { Check, X, Code, Package, Layers, Zap } from 'lucide-react'
+import { Code, Package, Zap } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import TerminalCommand from './TerminalCommand'
+import Features from './templates/Features'
+import { navigationItems } from '@/lib/routes'
+import Link from 'next/link'
+import { buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 
 export interface Feature {
   icon: React.ReactNode;
@@ -56,12 +61,15 @@ export default function ComponentDocTemplate({
   codeFilename = "BasicUsage.tsx",
   propsData,
   features,
-  bestPractices,
   showInstallation = true,
   componentName,
   additionalSections,
-  subComponents,
+  subComponents
 }: ComponentDocProps) {
+  const currentIndex = navigationItems.findIndex(item => item.title === title);
+  const prevRoute = currentIndex > 0 ? navigationItems[currentIndex - 1] : null;
+  const nextRoute = currentIndex < navigationItems.length - 1 ? navigationItems[currentIndex + 1] : null;
+
   return (
     <div className="max-w-5xl mx-auto space-y-10  md:space-y-20 md:px-6 md:py-10 py-4 px-4">
       <ComponentHeader
@@ -80,24 +88,24 @@ export default function ComponentDocTemplate({
             Install the {title} component using your preferred package manager.
           </p>
 
-          <div className="bg-gray-50 dark:bg-gray-900 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800">
+          <div className="bg-gray-50 dark:bg-background rounded-xl overflow-hidden border border-gray-200 dark:border-slate-800">
             <Tabs defaultValue="npm" className="w-full md:p-1">
-              <TabsList className="flex justify-start border-b border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-800/50">
+              <TabsList className="flex justify-start border-b border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900/70">
                 <TabsTrigger
                   value="npm"
-                  className="px-6 py-1 text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 transition-all duration-200"
+                  className="px-6 py-1 text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-950 transition-all duration-200"
                 >
                   npm
                 </TabsTrigger>
                 <TabsTrigger
                   value="pnpm"
-                  className="px-6 py-1 text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 transition-all duration-200"
+                  className="px-6 py-1 text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-950 transition-all duration-200"
                 >
                   pnpm
                 </TabsTrigger>
                 <TabsTrigger
                   value="bun"
-                  className="px-6 py-1 text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-900 transition-all duration-200"
+                  className="px-6 py-1 text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-950 transition-all duration-200"
                 >
                   bun
                 </TabsTrigger>
@@ -142,18 +150,18 @@ export default function ComponentDocTemplate({
           {usageDescription}
         </p>
 
-        <div className="mt-8 pb-4 bg-white dark:bg-gray-950 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+        <div className="mt-8 pb-4 bg-white dark:bg-background rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
           <Tabs defaultValue="preview" className="w-full">
-            <TabsList className="flex justify-start border-b border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-800/50">
+            <TabsList className="flex justify-start border-b border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900/70">
               <TabsTrigger
                 value="preview"
-                className="px-6 py-1 text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 transition-all duration-200"
+                className="px-6 py-1 text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-950 transition-all duration-200"
               >
                 Preview
               </TabsTrigger>
               <TabsTrigger
                 value="code"
-                className="px-6 py-1 text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 transition-all duration-200"
+                className="px-6 py-1 text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-950 transition-all duration-200"
               >
                 Code
               </TabsTrigger>
@@ -174,29 +182,7 @@ export default function ComponentDocTemplate({
       </section>
 
       {features && features.length > 0 && (
-        <section className="space-y-8">
-          <div className="flex items-center space-x-3">
-            <Layers className="h-7 w-7 text-indigo-500 dark:text-indigo-400" />
-            <h2 id="features" className="md:text-3xl text-2xl font-bold text-gray-900 dark:text-white">Features</h2>
-          </div>
-          <p className="md:text-lg text-gray-700 dark:text-gray-300 max-w-3xl">
-            The {title} component offers several features to enhance the user experience.
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {features.map((feature, index) => (
-              <div key={index} className="rounded-xl border border-gray-200 dark:border-gray-800 p-6 bg-white dark:bg-gray-900 shadow-sm hover:shadow-md transition-shadow duration-300">
-                <div className="rounded-full bg-indigo-100 dark:bg-indigo-900/30 w-12 h-12 flex items-center justify-center mb-4">
-                  {feature.icon}
-                </div>
-                <h3 className="md:text-xl text-lg font-semibold mb-3 dark:text-white">{feature.title}</h3>
-                <p className="text-gray-600 dark:text-gray-400 max-md:text-sm">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
+        <Features title={title} features={features} />
       )}
 
       {subComponents && subComponents.length > 0 ? (
@@ -228,7 +214,7 @@ export default function ComponentDocTemplate({
             <Zap className="h-7 w-7 text-indigo-500 dark:text-indigo-400" />
             <h2 id="api-reference" className="md:text-3xl text-2xl font-bold text-gray-900 dark:text-white">API Reference</h2>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="bg-white dark:bg-transparent rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
             <PropsTable props={propsData} />
           </div>
         </section>
@@ -236,38 +222,28 @@ export default function ComponentDocTemplate({
 
       {additionalSections}
 
-      {bestPractices && bestPractices.length > 0 && (
-        <section className="pt-8 mt-8 border-t border-gray-200 dark:border-gray-800 space-y-8">
-          <h2 id="best-practices" className="md:text-3xl text-2xl font-bold text-gray-900 dark:text-white">Best Practices</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {bestPractices.map((practice, index) => (
-              practice.type === 'do' ? (
-                <div key={index} className="rounded-xl border border-green-100 dark:border-green-900/30 bg-green-50/50 dark:bg-green-900/10 md:p-8 p-4 shadow-sm">
-                  <h3 className="flex items-center text-lg font-semibold text-green-800 dark:text-green-400 mb-6">
-                    <Check className="text-green-500 mr-3 h-6 w-6 bg-green-100 dark:bg-green-800/50 p-1 rounded-full" /> Do
-                  </h3>
-                  <ul className="space-y-4 md:ml-10 ml-6 list-disc text-green-800 dark:text-green-400 text-base">
-                    {practice.items.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              ) : (
-                <div key={index} className="rounded-xl border border-red-100 dark:border-red-900/30 bg-red-50/50 dark:bg-red-900/10 md:p-8 p-4 shadow-sm">
-                  <h3 className="flex items-center text-lg font-semibold text-red-800 dark:text-red-400 mb-6">
-                    <X className="text-red-500 mr-3 h-6 w-6 bg-red-100 dark:bg-red-800/50 p-1 rounded-full" /> Don&apos;t
-                  </h3>
-                  <ul className="space-y-4 md:ml-10 ml-6 list-disc text-red-800 dark:text-red-400 text-base">
-                    {practice.items.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              )
-            ))}
-          </div>
-        </section>
-      )}
+      <div className="flex justify-between items-center mt-12 pt-8 border-t border-gray-200 dark:border-gray-800">
+        {prevRoute ? (
+          <Link href={prevRoute.href} className={cn(buttonVariants({ variant: "outline" }), "flex items-center space-x-2")}>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+            <span>{prevRoute.title}</span>
+          </Link>
+        ) : (
+          <div />
+        )}
+        {nextRoute ? (
+          <Link href={nextRoute.href} className={cn(buttonVariants({ variant: "outline" }), "flex items-center space-x-2")}>
+            <span>{nextRoute.title}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </Link>
+        ) : (
+          <div />
+        )}
+      </div>
     </div>
   )
 }
