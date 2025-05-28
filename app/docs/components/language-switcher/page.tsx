@@ -261,7 +261,7 @@ export default function MyApp() {
   const previewComponent = (
     <LanguageProvider>
       <div className="border rounded-lg shadow-sm overflow-hidden max-w-3xl mx-auto">
-        <header className="flex justify-between items-center p-4 border-b bg-gray-50 dark:bg-gray-800/50">
+        <header className="flex justify-between items-center p-4 border-b bg-gray-50 dark:bg-background">
           <h1 className="text-xl font-bold">
             <Translate
               translations={{

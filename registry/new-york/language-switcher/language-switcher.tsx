@@ -160,18 +160,17 @@ export function LanguageSwitcher({
         value={currentLanguage}
         onValueChange={(value) => setLanguage(value)}
       >
-        <SelectTrigger className={cn("w-[180px] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100", className)}>
+        <SelectTrigger className={cn("w-[180px", className)}>
           <SelectValue>
             {showFlags && currentLanguageObj?.flag ? `${currentLanguageObj.flag} ` : ''}
             {currentLanguageObj?.name || currentLanguage}
           </SelectValue>
         </SelectTrigger>
-        <SelectContent className="dark:bg-gray-900 dark:border-gray-700">
+        <SelectContent>
           {languages.map((language) => (
             <SelectItem
               key={language.code}
               value={language.code}
-              className="dark:text-gray-100 dark:data-[highlighted]:bg-gray-800 dark:focus:bg-gray-800"
             >
               {showFlags && language.flag ? `${language.flag} ` : ''}
               {language.name}

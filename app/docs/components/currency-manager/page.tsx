@@ -105,7 +105,7 @@ export default function MyComponent() {
   const previewComponent = (
     <CurrencyProvider>
       <div className="border rounded-lg shadow-sm overflow-hidden max-w-3xl mx-auto">
-        <header className="flex justify-between items-center p-4 border-b bg-gray-50 dark:bg-gray-800/50">
+        <header className="flex justify-between items-center p-4 border-b bg-gray-50 dark:bg-background">
           <h1 className="text-xl font-bold">E-commerce Store</h1>
           <CurrencySelector />
         </header>
@@ -116,7 +116,7 @@ export default function MyComponent() {
               <h2 className="text-xl font-medium mb-4">Featured Products</h2>
               <div className="grid gap-6 md:grid-cols-3">
                 <div className="border rounded-lg overflow-hidden">
-                  <div className="bg-gray-100 dark:bg-gray-800 h-32 flex items-center justify-center">
+                  <div className="bg-gray-100 dark:bg-gray-900 h-32 flex items-center justify-center">
                     <div className="text-gray-400">Product Image</div>
                   </div>
                   <div className="p-4">
@@ -128,7 +128,7 @@ export default function MyComponent() {
                 </div>
 
                 <div className="border rounded-lg overflow-hidden">
-                  <div className="bg-gray-100 dark:bg-gray-800 h-32 flex items-center justify-center">
+                  <div className="bg-gray-100 dark:bg-gray-900 h-32 flex items-center justify-center">
                     <div className="text-gray-400">Product Image</div>
                   </div>
                   <div className="p-4">
@@ -140,7 +140,7 @@ export default function MyComponent() {
                 </div>
 
                 <div className="border rounded-lg overflow-hidden">
-                  <div className="bg-gray-100 dark:bg-gray-800 h-32 flex items-center justify-center">
+                  <div className="bg-gray-100 dark:bg-gray-900 h-32 flex items-center justify-center">
                     <div className="text-gray-400">Product Image</div>
                   </div>
                   <div className="p-4">

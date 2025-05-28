@@ -17,6 +17,7 @@ import {
   Step,
   useMultiStepForm
 } from "./multi-step-form-wrapper"
+import { Textarea } from "@/components/ui/textarea"
 
 const basicInfoSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),
@@ -151,10 +152,10 @@ function MessageStep() {
             <FormItem>
               <FormLabel>Your Message</FormLabel>
               <FormControl>
-                <textarea
+                <Textarea
                   {...field}
                   placeholder="Type your message here"
-                  className="w-full p-2 text-sm border rounded min-h-[80px] dark:bg-gray-800"
+                  className="w-full p-2 text-sm border rounded min-h-[80px]"
                 />
               </FormControl>
               <FormMessage />

@@ -159,12 +159,12 @@ export function CurrencySelector({ className }: { className?: string }) {
       }}
       disabled={loading}
     >
-      <SelectTrigger className={cn("w-[180px] dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100", className)}>
+      <SelectTrigger className={cn("w-[180px]", className)}>
         <SelectValue placeholder="Select currency" />
       </SelectTrigger>
-      <SelectContent className="dark:bg-gray-900 dark:border-gray-700">
+      <SelectContent>
         {currencies.map((c) => (
-          <SelectItem key={c.code} value={c.code} className="dark:text-gray-100 dark:data-[highlighted]:bg-gray-800 dark:focus:bg-gray-800">
+          <SelectItem key={c.code} value={c.code}>
             {c.symbol} {c.name} ({c.code})
           </SelectItem>
         ))}
