@@ -4,6 +4,7 @@ import { usePathname } from 'next/navigation'
 import { DocsNavigation } from './_components/DocsNavigation'
 import { TableOfContents } from './_components/TableOfContents'
 import { PanelLeft } from "lucide-react"
+import { ModeToggle } from '@/components/mode-toggle'
 
 
 export default function DocsLayout({
@@ -68,7 +69,7 @@ export default function DocsLayout({
       </div>
 
       <main className="flex-1 transition-all duration-300 w-full">
-        <div className="sticky top-0 z-10 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 p-3 md:hidden">
+        <div className="sticky top-0 z-10 bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 p-3 md:hidden flex justify-between items-center">
           <button
             onClick={toggleSidebar}
             className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800 transition-colors"
@@ -76,6 +77,7 @@ export default function DocsLayout({
           >
             <PanelLeft className="w-5 h-5" />
           </button>
+          <ModeToggle />
         </div>
 
         <div className="md:px-4 px-2 py-8 max-w-7xl mx-auto">

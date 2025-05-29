@@ -58,7 +58,7 @@ const navigationItems: NavigationItem[] = [
   },
 ]
 
-const DocsSearch = () => {
+const DocsSearch = ({ collapsed }: { collapsed?: boolean }) => {
   const [open, setOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
@@ -107,18 +107,28 @@ const DocsSearch = () => {
 
   return (
     <>
-      <button
-        onClick={() => setOpen(true)}
-        className="w-full flex items-center text-left p-2 text-sm text-primary dark:text-primary/90 bg-background/80 backdrop-blur-sm border border-primary/20 dark:border-primary/30 rounded-lg shadow-sm hover:shadow-md hover:border-primary/40 hover:-translate-y-0.5 hover:bg-primary/5 dark:hover:bg-primary/10 transition-all duration-200 mb-4 group"
-      >
-        <Search className="w-5 h-5 mr-3 text-primary/70 group-hover:text-primary transition-colors" />
-        <p className="flex-grow font-medium">Search docs</p>
-        <kbd
-          className="pointer-events-none inline-flex h-6 select-none items-center gap-1 rounded border border-primary/20 dark:border-primary/30 bg-primary/5 dark:bg-primary/10 px-2 font-mono text-xs font-medium text-primary/70"
+      {collapsed ? (
+        <button
+          onClick={() => setOpen(true)}
+          className="p-2 flex mx-auto rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800 transition-colors mb-4"
+          aria-label="Search documentation"
         >
-          <span className="text-sm">⌘</span>K
-        </kbd>
-      </button>
+          <Search className="w-5 h-5" />
+        </button>
+      ) : (
+        <button
+          onClick={() => setOpen(true)}
+          className="w-full flex items-center text-left p-2 text-sm text-primary dark:text-primary/90 bg-background/80 backdrop-blur-sm border border-primary/20 dark:border-primary/30 rounded-lg shadow-sm hover:shadow-md hover:border-primary/40 hover:-translate-y-0.5 hover:bg-primary/5 dark:hover:bg-primary/10 transition-all duration-200 mb-4 group"
+        >
+          <Search className="w-5 h-5 mr-3 text-primary/70 group-hover:text-primary transition-colors" />
+          <p className="flex-grow font-medium">Search docs</p>
+          <kbd
+            className="pointer-events-none inline-flex h-6 select-none items-center gap-1 rounded border border-primary/20 dark:border-primary/30 bg-primary/5 dark:bg-primary/10 px-2 font-mono text-xs font-medium text-primary/70"
+          >
+            <span className="text-sm">⌘</span>K
+          </kbd>
+        </button>
+      )}
       <CommandDialog open={open} onOpenChange={setOpen}>
         <DialogTitle className="hidden">
           Documentation Search

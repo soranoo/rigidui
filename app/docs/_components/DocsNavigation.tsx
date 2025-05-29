@@ -2,10 +2,11 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { PanelLeft, Moon, Sun, ChevronDown, ChevronRight, PanelRight } from "lucide-react"
+import { PanelLeft, ChevronDown, ChevronRight, PanelRight } from "lucide-react"
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import DocsSearch from './DocsSearch'
+import { ModeToggle } from '@/components/mode-toggle'
 
 interface NavigationItem {
   title: string
@@ -65,15 +66,8 @@ export function DocsNavigation({
   isMobile?: boolean
 }) {
   const pathname = usePathname()
-  const [darkMode, setDarkMode] = useState(false)
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({})
   const [isCommandPanelOpen, setIsCommandPanelOpen] = useState(false)
-
-  useEffect(() => {
-    const isDark = localStorage.getItem('theme') === 'dark'
-    setDarkMode(isDark)
-    document.documentElement.classList.toggle('dark', isDark)
-  }, [])
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -91,13 +85,6 @@ export function DocsNavigation({
       window.removeEventListener('keydown', handleKeyDown)
     }
   }, [isCommandPanelOpen])
-
-  const toggleTheme = () => {
-    const newDarkMode = !darkMode
-    setDarkMode(newDarkMode)
-    localStorage.setItem('theme', newDarkMode ? 'dark' : 'light')
-    document.documentElement.classList.toggle('dark', newDarkMode)
-  }
 
   const toggleSection = (href: string) => {
     setExpandedSections(prev => ({
@@ -168,13 +155,9 @@ export function DocsNavigation({
           </span>
         </Link>
         <div className={`flex items-center ${collapsed && !isMobile ? 'flex-col space-y-4' : 'space-x-2'}`}>
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800 transition-colors"
-            aria-label="Toggle theme"
-          >
-            {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-          </button>
+          <div className='hidden md:block'>
+            <ModeToggle />
+          </div>
           {!isMobile && (
             <button
               onClick={onToggleSidebar}
@@ -186,8 +169,8 @@ export function DocsNavigation({
           )}
         </div>
       </div>
+      <DocsSearch collapsed={collapsed && !isMobile} />
 
-      <DocsSearch />
 
       {(!collapsed || isMobile) && (
         <div className="space-y-1">

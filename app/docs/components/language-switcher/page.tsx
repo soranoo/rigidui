@@ -262,7 +262,7 @@ export default function MyApp() {
     <LanguageProvider>
       <div className="border rounded-lg shadow-sm overflow-hidden max-w-3xl mx-auto">
         <header className="flex justify-between items-center p-4 border-b bg-gray-50 dark:bg-background">
-          <h1 className="text-xl font-bold">
+          <h1 className="md:text-xl font-bold">
             <Translate
               translations={{
                 en: "My Application",
@@ -281,7 +281,7 @@ export default function MyApp() {
         </header>
 
         <main className="p-6 bg-white dark:bg-background">
-          <h2 className="text-2xl mb-4">
+          <h2 className="md:text-2xl mb-4">
             <Translate
               translations={{
                 en: "Welcome to our platform",
@@ -292,7 +292,7 @@ export default function MyApp() {
             />
           </h2>
 
-          <p className="mb-6 text-gray-600 dark:text-gray-400">
+          <p className="max-md:text-sm mb-6 text-gray-600 dark:text-gray-400">
             <Translate
               translations={{
                 en: "Choose your language preference above",
@@ -303,7 +303,7 @@ export default function MyApp() {
             />
           </p>
 
-          <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+          <button className="md:px-4 px-2 max-md:text-sm py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
             <Translate
               translations={{
                 en: "Get Started",

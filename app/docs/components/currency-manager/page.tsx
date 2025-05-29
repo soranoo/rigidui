@@ -66,35 +66,74 @@ export default function CurrencyManagerPage() {
 
 export default function MyComponent() {
   return (
-    <CurrencyProvider defaultCurrency="USD">
-      <div className="space-y-4">
-        <header className="flex justify-between items-center">
-          <h1 className="text-xl font-bold">My Store</h1>
-          <CurrencySelector className="w-32" />
-        </header>
+   <CurrencyProvider>
+      <div className="max-w-4xl mx-auto space-y-6 px-4 sm:px-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b">
+          <h2 className="text-xl font-semibold">Shopping Cart</h2>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600 dark:text-gray-400">Currency:</span>
+            <CurrencySelector className="w-full sm:w-40" />
+          </div>
+        </div>
 
         <div className="space-y-4">
-          <h2 className="text-lg font-medium">Product Catalog</h2>
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="border p-4 rounded-md">
-              <h3>Premium Headphones</h3>
-              <p className="text-lg font-bold">
-                <CurrencyDisplay value={129.99} sourceCurrency="USD" />
-              </p>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-lg gap-3">
+            <div className="flex-1">
+              <h3 className="font-medium">MacBook Pro 14&quot;</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Qty: 1</p>
             </div>
-            <div className="border p-4 rounded-md">
-              <h3>Wireless Keyboard</h3>
-              <p className="text-lg font-bold">
-                <CurrencyDisplay value={79.99} sourceCurrency="EUR" />
-              </p>
+            <div className="text-left sm:text-right">
+              <div className="font-semibold text-lg">
+                <CurrencyDisplay value={1999} sourceCurrency="USD" />
+              </div>
+              <div className="text-xs text-gray-500">Originally $1,999 USD</div>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-lg gap-3">
+            <div className="flex-1">
+              <h3 className="font-medium">Wireless Mouse</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Qty: 2</p>
+            </div>
+            <div className="text-left sm:text-right">
+              <div className="font-semibold text-lg">
+                <CurrencyDisplay value={158} sourceCurrency="EUR" />
+              </div>
+              <div className="text-xs text-gray-500">Originally €79 EUR each</div>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-lg gap-3">
+            <div className="flex-1">
+              <h3 className="font-medium">Premium Headphones</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Qty: 1</p>
+            </div>
+            <div className="text-left sm:text-right">
+              <div className="font-semibold text-lg">
+                <CurrencyDisplay value={249} sourceCurrency="GBP" />
+              </div>
+              <div className="text-xs text-gray-500">Originally £249 GBP</div>
             </div>
           </div>
         </div>
 
         <div className="border-t pt-4">
-          <h3 className="font-medium">Cart Total</h3>
-          <p className="text-xl font-bold">
-            <CurrencyDisplay value={209.98} sourceCurrency="USD" />
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <span className="text-xl font-bold">Total:</span>
+            <CurrencyDisplay
+              value={2406}
+              sourceCurrency="USD"
+              className="text-2xl font-bold text-green-600 dark:text-green-400"
+            />
+          </div>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+            * Prices automatically converted from original currencies
+          </p>
+        </div>
+
+        <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+          <p className="text-sm text-blue-800 dark:text-blue-200">
+            <strong>Try it:</strong> Change the currency above to see all prices automatically convert in real-time using live exchange rates!
           </p>
         </div>
       </div>
@@ -104,75 +143,75 @@ export default function MyComponent() {
 
   const previewComponent = (
     <CurrencyProvider>
-      <div className="border rounded-lg shadow-sm overflow-hidden max-w-3xl mx-auto">
-        <header className="flex justify-between items-center p-4 border-b bg-gray-50 dark:bg-background">
-          <h1 className="text-xl font-bold">E-commerce Store</h1>
-          <CurrencySelector />
-        </header>
+      <div className="max-w-4xl mx-auto space-y-6 px-4 sm:px-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b">
+          <h2 className="text-xl font-semibold">Shopping Cart</h2>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600 dark:text-gray-400">Currency:</span>
+            <CurrencySelector className="w-full sm:w-40" />
+          </div>
+        </div>
 
-        <main className="p-6 bg-white dark:bg-background">
-          <div className="space-y-6">
-            <div>
-              <h2 className="text-xl font-medium mb-4">Featured Products</h2>
-              <div className="grid gap-6 md:grid-cols-3">
-                <div className="border rounded-lg overflow-hidden">
-                  <div className="bg-gray-100 dark:bg-gray-900 h-32 flex items-center justify-center">
-                    <div className="text-gray-400">Product Image</div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-medium">Premium Headphones</h3>
-                    <p className="text-lg font-bold mt-1">
-                      <CurrencyDisplay value={129.99} sourceCurrency="USD" />
-                    </p>
-                  </div>
-                </div>
-
-                <div className="border rounded-lg overflow-hidden">
-                  <div className="bg-gray-100 dark:bg-gray-900 h-32 flex items-center justify-center">
-                    <div className="text-gray-400">Product Image</div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-medium">Wireless Keyboard</h3>
-                    <p className="text-lg font-bold mt-1">
-                      <CurrencyDisplay value={79.99} sourceCurrency="EUR" />
-                    </p>
-                  </div>
-                </div>
-
-                <div className="border rounded-lg overflow-hidden">
-                  <div className="bg-gray-100 dark:bg-gray-900 h-32 flex items-center justify-center">
-                    <div className="text-gray-400">Product Image</div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-medium">Smart Watch</h3>
-                    <p className="text-lg font-bold mt-1">
-                      <CurrencyDisplay value={199.99} sourceCurrency="GBP" />
-                    </p>
-                  </div>
-                </div>
-              </div>
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-lg gap-3">
+            <div className="flex-1">
+              <h3 className="font-medium">MacBook Pro 14&quot;</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Qty: 1</p>
             </div>
-
-            <div className="space-y-4 pt-6 border-t">
-              <h2 className="text-lg font-medium">Exchange Rate Information</h2>
-              <div className="grid gap-3">
-                {["USD", "EUR", "GBP", "JPY", "INR"].map((currency) => (
-                  <div key={currency} className="flex items-center justify-between border-b pb-2">
-                    <span className="font-medium">{currency}:</span>
-                    <CurrencyDisplay
-                      value={1}
-                      sourceCurrency={currency}
-                      className="font-mono text-right"
-                    />
-                  </div>
-                ))}
+            <div className="text-left sm:text-right">
+              <div className="font-semibold text-lg">
+                <CurrencyDisplay value={1999} sourceCurrency="USD" />
               </div>
-              <p className="text-sm text-gray-500 mt-2">
-                Change your preferred currency using the selector in the header to see all values update automatically.
-              </p>
+              <div className="text-xs text-gray-500">Originally $1,999 USD</div>
             </div>
           </div>
-        </main>
+
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-lg gap-3">
+            <div className="flex-1">
+              <h3 className="font-medium">Wireless Mouse</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Qty: 2</p>
+            </div>
+            <div className="text-left sm:text-right">
+              <div className="font-semibold text-lg">
+                <CurrencyDisplay value={158} sourceCurrency="EUR" />
+              </div>
+              <div className="text-xs text-gray-500">Originally €79 EUR each</div>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border rounded-lg gap-3">
+            <div className="flex-1">
+              <h3 className="font-medium">Premium Headphones</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Qty: 1</p>
+            </div>
+            <div className="text-left sm:text-right">
+              <div className="font-semibold text-lg">
+                <CurrencyDisplay value={249} sourceCurrency="GBP" />
+              </div>
+              <div className="text-xs text-gray-500">Originally £249 GBP</div>
+            </div>
+          </div>
+        </div>
+
+        <div className="border-t pt-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <span className="text-xl font-bold">Total:</span>
+            <CurrencyDisplay
+              value={2406}
+              sourceCurrency="USD"
+              className="text-2xl font-bold text-green-600 dark:text-green-400"
+            />
+          </div>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+            * Prices automatically converted from original currencies
+          </p>
+        </div>
+
+        <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+          <p className="text-sm text-blue-800 dark:text-blue-200">
+            <strong>Try it:</strong> Change the currency above to see all prices automatically convert in real-time using live exchange rates!
+          </p>
+        </div>
       </div>
     </CurrencyProvider>
   );
