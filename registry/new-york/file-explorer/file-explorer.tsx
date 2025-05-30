@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from 'react'
-import { ChevronDown, ChevronRight, Folder, FolderOpen, FileText, X, Copy, Check, ChevronsUp, Search } from 'lucide-react'
+import { ChevronDown, ChevronRight, Folder, FolderOpen, FileText, X, Copy, Check, ChevronsUp, Search, Image } from 'lucide-react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -16,6 +16,8 @@ type FileType = {
   language?: string
   content: string
   icon?: React.ReactNode
+  isImage?: boolean
+  imageUrl?: string
 }
 
 type FolderType = {
@@ -146,10 +148,46 @@ export default function HomePage() {
 }`
             }
           ]
+        },
+        {
+          id: 'assets',
+          name: 'assets',
+          type: 'folder',
+          children: [
+            {
+              id: 'logo.png',
+              name: 'logo.png',
+              type: 'file',
+              isImage: true,
+              imageUrl: 'https://via.placeholder.com/300x200/3B82F6/FFFFFF?text=Logo',
+              content: 'Binary image data'
+            },
+            {
+              id: 'hero.jpg',
+              name: 'hero.jpg',
+              type: 'file',
+              isImage: true,
+              imageUrl: 'https://via.placeholder.com/600x400/10B981/FFFFFF?text=Hero+Image',
+              content: 'Binary image data'
+            }
+          ]
         }
       ]
     }
   ]
+}
+
+const isImageFile = (filename: string): boolean => {
+  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp', '.svg', '.ico']
+  return imageExtensions.some(ext => filename.toLowerCase().endsWith(ext))
+}
+
+const getFileIcon = (file: FileType, defaultFileIcon: React.ReactNode): React.ReactNode => {
+  if (file.icon) return file.icon
+  if (file.isImage || isImageFile(file.name)) {
+    return <Image className="h-4 w-4 text-blue-500" />
+  }
+  return defaultFileIcon
 }
 
 const FileTreeItem = ({
@@ -214,7 +252,7 @@ const FileTreeItem = ({
       </>
     )
   } else {
-    const fileIcon = item.icon || defaultFileIcon;
+    const fileIcon = getFileIcon(item as FileType, defaultFileIcon);
 
     return (
       <div
@@ -365,39 +403,70 @@ export function FileExplorer({
             <>
               <div className="flex items-center justify-between border-b p-4">
                 <div className="flex items-center">
-                  <span className="mr-2">{selectedFile.icon || defaultFileIcon}</span>
+                  <span className="mr-2">{getFileIcon(selectedFile, defaultFileIcon)}</span>
                   <span className="font-medium">{selectedFile.name}</span>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={handleCopyContent}
-                  className="h-8 w-8"
-                >
-                  {copied ? (
-                    <Check className="h-4 w-4 text-green-500" />
-                  ) : (
-                    <Copy className="h-4 w-4" />
-                  )}
-                </Button>
+                {!selectedFile.isImage && !isImageFile(selectedFile.name) && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleCopyContent}
+                    className="h-8 w-8"
+                  >
+                    {copied ? (
+                      <Check className="h-4 w-4 text-green-500" />
+                    ) : (
+                      <Copy className="h-4 w-4" />
+                    )}
+                  </Button>
+                )}
               </div>
 
               <div className="flex-grow overflow-auto p-0">
-                <SyntaxHighlighter
-                  language={selectedFile.language || 'text'}
-                  style={atomOneDark}
-                  customStyle={{
-                    margin: 0,
-                    padding: '1rem',
-                    height: fileContentHeight,
-                    borderRadius: 0,
-                    fontSize: '0.9rem',
-                    backgroundColor: 'hsl(var(--background))',
-                  }}
+                {selectedFile.isImage || isImageFile(selectedFile.name) ? (
+                  <div className="flex items-center justify-center h-full p-6">
+                    <div className="max-w-full max-h-full flex flex-col items-center">
+                      <img
+                        src={selectedFile.imageUrl || selectedFile.content}
+                        alt={selectedFile.name}
+                        className="max-w-full max-h-full object-contain rounded-lg shadow-lg"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                          const parent = target.parentElement;
+                          if (parent) {
+                            parent.innerHTML = `
+                              <div class="flex flex-col items-center justify-center text-muted-foreground">
+                                <Image class="h-16 w-16 mb-4" />
+                                <p class="text-lg font-medium">Unable to display image</p>
+                                <p class="text-sm">${selectedFile.name}</p>
+                              </div>
+                            `;
+                          }
+                        }}
+                      />
+                      <p className="mt-4 text-sm text-muted-foreground text-center">
+                        {selectedFile.name}
+                      </p>
+                    </div>
+                  </div>
+                ) : (
+                  <SyntaxHighlighter
+                    language={selectedFile.language || 'text'}
+                    style={atomOneDark}
+                    customStyle={{
+                      margin: 0,
+                      padding: '1rem',
+                      height: fileContentHeight,
+                      borderRadius: 0,
+                      fontSize: '0.9rem',
+                      backgroundColor: 'hsl(var(--background))',
+                    }}
                   // showLineNumbers={true}
-                >
-                  {selectedFile.content}
-                </SyntaxHighlighter>
+                  >
+                    {selectedFile.content}
+                  </SyntaxHighlighter>
+                )}
               </div>
             </>
           ) : (
