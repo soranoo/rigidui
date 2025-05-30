@@ -1,412 +1,342 @@
 "use client"
-
-import React, { useState, useRef, useCallback } from 'react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Upload, File, CheckCircle2, AlertCircle, Trash2, Image } from 'lucide-react';
-import { toast } from 'sonner';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Upload, X, File, FileText, FileVideo, FileAudio, Check, AlertCircle, Image as ImageIcon } from 'lucide-react';
+
+const Progress = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & { value?: number }
+>(({ className, value = 0, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("relative w-full overflow-hidden rounded-full bg-secondary", className)}
+    {...props}
+  >
+    <div
+      className="h-full w-full flex-1 bg-primary transition-all duration-300 ease-in-out"
+      style={{ width: `${value}%` }}
+    />
+  </div>
+));
+Progress.displayName = "Progress";
 
 export interface FileWithPreview {
-  file: File;
-  preview?: string;
   id: string;
+  file: File;
   name: string;
-  type: string;
   size: number;
-  uploadProgress: number;
-  status: 'uploading' | 'success' | 'error';
+  type: string;
+  progress: number;
+  status: 'uploading' | 'complete' | 'error';
+  error?: string | null;
+  preview?: string | null;
 }
 
 export interface FileUploaderProps {
+  onFilesReady?: (files: File[]) => void;
   maxFiles?: number;
+  maxSize?: number;
   accept?: string[];
-  onFilesReady?: (files: FileWithPreview[]) => void;
-  onFileRemove?: (file: FileWithPreview) => void;
   className?: string;
-  disabled?: boolean;
 }
 
-const getFileIcon = (fileItem: FileWithPreview) => {
-  if (fileItem.type && fileItem.type.startsWith('image/')) {
-    return <Image className="w-5 h-5" />;
-  }
-  return <File className="w-5 h-5" />;
-};
-
-export const FileUploader = ({
-  maxFiles = 1,
-  accept,
+export function FileUploader({
   onFilesReady,
-  onFileRemove,
-  className,
-  disabled = false
-}: FileUploaderProps) => {
+  maxFiles = 10,
+  maxSize = 10 * 1024 * 1024,
+  accept = ['image/*', 'application/pdf', 'text/*'],
+  className
+}: FileUploaderProps) {
   const [files, setFiles] = useState<FileWithPreview[]>([]);
-  const [isDragging, setIsDragging] = useState(false);
+  const [dragActive, setDragActive] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const uploadIntervalsRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
 
-  const acceptedTypes = accept?.join(',');
-
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    if (!disabled) {
-      setIsDragging(true);
-    }
-  }, [disabled]);
-
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  }, []);
-
-  const simulateUpload = useCallback((fileId: string) => {
-    let progress = 0;
-    const interval = setInterval(() => {
-      progress += Math.random() * 15 + 5;
-
-      if (progress >= 100) {
-        progress = 100;
-        clearInterval(interval);
-        uploadIntervalsRef.current.delete(fileId);
-
-        setFiles(prevFiles => {
-          const newFiles = prevFiles.map(fileItem =>
-            fileItem.id === fileId ?
-              { ...fileItem, uploadProgress: 100, status: 'success' as const } :
-              fileItem
-          );
-
-          if (newFiles.every(fileItem => fileItem.status === 'success')) {
-            onFilesReady?.(newFiles);
-          }
-
-          return newFiles;
-        });
-
-        const fileName = files.find(f => f.id === fileId)?.name;
-        if (fileName) {
-          toast.success(`${fileName} uploaded successfully`);
-        }
-      } else {
-        setFiles(prevFiles =>
-          prevFiles.map(fileItem =>
-            fileItem.id === fileId ?
-              { ...fileItem, uploadProgress: Math.min(progress, 100) } :
-              fileItem
-          )
-        );
-      }
-    }, 200 + Math.random() * 300);
-
-    uploadIntervalsRef.current.set(fileId, interval);
-    return interval;
-  }, [files, onFilesReady]);
-
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-
-    if (disabled || !e.dataTransfer.files) return;
-
-    handleFiles(e.dataTransfer.files);
-  }, [disabled]);
-
-  const validateFiles = useCallback((fileList: File[]): { valid: File[], errors: { file: File, message: string }[] } => {
-    const valid: File[] = [];
-    const errors: { file: File, message: string }[] = [];
-
-    if (files.length + fileList.length > maxFiles) {
-      const allowedCount = Math.max(0, maxFiles - files.length);
-      const message = `Maximum ${maxFiles} file${maxFiles === 1 ? '' : 's'} allowed`;
-
-      fileList.slice(allowedCount).forEach(file => {
-        errors.push({ file, message });
-      });
-      fileList = fileList.slice(0, allowedCount);
-    }
-
-    for (const file of fileList) {
-      if (accept && accept.length > 0) {
-        const fileType = file.type || '';
-        const fileName = file.name ? file.name.toLowerCase() : '';
-        const fileExtension = fileName.split('.').pop();
-
-        const isAccepted = accept.some(type => {
-          if (type.endsWith('/*')) {
-            const category = type.split('/')[0];
-            return fileType.startsWith(`${category}/`);
-          }
-          if (type.includes('/')) {
-            return type === fileType;
-          }
-          if (type.startsWith('.')) {
-            return type === `.${fileExtension}`;
-          }
-          return false;
-        });
-
-        if (!isAccepted) {
-          errors.push({
-            file,
-            message: `File type not accepted. Allowed: ${accept.join(', ')}`
-          });
-          continue;
-        }
-      }
-
-      const isDuplicate = files.some(existingFile =>
-        existingFile.name === file.name && existingFile.size === file.size
-      );
-
-      if (isDuplicate) {
-        errors.push({
-          file,
-          message: 'File already exists'
-        });
-        continue;
-      }
-
-      valid.push(file);
-    }
-
-    return { valid, errors };
-  }, [files, maxFiles, accept]);
-
-  const handleFiles = useCallback((fileList: FileList) => {
-    const fileArray = Array.from(fileList);
-    const { valid, errors: validationErrors } = validateFiles(fileArray);
-
-    if (validationErrors.length > 0) {
-      validationErrors.forEach(({ file, message }) => {
-        toast.error(`${file.name || 'Unknown file'}: ${message}`);
-      });
-    }
-
-    if (valid.length === 0) return;
-
-    const newFiles = valid.map(file => {
-      const id = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-      let preview = undefined;
-
-      if (file.type && file.type.startsWith('image/')) {
-        try {
-          preview = URL.createObjectURL(file);
-        } catch (error) {
-          console.warn('Failed to create preview for', file.name, error);
-        }
-      }
-
-      return {
-        file,
-        preview,
-        id,
-        name: file.name || 'Unknown file',
-        type: file.type || 'application/octet-stream',
-        size: file.size || 0,
-        uploadProgress: 0,
-        status: 'uploading' as const
-      };
-    });
-
-    setFiles(prevFiles => [...prevFiles, ...newFiles]);
-
-    newFiles.forEach(fileItem => {
-      setTimeout(() => simulateUpload(fileItem.id), Math.random() * 1000);
-    });
-  }, [validateFiles, simulateUpload]);
-
-  const handleFileInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && !disabled) {
-      handleFiles(e.target.files);
-    }
-
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
-    }
-  }, [handleFiles, disabled]);
-
-  const handleButtonClick = useCallback(() => {
-    if (!disabled) {
-      fileInputRef.current?.click();
-    }
-  }, [disabled]);
-
-  const removeFile = useCallback((id: string) => {
-    setFiles(prevFiles => {
-      const fileToRemove = prevFiles.find(fileItem => fileItem.id === id);
-      if (fileToRemove) {
-        if (fileToRemove.preview) {
-          URL.revokeObjectURL(fileToRemove.preview);
-        }
-
-        const interval = uploadIntervalsRef.current.get(id);
-        if (interval) {
-          clearInterval(interval);
-          uploadIntervalsRef.current.delete(id);
-        }
-
-        onFileRemove?.(fileToRemove);
-      }
-
-      return prevFiles.filter(fileItem => fileItem.id !== id);
-    });
-  }, [onFileRemove]);
-
-  React.useEffect(() => {
+  useEffect(() => {
     return () => {
-      uploadIntervalsRef.current.forEach(interval => clearInterval(interval));
-      uploadIntervalsRef.current.clear();
-
-      files.forEach(fileItem => {
-        if (fileItem.preview) {
-          URL.revokeObjectURL(fileItem.preview);
-        }
-      });
-    };
-  }, []);
-
-  React.useEffect(() => {
-    return () => {
-      files.forEach(fileItem => {
-        if (fileItem.preview) {
-          URL.revokeObjectURL(fileItem.preview);
-        }
+      files.forEach(file => {
+        if (file.preview) URL.revokeObjectURL(file.preview);
       });
     };
   }, [files]);
 
+  const getFileIcon = useCallback((file: File) => {
+    if (file.type.startsWith('image/')) return <ImageIcon className="w-4 h-4" aria-hidden="true" />;
+    if (file.type.startsWith('video/')) return <FileVideo className="w-4 h-4" aria-hidden="true" />;
+    if (file.type.startsWith('audio/')) return <FileAudio className="w-4 h-4" aria-hidden="true" />;
+    if (file.type === 'application/pdf') return <FileText className="w-4 h-4" aria-hidden="true" />;
+    return <File className="w-4 h-4" aria-hidden="true" />;
+  }, []);
+
+  const formatFileSize = useCallback((bytes: number) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  }, []);
+
+  const validateFile = useCallback((file: File) => {
+    if (file.size > maxSize) {
+      return `File size exceeds ${formatFileSize(maxSize)}`;
+    }
+
+    const fileType = file.type;
+    const isAccepted = accept.some(type => {
+      if (type.endsWith('/*')) {
+        return fileType.startsWith(type.slice(0, -1));
+      }
+      return fileType === type;
+    });
+
+    if (!isAccepted) {
+      return 'File type not supported';
+    }
+
+    return null;
+  }, [maxSize, accept, formatFileSize]);
+
+  const addFiles = useCallback((newFiles: FileList) => {
+    if (files.length >= maxFiles) return;
+
+    const filesToAdd = Array.from(newFiles).slice(0, maxFiles - files.length);
+
+    const processedFiles = filesToAdd.map(file => {
+      const error = validateFile(file);
+      const isImage = file.type.startsWith('image/');
+
+      return {
+        id: Math.random().toString(36).substring(2, 11),
+        file,
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        progress: error ? 0 : 100,
+        status: error ? 'error' : 'complete',
+        error,
+        preview: isImage ? URL.createObjectURL(file) : null
+      } as FileWithPreview;
+    });
+
+    const newFileList = [...files, ...processedFiles];
+    setFiles(newFileList);
+
+    const validFiles = newFileList.filter(f => !f.error).map(f => f.file);
+    if (onFilesReady) {
+      onFilesReady(validFiles);
+    }
+  }, [files, maxFiles, validateFile, onFilesReady]);
+
+  const removeFile = useCallback((fileId: string) => {
+    setFiles(prevFiles => {
+      const fileToRemove = prevFiles.find(f => f.id === fileId);
+      if (fileToRemove?.preview) {
+        URL.revokeObjectURL(fileToRemove.preview);
+      }
+
+      const updatedFiles = prevFiles.filter(f => f.id !== fileId);
+
+      if (onFilesReady) {
+        const validFiles = updatedFiles.filter(f => !f.error).map(f => f.file);
+        onFilesReady(validFiles);
+      }
+
+      return updatedFiles;
+    });
+  }, [onFilesReady]);
+
+  const handleDrag = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === 'dragenter' || e.type === 'dragover') {
+      setDragActive(true);
+    } else if (e.type === 'dragleave') {
+      setDragActive(false);
+    }
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      addFiles(e.dataTransfer.files);
+    }
+  }, [addFiles]);
+
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      addFiles(e.target.files);
+    }
+  }, [addFiles]);
+
+  const clearAllFiles = useCallback(() => {
+    files.forEach(file => {
+      if (file.preview) URL.revokeObjectURL(file.preview);
+    });
+
+    setFiles([]);
+    if (onFilesReady) {
+      onFilesReady([]);
+    }
+  }, [files, onFilesReady]);
+
+  const openFileDialog = () => {
+    fileInputRef.current?.click();
+  };
+
+  const getReadableFileTypes = useCallback(() => {
+    return accept.map(type => {
+      if (type === 'image/*') return 'Images';
+      if (type === 'application/pdf') return 'PDF';
+      if (type === 'text/*') return 'Text files';
+      if (type === 'video/*') return 'Videos';
+      if (type === 'audio/*') return 'Audio';
+      return type;
+    });
+  }, [accept]);
+
   return (
-    <div className={cn("w-full", className)}>
-      <div
+    <div className={cn("w-full space-y-4", className)}>
+      <Card
         className={cn(
-          "border-2 border-dashed rounded-lg p-8 transition-colors",
-          "flex flex-col items-center justify-center text-center",
-          disabled && "opacity-50 cursor-not-allowed",
-          !disabled && isDragging && "border-primary bg-primary/5",
-          !disabled && !isDragging && "border-gray-300 dark:border-gray-700 hover:border-primary"
+          "relative border-2 border-dashed transition-colors duration-200",
+          dragActive ? "border-primary bg-primary/5" : "border-muted",
+          files.length >= maxFiles && "opacity-50 pointer-events-none"
         )}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
+        onDragEnter={handleDrag}
+        onDragLeave={handleDrag}
+        onDragOver={handleDrag}
         onDrop={handleDrop}
       >
+        <CardContent className="flex flex-col items-center justify-center p-8 text-center">
+          <div className={cn(
+            "flex items-center justify-center w-16 h-16 rounded-full mb-4 transition-colors",
+            dragActive
+              ? "bg-primary text-primary-foreground"
+              : "bg-muted/50 text-muted-foreground"
+          )}>
+            <Upload className="w-8 h-8" />
+          </div>
+
+          <h3 className="text-lg font-semibold mb-2">
+            {dragActive ? "Drop files here" : "Upload Files"}
+          </h3>
+
+          <p className="text-sm text-muted-foreground mb-4">
+            Drag and drop files here or click to browse
+          </p>
+
+          <div className="flex flex-wrap gap-2 mb-4 justify-center">
+            {getReadableFileTypes().map((type, index) => (
+              <Badge key={index} variant="secondary" className="text-xs">
+                {type}
+              </Badge>
+            ))}
+          </div>
+
+          <Button
+            onClick={openFileDialog}
+            variant="outline"
+            className="transition-all duration-200 hover:bg-primary hover:text-primary-foreground"
+            disabled={files.length >= maxFiles}
+          >
+            Choose Files
+          </Button>
+
+          <p className="text-xs text-muted-foreground mt-2">
+            Max {maxFiles} files, up to {formatFileSize(maxSize)} each
+          </p>
+        </CardContent>
+
         <input
           ref={fileInputRef}
           type="file"
-          multiple={maxFiles !== 1}
-          accept={acceptedTypes}
-          onChange={handleFileInputChange}
+          multiple
+          accept={accept.join(',')}
+          onChange={handleInputChange}
           className="hidden"
-          disabled={disabled}
         />
-
-        <Upload className="w-8 h-8 text-primary mb-4" />
-        <h3 className="text-lg font-semibold mb-2">
-          {isDragging ? 'Drop files here' : 'Drag & Drop your files here'}
-        </h3>
-        <p className="text-gray-500 dark:text-gray-400 mb-4">or</p>
-
-        <Button
-          onClick={handleButtonClick}
-          disabled={disabled || files.length >= maxFiles}
-          variant={isDragging ? "default" : "outline"}
-        >
-          Browse Files
-        </Button>
-
-        <p className="mt-4 text-sm text-gray-500">
-          {accept ? `Accepted types: ${accept.join(', ')}` : 'All file types supported'}
-          {maxFiles !== Infinity && ` (Max ${maxFiles} file${maxFiles === 1 ? '' : 's'})`}
-        </p>
-      </div>
+      </Card>
 
       {files.length > 0 && (
-        <div className="mt-6">
-          <h3 className="text-lg font-semibold mb-4">
-            Files ({files.length}{maxFiles !== Infinity ? `/${maxFiles}` : ''})
-          </h3>
-          <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-            {files.map((fileItem) => (
-              <Card key={fileItem.id} className="p-4">
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex items-center">
-                    <div className="w-10 h-10 mr-3 rounded bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                      {getFileIcon(fileItem)}
-                    </div>
-                    <div className="overflow-hidden">
-                      <p className="font-medium max-w-[150px]" title={fileItem.name}>
-                        {fileItem.name.slice(0, 15)}...
-                      </p>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={() => removeFile(fileItem.id)}
-                    className="text-gray-500 hover:text-red-500 transition-colors"
-                    disabled={disabled}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-
-                {fileItem.preview && (
-                  <div className="mb-3 relative aspect-video w-full overflow-hidden rounded-md bg-gray-100 dark:bg-gray-800">
-                    <img
-                      src={fileItem.preview}
-                      alt={fileItem.name}
-                      className="object-cover w-full h-full"
-                      onError={(e) => {
-                        console.warn('Failed to load preview for', fileItem.name);
-                        e.currentTarget.style.display = 'none';
-                      }}
-                    />
-                  </div>
-                )}
-
-                <div className="relative pt-1">
-                  <div className="h-2 mb-2 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
-                    <div
-                      className={cn(
-                        "h-full rounded-full transition-all duration-300 ease-out",
-                        fileItem.status === 'uploading' ? "bg-blue-500" :
-                          fileItem.status === 'success' ? "bg-green-500" :
-                            "bg-red-500"
-                      )}
-                      style={{ width: `${fileItem.uploadProgress}%` }}
-                    />
-                  </div>
-
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-gray-500">
-                      {Math.round(fileItem.uploadProgress)}%
-                    </span>
-                    <span>
-                      {fileItem.status === 'uploading' && (
-                        <span className="flex items-center text-blue-500">
-                          Uploading...
-                        </span>
-                      )}
-                      {fileItem.status === 'success' && (
-                        <span className="flex items-center text-green-500">
-                          <CheckCircle2 className="w-3 h-3 mr-1" />
-                          Complete
-                        </span>
-                      )}
-                      {fileItem.status === 'error' && (
-                        <span className="flex items-center text-red-500">
-                          <AlertCircle className="w-3 h-3 mr-1" />
-                          Failed
-                        </span>
-                      )}
-                    </span>
-                  </div>
-                </div>
-              </Card>
-            ))}
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <h4 className="text-sm font-medium">Uploaded Files ({files.length}/{maxFiles})</h4>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={clearAllFiles}
+              className="text-xs hover:bg-destructive/10 hover:text-destructive"
+            >
+              Clear All
+            </Button>
           </div>
+
+          {files.map((fileData) => (
+            <Card key={fileData.id} className="relative overflow-hidden group">
+              <div className={cn(
+                "absolute inset-0 opacity-0 transition-opacity duration-200",
+                fileData.error ? "bg-destructive/5" : "bg-primary/5"
+              )} />
+              <CardContent className="p-4 relative">
+                <div className="flex items-start gap-3">
+                  {fileData.preview ? (
+                    <div className="relative w-12 h-12 rounded-md overflow-hidden flex-shrink-0 border">
+                      <img
+                        src={fileData.preview}
+                        alt={fileData.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-12 h-12 bg-muted rounded-md flex items-center justify-center flex-shrink-0 border">
+                      {fileData.error ? (
+                        <AlertCircle className="w-6 h-6 text-destructive" />
+                      ) : (
+                        getFileIcon(fileData.file)
+                      )}
+                    </div>
+                  )}
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="text-sm font-medium truncate">{fileData.name}</p>
+                      {fileData.status === 'complete' && !fileData.error && (
+                        <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
+                      )}
+                    </div>
+
+                    <p className="text-xs text-muted-foreground mb-2">
+                      {formatFileSize(fileData.size)} • {fileData.type}
+                    </p>
+
+                    {fileData.error ? (
+                      <p className="text-xs text-destructive flex items-center gap-1">
+                        <AlertCircle className="w-3 h-3" /> {fileData.error}
+                      </p>
+                    ) : (
+                      <Progress value={fileData.progress} className="h-2" />
+                    )}
+                  </div>
+
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => removeFile(fileData.id)}
+                    className="flex-shrink-0 h-8 w-8 rounded-full opacity-70 hover:opacity-100 hover:bg-destructive/10 hover:text-destructive"
+                  >
+                    <X className="w-4 h-4" />
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
       )}
     </div>
   );
-};
+}
