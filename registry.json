@@ -104,6 +104,24 @@
         }
       ],
       "author": "Nitish Singh <devxnitish@gmail.com>"
+    },
+    {
+      "name": "file-uploader",
+      "type": "registry:component",
+      "title": "File Uploader",
+      "description": "A file uploader component",
+      "registryDependencies": [
+        "button",
+        "card",
+        "badge"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/file-uploader/file-uploader.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "author": "Nitish Singh <devxnitish@gmail.com>"
     }
   ]
 }
