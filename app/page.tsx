@@ -1,98 +1,31 @@
 "use client"
 import * as React from "react"
 import Link from "next/link"
-import { ArrowRight, Code, Component, Zap, CheckCircle, ExternalLink, Sparkles, Stars, Grid3X3, Cpu} from "lucide-react"
+import { ArrowRight, Code, Zap, CheckCircle, ExternalLink, Sparkles, Stars, Grid3X3, Cpu } from "lucide-react"
 import Image from "next/image"
 import Sidebar from "@/components/sidebar"
 import FeaturesSection from "@/components/home/FeaturesSection"
+import HeroSection from "@/components/home/HeroSection"
 
 export default function Home() {
 
   return (
     <div className="flex flex-col min-h-svh relative overflow-hidden">
+      <div className="fixed dark:hidden left-0 inset-0 rotate-45 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]"><div className="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_800px_at_100%_200px,#d5c5ff,transparent)]"></div></div>
+      <div className="fixed dark:hidden left-0 inset-0 -rotate-45 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]"><div className="absolute bottom-0 left-0 right-0 top-0 bg-[radial-gradient(circle_800px_at_100%_200px,#d5c5ff,transparent)]"></div></div>
+      <div className="fixed hidden dark:block h-full w-full bg-black">
+        <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]">
+        </div>
+        <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#50657036,#000)]">
+        </div>
+        {/* <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#fbfbfb36,#000)]">
+        </div> */}
+      </div>
       <Sidebar />
 
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-background to-purple-50 dark:from-slate-950 dark:via-background dark:to-indigo-950" />
-      <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-20 left-20 w-80 h-80 bg-gradient-to-tr from-blue-500/10 to-primary/10 rounded-full blur-3xl animate-pulse delay-1000" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-primary/5 via-transparent to-purple-500/5 rounded-full blur-3xl animate-spin-slow" />
-
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {Array.from({ length: 20 }).map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-primary/30 rounded-full animate-float-particle"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${3 + Math.random() * 4}s`
-            }}
-          />
-        ))}
-      </div>
-
-      <section className="py-32 px-6 bg-gradient-to-br from-background via-background to-muted/30 relative overflow-hidden min-h-screen flex items-center">
-        <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none" />
-
-        <div className="absolute top-20 left-10 w-32 h-32 border border-primary/20 rounded-lg rotate-12 animate-pulse" />
-        <div className="absolute top-40 right-20 w-24 h-24 border border-purple-500/20 rounded-full animate-spin-slow" />
-        <div className="absolute bottom-40 left-1/4 w-16 h-16 bg-gradient-to-br from-primary/10 to-transparent rotate-45 animate-bounce-slow" />
-
-        <div className="max-w-7xl mx-auto flex flex-col items-center text-center gap-12 relative z-10">
-          <div className="group">
-            <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/15 via-primary/10 to-purple-500/15 text-primary px-6 py-3 rounded-full text-sm font-medium mb-4 shadow-2xl shadow-primary/10 backdrop-blur-sm border border-primary/20 hover:scale-105 transition-all duration-300 cursor-pointer">
-              <Sparkles className="w-4 h-4 animate-pulse" />
-              <span className="bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent font-semibold">Now in Beta</span>
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-            </div>
-          </div>
-
-          <div className="relative">
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-violet-500 dark:to-pink-500 py-4 animate-gradient-x relative z-10 leading-none">
-              Rigid<span className="text-primary drop-shadow-2xl">UI</span>
-            </h1>
-            <div className="absolute -inset-4 blur-3xl bg-gradient-to-r from-indigo-600/30 via-purple-600/30 to-pink-600/30 dark:from-blue-400/30 dark:via-violet-500/30 dark:to-pink-500/30 -z-10 animate-pulse"></div>
-            <div className="absolute -inset-8 blur-3xl bg-gradient-to-r from-indigo-600/20 via-purple-600/20 to-pink-600/20 dark:from-blue-400/20 dark:via-violet-500/20 dark:to-pink-500/20 -z-20 animate-gradient-x"></div>
-          </div>
-
-          <div className="max-w-4xl">
-            <p className="text-xl md:text-3xl text-muted-foreground leading-relaxed mb-6">
-              The most <span className="font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">sophisticated</span> collection of
-              <span className="font-bold"> enterprise-grade</span> UI components
-            </p>
-            <p className="text-lg md:text-xl text-muted-foreground/80 max-w-3xl mx-auto">
-              Built for developers who demand <span className="text-primary font-semibold">perfection</span>,
-              designed for applications that need to <span className="text-primary font-semibold">impress</span>
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-6 mt-8">
-            <Link
-              href="/docs/getting-started"
-              className="group relative inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-primary to-purple-600 text-white px-10 py-4 font-semibold text-lg hover:scale-105 transition-all duration-300 shadow-2xl shadow-primary/25 hover:shadow-3xl hover:shadow-primary/40 overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-purple-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <span className="relative z-10 flex items-center gap-2">
-                Get Started <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </span>
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </Link>
-            <Link
-              href="/docs/components"
-              className="group relative inline-flex items-center justify-center rounded-xl border-2 border-primary/30 bg-background/80 backdrop-blur-sm px-10 py-4 font-semibold text-lg hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl hover:border-primary/60 overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <span className="relative z-10 flex items-center gap-2">
-                <Component className="w-5 h-5" />
-                Browse Components
-              </span>
-            </Link>
-          </div>
-        </div>
-      </section>
+      <HeroSection />
       <FeaturesSection />
-      <section className="py-32 px-6 bg-gradient-to-br from-background via-primary/5 to-background relative overflow-hidden">
+      <section className="py-32 px-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none" />
 
         <div className="absolute top-20 left-10 w-32 h-32 border-2 border-primary/20 rounded-2xl rotate-12 animate-spin-slow" />

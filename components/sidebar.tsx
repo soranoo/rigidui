@@ -1,12 +1,15 @@
 import Link from 'next/link'
 import React, { startTransition } from 'react'
 import { useTheme } from "next-themes"
+import localFont from 'next/font/local'
+const navFont = localFont({ src: '../app/34.otf' })
+
 
 const Sidebar = () => {
   const { setTheme, resolvedTheme } = useTheme()
 
   return (
-    <div className="fixed top-1.5 left-0 w-screen h-16 bg-transparent z-50 flex gap-2 items-center justify-center">
+    <div style={navFont.style} className="fixed top-1.5 left-0 w-screen h-16 bg-transparent z-50 flex gap-2 items-center justify-center">
       <div className="h-full w-[8vw] bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 dark:from-blue-600 dark:via-purple-600 dark:to-pink-600 rounded-lg flex items-center justify-center hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl dark:shadow-gray-900/50 dark:hover:shadow-gray-900/70 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-purple-400/20 to-pink-400/20 dark:from-blue-300/30 dark:via-purple-300/30 dark:to-pink-300/30 animate-pulse"></div>
         <div className="w-8 h-8 flex items-center justify-center relative z-10">
