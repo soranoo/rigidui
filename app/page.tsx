@@ -1,25 +1,16 @@
 "use client"
 import * as React from "react"
 import Link from "next/link"
-import { ArrowRight, Code, Component, Layers, Package, Terminal, Zap, CheckCircle, ExternalLink, Sparkles, Stars, Grid3X3, MousePointer, Command, Cpu, Gauge } from "lucide-react"
-import { ThemeToggle } from "@/components/theme-toggle"
+import { ArrowRight, Code, Component, Layers, Package, Zap, CheckCircle, ExternalLink, Sparkles, Stars, Grid3X3, Cpu, Gauge } from "lucide-react"
 import Image from "next/image"
+import Sidebar from "@/components/sidebar"
 
 export default function Home() {
-  const [mousePosition, setMousePosition] = React.useState({ x: 0, y: 0 })
-  const [isLoaded, setIsLoaded] = React.useState(false)
-
-  React.useEffect(() => {
-    setIsLoaded(true)
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
-  }, [])
 
   return (
     <div className="flex flex-col min-h-svh relative overflow-hidden">
+      <Sidebar />
+
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-50 via-background to-purple-50 dark:from-slate-950 dark:via-background dark:to-indigo-950" />
       <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-primary/10 to-purple-500/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-20 left-20 w-80 h-80 bg-gradient-to-tr from-blue-500/10 to-primary/10 rounded-full blur-3xl animate-pulse delay-1000" />
@@ -40,16 +31,7 @@ export default function Home() {
         ))}
       </div>
 
-      <div
-        className="fixed w-6 h-6 bg-primary/20 rounded-full pointer-events-none z-50 transition-all duration-100 blur-sm"
-        style={{
-          left: mousePosition.x - 12,
-          top: mousePosition.y - 12,
-          transform: `scale(${isLoaded ? 1 : 0})`
-        }}
-      />
-
-      <nav className="border-b sticky top-0 z-40 backdrop-blur-xl bg-background/70 shadow-lg border-primary/10">
+      {/* <nav className="border-b sticky top-0 z-40 backdrop-blur-xl bg-background/70 shadow-lg border-primary/10">
         <div className="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
           <Link href="/" className="font-bold text-xl flex items-center gap-3 group">
             <div className="relative">
@@ -88,9 +70,8 @@ export default function Home() {
             <ThemeToggle />
           </div>
         </div>
-      </nav>
-
-      <section className="py-32 px-6 bg-gradient-to-br from-background via-background to-muted/30 relative overflow-hidden min-h-screen flex items-center">
+      </nav> */}
+      <section className="py-32 px-6 bg-gradient-to-br from-[#F7F7F7] via-background to-muted/30 relative overflow-hidden min-h-screen flex items-center">
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none" />
 
         <div className="absolute top-20 left-10 w-32 h-32 border border-primary/20 rounded-lg rotate-12 animate-pulse" />
@@ -107,17 +88,17 @@ export default function Home() {
           </div>
 
           <div className="relative">
-            <h1 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-primary via-purple-600 to-pink-600 dark:from-blue-400 dark:via-primary dark:via-violet-500 dark:to-pink-500 py-4 animate-gradient-x relative z-10 leading-none">
+            <h1 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-violet-500 dark:to-pink-500 py-4 animate-gradient-x relative z-10 leading-none">
               Rigid<span className="text-primary drop-shadow-2xl">UI</span>
             </h1>
-            <div className="absolute -inset-4 blur-3xl bg-gradient-to-r from-indigo-600/30 via-primary/30 via-purple-600/30 to-pink-600/30 dark:from-blue-400/30 dark:via-primary/30 dark:via-violet-500/30 dark:to-pink-500/30 -z-10 animate-pulse"></div>
-            <div className="absolute -inset-8 blur-3xl bg-gradient-to-r from-indigo-600/20 via-primary/20 via-purple-600/20 to-pink-600/20 dark:from-blue-400/20 dark:via-primary/20 dark:via-violet-500/20 dark:to-pink-500/20 -z-20 animate-gradient-x"></div>
+            <div className="absolute -inset-4 blur-3xl bg-gradient-to-r from-indigo-600/30 via-purple-600/30 to-pink-600/30 dark:from-blue-400/30 dark:via-violet-500/30 dark:to-pink-500/30 -z-10 animate-pulse"></div>
+            <div className="absolute -inset-8 blur-3xl bg-gradient-to-r from-indigo-600/20 via-purple-600/20 to-pink-600/20 dark:from-blue-400/20 dark:via-violet-500/20 dark:to-pink-500/20 -z-20 animate-gradient-x"></div>
           </div>
 
           <div className="max-w-4xl">
             <p className="text-xl md:text-3xl text-muted-foreground leading-relaxed mb-6">
-              The most <span className="text-foreground font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">sophisticated</span> collection of
-              <span className="text-foreground font-bold"> enterprise-grade</span> UI components
+              The most <span className="font-bold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">sophisticated</span> collection of
+              <span className="font-bold"> enterprise-grade</span> UI components
             </p>
             <p className="text-lg md:text-xl text-muted-foreground/80 max-w-3xl mx-auto">
               Built for developers who demand <span className="text-primary font-semibold">perfection</span>,
@@ -166,7 +147,7 @@ export default function Home() {
             </h2>
             <p className="text-muted-foreground max-w-3xl mx-auto text-xl leading-relaxed">
               Built for enterprises that demand <span className="text-primary font-semibold">excellence</span>,
-              designed for developers who won't <span className="text-primary font-semibold">compromise</span>
+              designed for developers who won&apos;t <span className="text-primary font-semibold">compromise</span>
             </p>
           </div>
 
@@ -375,8 +356,8 @@ export default function Home() {
                         {[1, 2, 3, 4].map((step, i) => (
                           <div key={step} className="flex flex-col items-center relative z-10">
                             <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-all duration-500 ${i === 1 ? 'bg-primary text-white border-primary shadow-lg shadow-primary/50' :
-                                i === 0 ? 'bg-green-500 text-white border-green-500' :
-                                  'bg-background border-muted text-muted-foreground'
+                              i === 0 ? 'bg-green-500 text-white border-green-500' :
+                                'bg-background border-muted text-muted-foreground'
                               }`}>
                               {i === 0 ? '✓' : step}
                             </div>
@@ -539,9 +520,9 @@ export default function Home() {
                           ].map((file, i) => (
                             <div key={i} className="flex flex-col items-center p-2 rounded-lg hover:bg-emerald-500/10 transition-colors group/file cursor-pointer">
                               <div className={`w-8 h-8 rounded-lg mb-1 flex items-center justify-center text-xs font-bold transition-transform group-hover/file:scale-110 ${file.type === 'pdf' ? 'bg-red-500/20 text-red-600' :
-                                  file.type === 'excel' ? 'bg-green-500/20 text-green-600' :
-                                    file.type === 'image' ? 'bg-blue-500/20 text-blue-600' :
-                                      'bg-primary/20 text-primary'
+                                file.type === 'excel' ? 'bg-green-500/20 text-green-600' :
+                                  file.type === 'image' ? 'bg-blue-500/20 text-blue-600' :
+                                    'bg-primary/20 text-primary'
                                 }`}>
                                 {file.type.slice(0, 2).toUpperCase()}
                               </div>
