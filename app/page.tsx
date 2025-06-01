@@ -71,7 +71,7 @@ export default function Home() {
           </div>
         </div>
       </nav> */}
-      <section className="py-32 px-6 bg-gradient-to-br from-[#F7F7F7] via-background to-muted/30 relative overflow-hidden min-h-screen flex items-center">
+      <section className="py-32 px-6 bg-gradient-to-br from-background via-background to-muted/30 relative overflow-hidden min-h-screen flex items-center">
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.02] pointer-events-none" />
 
         <div className="absolute top-20 left-10 w-32 h-32 border border-primary/20 rounded-lg rotate-12 animate-pulse" />

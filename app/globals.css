@@ -134,3 +134,11 @@
 [data-rehype-pretty-code-title] + pre {
   @apply mt-2;
 }
+
+.shadow-light{
+  box-shadow: rgba(17, 12, 46, 0.15) 0px 40px 80px 0px, inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.shadow-dark{
+  box-shadow: rgba(17, 12, 46, 0.15) 0px 40px 80px 0px, inset 0 1px 0 rgba(0, 0, 0, 0.6);
+}
