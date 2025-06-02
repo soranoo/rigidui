@@ -1,6 +1,11 @@
+"use client"
+
 import React from 'react'
 import { FileUploader } from '@/registry/new-york/file-uploader/file-uploader'
 import ComponentDocTemplate from '../../_components/ComponentDocTemplate'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { CodeBlock } from "../../_components/CodeBlock"
+import { advancedUsageExamples } from './_components/AdvancedUsage'
 
 export default function FileUploaderPage() {
   const propsData = [
@@ -93,31 +98,6 @@ export default function FileUploaderPage() {
     }
   ]
 
-  const bestPractices = [
-    {
-      type: 'do' as const,
-      items: [
-        'Set appropriate file size limits based on your server capabilities',
-        'Validate file types on both client and server side',
-        'Provide clear feedback about upload progress and errors',
-        'Handle upload failures gracefully with retry options',
-        'Use proper MIME type validation for security',
-        'Implement proper error handling for network issues',
-      ]
-    },
-    {
-      type: 'dont' as const,
-      items: [
-        'Allow unlimited file sizes without proper validation',
-        'Trust client-side validation alone for security',
-        'Block the UI during file uploads without progress indication',
-        'Store sensitive files without proper access controls',
-        'Ignore memory cleanup for preview URLs',
-        'Forget to handle edge cases like duplicate file names',
-      ]
-    }
-  ]
-
   const usageCode = `import { FileUploader } from "@/components/ui/file-uploader"
 
 export default function MyComponent() {
@@ -147,125 +127,66 @@ export default function MyComponent() {
 }`
 
   const additionalSections = (
-    <section className="space-y-8">
-      <div className="flex items-center space-x-3">
-        <svg className="h-7 w-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-        </svg>
-        <h2 id="advanced-usage" className="md:text-3xl text-2xl font-bold text-gray-900 dark:text-white">Advanced Usage</h2>
-      </div>
-      <p className="md:text-lg text-gray-700 dark:text-gray-300 max-w-3xl">
-        Here are some advanced usage patterns for the File Uploader component.
-      </p>
+    <>
+      <section className="space-y-8">
+        <div className="flex items-center space-x-3">
+          <svg className="h-7 w-7 text-indigo-500 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+          </svg>
+          <h2 id="advanced-usage" className="md:text-3xl text-2xl font-bold text-gray-900 dark:text-white">
+            Advanced Usage
+          </h2>
+        </div>
+        <p className="md:text-lg text-gray-700 dark:text-gray-300 max-w-3xl">
+          Explore different configurations and use cases for the File Uploader component.
+        </p>
 
-      <div className="grid md:grid-cols-2 gap-6 mt-8">
-        <div className="bg-white dark:bg-background rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
-          <div className="p-6">
-            <h3 className="text-lg font-semibold mb-4">Single Image Uploader</h3>
-            <div className="space-y-4">
-              <FileUploader
-                maxFiles={1}
-                accept={['image/*']}
-                maxSize={1024 * 1024 * 2}
-                className="border-dashed border-2 border-primary/30"
-              />
-              <p className="text-sm text-gray-600 dark:text-gray-400">Single image uploader (max 2MB)</p>
+        <div className="space-y-12">
+          {advancedUsageExamples.map((example, index) => (
+            <div key={index} className="space-y-6">
+              <div>
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                  {example.title}
+                </h3>
+                <p className="text-gray-700 dark:text-gray-300">
+                  {example.description}
+                </p>
+              </div>
+
+              <div className="bg-white dark:bg-background rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+                <Tabs defaultValue="preview" className="w-full pb-4">
+                  <TabsList className="flex justify-start border-b border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900/70">
+                    <TabsTrigger
+                      value="preview"
+                      className="px-6 py-1 text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-950 transition-all duration-200"
+                    >
+                      Preview
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="code"
+                      className="px-6 py-1 text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-950 transition-all duration-200"
+                    >
+                      Code
+                    </TabsTrigger>
+                  </TabsList>
+                  <TabsContent value="preview" className="px-8  flex flex-col justify-start">
+                    <div className="mb-4 mt-4 text-sm font-medium text-gray-500 dark:text-gray-400">Live Preview</div>
+                    {example.component}
+                  </TabsContent>
+                  <TabsContent value="code" className="max-h-[500px] overflow-auto">
+                    <CodeBlock
+                      code={example.code}
+                      language='typescript'
+                      filename={`${example.title.replace(/\s+/g, '')}.tsx`}
+                    />
+                  </TabsContent>
+                </Tabs>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
-
-        <div className="bg-white dark:bg-background rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
-          <div className="p-6">
-            <h3 className="text-lg font-semibold mb-4">Document Uploader</h3>
-            <div className="space-y-4">
-              <FileUploader
-                maxFiles={3}
-                accept={['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']}
-                maxSize={1024 * 1024 * 10}
-                className="border-dashed border-2 border-amber-300/30"
-              />
-              <p className="text-sm text-gray-600 dark:text-gray-400">Documents only (PDF, DOC, DOCX - max 10MB)</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-8 pb-4 bg-white dark:bg-background rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
-        <div className="p-6">
-          <h3 className="text-lg font-semibold mb-4">Implementation Example</h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            This example shows how to implement the FileUploader with a server upload function:
-          </p>
-          <pre className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg overflow-x-auto text-sm">
-            {`import { FileUploader } from "@/components/ui/file-uploader"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-
-export default function UploadForm() {
-  const [files, setFiles] = useState([])
-  const [uploading, setUploading] = useState(false)
-  const [uploadComplete, setUploadComplete] = useState(false)
-
-  const handleFilesReady = (selectedFiles) => {
-    setFiles(selectedFiles)
-    setUploadComplete(false)
-  }
-
-  const handleUpload = async () => {
-    if (files.length === 0) return
-
-    setUploading(true)
-
-    try {
-      const formData = new FormData()
-      files.forEach((file, index) => {
-        formData.append(\`file-\${index}\`, file)
-      })
-
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData
-      })
-
-      if (response.ok) {
-        setUploadComplete(true)
-      } else {
-        console.error('Upload failed')
-      }
-    } catch (error) {
-      console.error('Error uploading files:', error)
-    } finally {
-      setUploading(false)
-    }
-  }
-
-  return (
-    <div className="space-y-6">
-      <FileUploader
-        maxFiles={5}
-        maxSize={1024 * 1024 * 5}
-        accept={['image/*', 'application/pdf']}
-        onFilesReady={handleFilesReady}
-      />
-
-      {files.length > 0 && (
-        <Button
-          onClick={handleUpload}
-          disabled={uploading}
-        >
-          {uploading ? 'Uploading...' : 'Upload to Server'}
-        </Button>
-      )}
-
-      {uploadComplete && (
-        <p className="text-green-500">Files uploaded successfully!</p>
-      )}
-    </div>
-  )`}
-          </pre>
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   )
 
   return (
@@ -287,7 +208,6 @@ export default function UploadForm() {
       usageDescription="The File Uploader component provides a complete file upload interface with drag & drop, progress tracking, and validation. It handles file selection, validation, and preview generation."
       propsData={propsData}
       features={features}
-      bestPractices={bestPractices}
       componentName="file-uploader"
       additionalSections={additionalSections}
     />

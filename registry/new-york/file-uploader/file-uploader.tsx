@@ -286,6 +286,7 @@ export function FileUploader({
                 <div className="flex items-start gap-3">
                   {fileData.preview ? (
                     <div className="relative w-12 h-12 rounded-md overflow-hidden flex-shrink-0 border">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={fileData.preview}
                         alt={fileData.name}
