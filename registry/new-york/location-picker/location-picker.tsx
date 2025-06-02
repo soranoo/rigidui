@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Input } from '@/components/ui/input'
 import { MapPin, LoaderCircle, Search, MapPinned, Locate } from 'lucide-react'
 import {
@@ -29,6 +29,9 @@ interface LocationPickerProps {
   autoDetectOnLoad?: boolean;
   defaultLocation?: string;
   onChange?: (location: string) => void;
+  variant?: 'popover' | 'inline';
+  placeholder?: string;
+  showLabel?: boolean;
 }
 
 export function LocationPicker({
@@ -36,6 +39,9 @@ export function LocationPicker({
   autoDetectOnLoad = false,
   defaultLocation = "",
   onChange,
+  variant = 'popover',
+  placeholder = "Enter city, district, or area",
+  showLabel = true,
 }: LocationPickerProps) {
   const [activeCity, setActiveCity] = useState(defaultLocation)
   const [isLoading, setIsLoading] = useState(false)
@@ -43,6 +49,7 @@ export function LocationPicker({
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   const [suggestions, setSuggestions] = useState<LocationSuggestion[]>([])
   const [isFetchingSuggestions, setIsFetchingSuggestions] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const API_URL = "https://nominatim.openstreetmap.org"
 
@@ -89,19 +96,40 @@ export function LocationPicker({
     }
   }
 
-  const getCurrentLocation = () => {
+  const getCurrentLocation = useCallback(() => {
     setIsLoading(true)
+    setError(null)
+
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by this browser")
+      setIsLoading(false)
+      return
+    }
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords
         getLocation(latitude, longitude)
       },
       (error) => {
-        console.log("Unable to retrieve location:", error)
+        let errorMessage = "Unable to retrieve location"
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            errorMessage = "Location access denied by user"
+            break
+          case error.POSITION_UNAVAILABLE:
+            errorMessage = "Location information unavailable"
+            break
+          case error.TIMEOUT:
+            errorMessage = "Location request timed out"
+            break
+        }
+        setError(errorMessage)
         setIsLoading(false)
-      }
+      },
+      { timeout: 10000, enableHighAccuracy: true }
     )
-  }
+  }, []);
 
   const fetchSuggestions = async (query: string) => {
     if (!query.trim() || query.length < 2) {
@@ -162,7 +190,7 @@ export function LocationPicker({
     if (autoDetectOnLoad && !activeCity) {
       getCurrentLocation();
     }
-  }, [autoDetectOnLoad]);
+  }, [autoDetectOnLoad, activeCity, getCurrentLocation]);
 
   useEffect(() => {
     if (onChange && activeCity) {
@@ -170,6 +198,120 @@ export function LocationPicker({
     }
   }, [activeCity, onChange]);
 
+  if (variant === 'inline') {
+    return (
+      <div className={cn("space-y-4", className)}>
+        {showLabel && (
+          <div className="space-y-1">
+            <h4 className="font-medium text-sm">Location</h4>
+            <p className="text-xs text-muted-foreground">Find products near you</p>
+          </div>
+        )}
+
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <div className="relative flex-1">
+              <Input
+                placeholder={placeholder}
+                value={locationSearch}
+                onChange={(e) => setLocationSearch(e.target.value)}
+                onKeyUp={(e) => e.key === 'Enter' && suggestions.length === 0 && searchLocation()}
+                aria-label="Search for location"
+                aria-describedby={suggestions.length > 0 ? "suggestions-list" : undefined}
+              />
+            </div>
+
+            <Button
+              className="rounded-md h-10 w-10 p-0"
+              variant="outline"
+              onClick={searchLocation}
+              disabled={isLoading || !locationSearch.trim()}
+              title="Search Location"
+            >
+              {isLoading ? (
+                <LoaderCircle className="h-4 w-4 animate-spin" />
+              ) : (
+                <Search className="h-4 w-4" />
+              )}
+            </Button>
+
+            <Button
+              variant="outline"
+              onClick={getCurrentLocation}
+              className="rounded-md h-10 w-10 p-0"
+              title="Use Current Location"
+            >
+              <Locate className="h-4 w-4" />
+            </Button>
+          </div>
+
+          {activeCity && (
+            <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 p-2 rounded-md">
+              <MapPin size={14} className="text-primary" />
+              <span>Current: {activeCity}</span>
+            </div>
+          )}
+
+          {suggestions.length > 0 && (
+            <div
+              id="suggestions-list"
+              role="listbox"
+              aria-label="Location suggestions"
+              className="w-full bg-background rounded-md border border-border shadow-lg max-h-60 overflow-y-auto"
+            >
+              {suggestions.map((suggestion) => (
+                <div
+                  key={suggestion.place_id}
+                  role="option"
+                  aria-selected={false}
+                  tabIndex={0}
+                  className="px-4 py-2 hover:bg-muted cursor-pointer border-b border-border last:border-0 transition-colors"
+                  onClick={() => selectSuggestion(suggestion)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      selectSuggestion(suggestion)
+                    }
+                  }}
+                >
+                  <div className="flex items-start">
+                    <MapPinned size={16} className="text-primary mt-0.5 mr-2 shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium text-foreground">
+                        {formatLocationName(suggestion)}
+                      </p>
+                      <p className="text-xs text-muted-foreground truncate max-w-[250px]">
+                        {suggestion.display_name}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {isFetchingSuggestions && locationSearch.length >= 2 && suggestions.length === 0 && (
+            <div className="w-full bg-background rounded-md border border-border shadow-md p-4 text-center">
+              <LoaderCircle size={20} className="animate-spin mx-auto text-primary" />
+              <p className="text-sm text-muted-foreground mt-1">Searching locations...</p>
+            </div>
+          )}
+
+          {locationSearch.length >= 2 && !isFetchingSuggestions && suggestions.length === 0 && (
+            <div className="w-full bg-background rounded-md border border-border p-4 text-center">
+              <p className="text-sm text-muted-foreground">No locations found for &quot;{locationSearch}&quot;</p>
+            </div>
+          )}
+
+          {error && (
+            <div className="w-full bg-destructive/10 rounded-md border border-destructive/20 p-3 text-center">
+              <p className="text-sm text-destructive">{error}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
@@ -201,10 +343,12 @@ export function LocationPicker({
           <div className="flex items-center gap-2 mb-4">
             <div className="relative flex-1">
               <Input
-                placeholder="Enter city, district, or area"
+                placeholder={placeholder}
                 value={locationSearch}
                 onChange={(e) => setLocationSearch(e.target.value)}
                 onKeyUp={(e) => e.key === 'Enter' && suggestions.length === 0 && searchLocation()}
+                aria-label="Search for location"
+                aria-describedby={suggestions.length > 0 ? "suggestions-list" : undefined}
               />
             </div>
 
@@ -260,6 +404,18 @@ export function LocationPicker({
             <div className="z-50 w-full bg-background rounded-md border border-border shadow-md p-4 text-center mt-1 mb-4">
               <LoaderCircle size={20} className="animate-spin mx-auto text-primary" />
               <p className="text-sm text-muted-foreground mt-1">Searching locations...</p>
+            </div>
+          )}
+
+          {locationSearch.length >= 2 && !isFetchingSuggestions && suggestions.length === 0 && (
+            <div className="w-full bg-background rounded-md border border-border p-4 text-center">
+              <p className="text-sm text-muted-foreground">No locations found for &quot;{locationSearch}&quot;</p>
+            </div>
+          )}
+
+          {error && (
+            <div className="w-full bg-destructive/10 rounded-md border border-destructive/20 p-3 text-center">
+              <p className="text-sm text-destructive">{error}</p>
             </div>
           )}
         </div>
