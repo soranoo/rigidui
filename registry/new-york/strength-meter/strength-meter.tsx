@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { Eye, EyeOff, Check, X} from "lucide-react"
+import { Eye, EyeOff, Check, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { cva, type VariantProps } from "class-variance-authority"
 
@@ -59,7 +59,7 @@ export interface PasswordStrengthRequirement {
 
 export interface PasswordStrengthMeterProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof strengthMeterVariants> {
+  VariantProps<typeof strengthMeterVariants> {
   value?: string
   onValueChange?: (value: string) => void
   showText?: boolean
@@ -136,6 +136,10 @@ export function PasswordStrengthMeter({
 }: PasswordStrengthMeterProps) {
   const [password, setPassword] = React.useState(value)
   const [showPassword, setShowPassword] = React.useState(false)
+
+  React.useEffect(() => {
+    setPassword(value)
+  }, [value])
 
   const calculateBaseStrength = (password: string): number => {
     if (!password) return 0

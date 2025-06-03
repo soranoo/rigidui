@@ -3,6 +3,9 @@ import React from 'react'
 import { PasswordStrengthMeter } from '@/registry/new-york/strength-meter/strength-meter'
 import ComponentDocTemplate from '../../_components/ComponentDocTemplate'
 import { Card, CardContent } from '@/components/ui/card'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { CodeBlock } from "../../_components/CodeBlock"
+import { advancedUsageExamples } from './_components/AdvancedUsage'
 
 export default function StrengthMeterPage() {
   const propsData = [
@@ -286,6 +289,64 @@ export function CustomPasswordMeter() {
       features={features}
       bestPractices={bestPractices}
       componentName="https://rigidui.vercel.app/registry/strength-meter"
+      additionalSections={
+        <section className="space-y-8">
+          <div className="flex items-center space-x-3">
+            <svg className="h-7 w-7 text-indigo-500 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            <h2 id="advanced-usage" className="md:text-3xl text-2xl font-bold text-gray-900 dark:text-white">Advanced Usage</h2>
+          </div>
+          <p className="md:text-lg text-gray-700 dark:text-gray-300 max-w-3xl">
+            Explore different configurations and use cases for the Password Strength Meter component.
+          </p>
+
+          <div className="space-y-12">
+            {advancedUsageExamples.map((example, index) => (
+              <div key={index} className="space-y-6">
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                    {example.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {example.description}
+                  </p>
+                </div>
+
+                <div className="bg-white dark:bg-background rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+                  <Tabs defaultValue="preview" className="w-full pb-4">
+                    <TabsList className="flex justify-start border-b border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900/70">
+                      <TabsTrigger
+                        value="preview"
+                        className="px-6 py-1 text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-950 transition-all duration-200"
+                      >
+                        Preview
+                      </TabsTrigger>
+                      <TabsTrigger
+                        value="code"
+                        className="px-6 py-1 text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-950 transition-all duration-200"
+                      >
+                        Code
+                      </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="preview" className="px-8  flex flex-col justify-start">
+                      <div className="mb-4 mt-4 text-sm font-medium text-gray-500 dark:text-gray-400">Live Preview</div>
+                      {example.component}
+                    </TabsContent>
+                    <TabsContent value="code" className="max-h-[500px] overflow-auto">
+                      <CodeBlock
+                        code={example.code}
+                        language='typescript'
+                        filename={`${example.title.replace(/\s+/g, '')}.tsx`}
+                      />
+                    </TabsContent>
+                  </Tabs>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      }
     />
   )
 }
