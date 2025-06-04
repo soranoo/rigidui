@@ -31,8 +31,8 @@ RigidUI extends shadcn/ui with additional enterprise-grade components:
 
 - **File Explorer** - Hierarchical file system browser with syntax highlighting
 - **Currency Manager** - Multi-currency conversion and display system
-- **Language Switcher** - Internationalization component for multi-language support
 - **Location Picker** - Geographic location selection with search functionality
+- **Infinite Scroll** - Efficiently load large datasets with infinite scrolling
 - **Multi-Step Form Wrapper** - Guided step-by-step form interfaces
 - **Password Strength Meter** - Visual password strength evaluation component
 - **File Uploader** - Drag and drop file upload with previews and validation
@@ -75,7 +75,11 @@ npx shadcn add currency-manager
 Here's an example of using the Currency Manager component:
 
 ```tsx
-import { CurrencyDisplay, CurrencyProvider, CurrencySelector } from "@/components/ui/currency-manager"
+import {
+  CurrencyDisplay,
+  CurrencyProvider,
+  CurrencySelector,
+} from "@/components/ui/currency-manager";
 
 export default function App() {
   return (
@@ -99,7 +103,7 @@ export default function App() {
         </div>
       </div>
     </CurrencyProvider>
-  )
+  );
 }
 ```
 

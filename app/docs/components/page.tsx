@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { PasswordStrengthMeter } from '@/registry/new-york/strength-meter/strength-meter'
-import { Check, FileCode, FolderClosed, FolderOpen, Globe, MapPin } from 'lucide-react'
+import { Check, FileCode, FolderClosed, FolderOpen, MapPin } from 'lucide-react'
 
 const componentsData = [
   {
@@ -24,13 +24,7 @@ const componentsData = [
         href: '/docs/components/currency-manager',
         description: 'Manage and convert between different currencies with real-time exchange rates',
         image: '/window.svg'
-      },
-      {
-        name: 'Language Switcher',
-        href: '/docs/components/language-switcher',
-        description: 'Seamlessly switch between multiple languages in your application',
-        image: '/globe.svg'
-      },
+      }
     ]
   },
   {
@@ -64,6 +58,12 @@ const componentsData = [
         href: '/docs/components/file-explorer',
         description: 'Interactive file system explorer with syntax highlighting and directory navigation',
         image: '/file.svg'
+      },
+      {
+        name: 'Infinite Scroll',
+        href: '/docs/components/infinite-scroll',
+        description: 'Efficiently display large datasets with automatic loading and smooth user experience',
+        image: '/window.svg'
       }
     ]
   }
@@ -195,23 +195,30 @@ const ComponentCard = ({ name, description, image, href }: ComponentCardProps) =
             </Card>
           </div>
         )
-      case 'Language Switcher':
+      case 'Infinite Scroll':
         return (
           <div className="p-3 h-full">
             <Card className="p-3 shadow-sm bg-white dark:bg-transparent h-full">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center">
-                  <Globe className="h-4 w-4 mr-2 text-slate-500 dark:text-slate-400" />
-                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Language</span>
+              <div className="flex items-center justify-between mb-3 border-b border-slate-200 dark:border-slate-700 pb-2">
+                <h3 className="text-sm font-medium text-slate-700 dark:text-slate-200">Data Feed</h3>
+                <Badge variant="outline" className="text-xs px-1.5 py-0.5 border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300">Loading...</Badge>
+              </div>
+              <div className="space-y-2 max-h-24 overflow-y-auto">
+                <div className="p-2 bg-slate-50 dark:bg-slate-800/50 rounded-md border border-slate-200 dark:border-slate-700">
+                  <div className="text-xs font-medium text-slate-700 dark:text-slate-200">Product #1</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400">Dynamic content loading</div>
+                </div>
+                <div className="p-2 bg-slate-50 dark:bg-slate-800/50 rounded-md border border-slate-200 dark:border-slate-700">
+                  <div className="text-xs font-medium text-slate-700 dark:text-slate-200">Product #2</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400">Seamless scrolling experience</div>
+                </div>
+                <div className="p-2 bg-slate-50 dark:bg-slate-800/50 rounded-md border border-slate-200 dark:border-slate-700 opacity-50">
+                  <div className="text-xs font-medium text-slate-700 dark:text-slate-200">Loading...</div>
+                  <div className="text-xs text-slate-500 dark:text-slate-400">Auto-pagination in action</div>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-2">
-                <Button variant="outline" className="justify-start text-xs h-8 border-primary/50 bg-primary/5 text-primary hover:bg-primary/10" size="sm">
-                  <span className="mr-1.5 opacity-90 text-sm">🇺🇸</span> English
-                </Button>
-                <Button variant="ghost" className="justify-start text-xs h-8 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800" size="sm">
-                  <span className="mr-1.5 opacity-90 text-sm">🇪🇸</span> Español
-                </Button>
+              <div className="mt-3 text-center">
+                <div className="text-xs text-slate-500 dark:text-slate-400">↓ Scroll for more items</div>
               </div>
             </Card>
           </div>

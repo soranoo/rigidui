@@ -61,18 +61,6 @@
 
     },
     {
-      "name": "language-switcher",
-      "type": "registry:component",
-      "title": "Language Switcher",
-      "description": "A language switcher component",
-      "files": [
-        {
-          "path": "registry/new-york/language-switcher/language-switcher.tsx",
-          "type": "registry:component"
-        }
-      ]
-    },
-    {
       "name": "multi-step-form-wrapper",
       "type": "registry:component",
       "title": "Multi Step Form Wrapper",
@@ -118,6 +106,19 @@
       "files": [
         {
           "path": "registry/new-york/file-uploader/file-uploader.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "author": "Nitish Singh <devxnitish@gmail.com>"
+    },
+    {
+      "name": "infinite-scroll",
+      "type": "registry:component",
+      "title": "Infinite Scroll",
+      "description": "An infinite scroll component",
+      "files": [
+        {
+          "path": "registry/new-york/infinite-scroll/infinite-scroll.tsx",
           "type": "registry:component"
         }
       ],

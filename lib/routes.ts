@@ -4,7 +4,7 @@ export const navigationItems = [
   { title: 'Components', href: '/docs/components' },
   { title: 'Location Picker', href: '/docs/components/location-picker' },
   { title: 'Currency Manager', href: '/docs/components/currency-manager' },
-  { title: 'Language Switcher', href: '/docs/components/language-switcher' },
+  { title: 'Infinite Scroll', href: '/docs/components/infinite-scroll' },
   { title: 'File Explorer', href: '/docs/components/file-explorer' },
   { title: 'Multi-Step Form Wrapper', href: '/docs/components/multi-step-form-wrapper' },
   { title: 'Password Strength Meter', href: '/docs/components/strength-meter' },
