@@ -66,7 +66,7 @@ export function MultiStepFormDemo() {
         >
           <BasicInfoStep />
         </Step>
-        <Step<FormValues>
+        <Step
           title="Message"
           schema={messageSchema}
         >
