@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useRef, useCallback } from 'react'
+import React, { useEffect, useRef, useCallback, useState } from 'react'
 import { cn } from '@/lib/utils'
 
 const DefaultLoader = () => (
@@ -51,20 +51,28 @@ export function InfiniteScroll<T>({
   const containerRef = useRef<HTMLDivElement>(null)
   const observerRef = useRef<IntersectionObserver | null>(null)
   const loadingRef = useRef<HTMLDivElement>(null)
+  const [internalLoading, setInternalLoading] = useState(false)
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const [target] = entries
-      if (target.isIntersecting && hasNextPage && !isLoading) {
-        onLoadMore()
+      if (target.isIntersecting && hasNextPage && !isLoading && !internalLoading) {
+        setInternalLoading(true)
+        Promise.resolve(onLoadMore()).finally(() => {
+          setInternalLoading(false)
+        })
       }
     },
-    [hasNextPage, isLoading, onLoadMore]
+    [hasNextPage, isLoading, internalLoading, onLoadMore]
   )
 
   useEffect(() => {
     const element = loadingRef.current
     if (!element) return
+
+    if (observerRef.current) {
+      observerRef.current.disconnect()
+    }
 
     observerRef.current = new IntersectionObserver(handleObserver, {
       root: scrollableTarget ? document.getElementById(scrollableTarget) : null,
@@ -102,6 +110,9 @@ export function InfiniteScroll<T>({
       ref={containerRef}
       className={cn("space-y-4", className)}
       style={reverse ? { display: 'flex', flexDirection: 'column-reverse' } : undefined}
+      role="feed"
+      aria-busy={isLoading}
+      aria-label="Scrollable content list"
     >
       {renderItems()}
 
