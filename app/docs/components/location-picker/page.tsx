@@ -92,32 +92,6 @@ export default function LocationPickerPage() {
     }
   ]
 
-  const bestPractices = [
-    {
-      type: 'do' as const,
-      items: [
-        'Use the popover variant for navigation bars or space-constrained layouts',
-        'Use the inline variant for forms or dedicated location selection pages',
-        'Provide clear instructions on how to use the location picker',
-        'Handle errors gracefully when geolocation fails',
-        'Consider privacy implications when using geolocation',
-        'Provide feedback when the location is being loaded',
-        'Use appropriate placeholder text that matches your use case',
-      ]
-    },
-    {
-      type: 'dont' as const,
-      items: [
-        'Automatically access user\'s location without permission',
-        'Store location data without user consent',
-        'Make the location search process complicated',
-        'Ignore accessibility considerations for location input',
-        'Use the inline variant in compact spaces where popover would be better',
-        'Forget to handle the onChange callback for form integration',
-      ]
-    }
-  ]
-
   const usageCode = `import { LocationPicker } from "@/components/ui/location-picker"
 
 export default function MyComponent() {
@@ -136,7 +110,6 @@ export default function MyComponent() {
       usageDescription="The Location Picker component provides an interface for searching and selecting locations. It supports both popover and inline variants to fit different UI contexts."
       propsData={propsData}
       features={features}
-      bestPractices={bestPractices}
       componentName="https://rigidui.vercel.app/registry/location-picker"
       additionalSections={
         <section className="space-y-8">

@@ -18,6 +18,113 @@ export type Currency = {
 
 const CURRENCY_NAMES_API_URL = "https://cdn.jsdelivr.net/npm/@fgrreloaded/currencies@latest/v1/currencies.json";
 
+const CURRENCY_CACHE_KEY = 'rigidui_currency_names';
+const SELECTED_CURRENCY_KEY = 'rigidui_selected_currency';
+const RATES_CACHE_KEY = 'rigidui_exchange_rates';
+const CURRENCY_CACHE_DURATION = 24 * 60 * 60 * 1000;
+
+interface CachedRates {
+  rates: Record<string, number>;
+  timestamp: number;
+  baseCurrency: string;
+}
+
+interface CachedCurrencies {
+  data: Currency[];
+  timestamp: number;
+}
+
+const safeLocalStorage = {
+  getItem: (key: string): string | null => {
+    try {
+      return typeof window !== 'undefined' ? localStorage.getItem(key) : null;
+    } catch {
+      return null;
+    }
+  },
+  setItem: (key: string, value: string): void => {
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(key, value);
+      }
+    } catch {
+    }
+  },
+  removeItem: (key: string): void => {
+    try {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem(key);
+      }
+    } catch {
+    }
+  }
+};
+
+const getCachedCurrencies = (): Currency[] | null => {
+  try {
+    const cached = safeLocalStorage.getItem(CURRENCY_CACHE_KEY);
+    if (!cached) return null;
+
+    const { data, timestamp }: CachedCurrencies = JSON.parse(cached);
+    if (Date.now() - timestamp > CURRENCY_CACHE_DURATION) {
+      safeLocalStorage.removeItem(CURRENCY_CACHE_KEY);
+      return null;
+    }
+    return data;
+  } catch {
+    return null;
+  }
+};
+
+const setCachedCurrencies = (currencies: Currency[]) => {
+  try {
+    safeLocalStorage.setItem(CURRENCY_CACHE_KEY, JSON.stringify({
+      data: currencies,
+      timestamp: Date.now()
+    }));
+  } catch {
+  }
+};
+
+const getStoredCurrency = (): string | null => {
+  return safeLocalStorage.getItem(SELECTED_CURRENCY_KEY);
+};
+
+const setStoredCurrency = (currencyCode: string) => {
+  safeLocalStorage.setItem(SELECTED_CURRENCY_KEY, currencyCode);
+};
+
+const getCachedRates = (baseCurrency: string): { rates: Record<string, number>, timestamp: number } | null => {
+  try {
+    const cached = safeLocalStorage.getItem(RATES_CACHE_KEY);
+    if (!cached) return null;
+
+    const { rates, timestamp, baseCurrency: cachedBase }: CachedRates = JSON.parse(cached);
+
+    if (cachedBase !== baseCurrency) return null;
+
+    return { rates, timestamp };
+  } catch {
+    return null;
+  }
+};
+
+const setCachedRates = (rates: Record<string, number>, baseCurrency: string) => {
+  try {
+    safeLocalStorage.setItem(RATES_CACHE_KEY, JSON.stringify({
+      rates,
+      timestamp: Date.now(),
+      baseCurrency
+    }));
+  } catch {
+  }
+};
+
+const shouldRefetchRates = (refetchIntervalMs?: number, lastFetchTimestamp?: number): boolean => {
+  if (!refetchIntervalMs || !lastFetchTimestamp) return true;
+  return Date.now() - lastFetchTimestamp > refetchIntervalMs;
+};
+
 const DefaultLoader = () => <Loader className='w-4 h-4 animate-spin dark:text-gray-300' />;
 
 type CurrencyContextType = {
@@ -32,6 +139,8 @@ type CurrencyContextType = {
   availableCurrencies: Currency[]
   loadingCurrencies: boolean
   currenciesError: string | null
+  fixedBaseCurrencyCode: string
+  lastRatesUpdate: number | null
 }
 
 const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined)
@@ -63,69 +172,114 @@ export function CurrencyProvider({
   const [rates, setRates] = useState<Record<string, number>>(initialRates || {})
   const [loadingRates, setLoadingRates] = useState(false)
   const [ratesError, setRatesError] = useState<string | null>(null)
+  const [lastRatesUpdate, setLastRatesUpdate] = useState<number | null>(null)
 
   useEffect(() => {
     const fetchCurrencyNames = async () => {
       setLoadingCurrencies(true);
       setCurrenciesError(null);
+
+      const cachedCurrencies = getCachedCurrencies();
+      if (cachedCurrencies && cachedCurrencies.length > 0) {
+        setAvailableCurrencies(cachedCurrencies);
+
+        const storedCurrencyCode = getStoredCurrency();
+        const targetCurrency = storedCurrencyCode || defaultSelectedCurrencyCode;
+        const selectedCurrency = cachedCurrencies.find(c => c.code === targetCurrency) || cachedCurrencies[0];
+        setCurrency(selectedCurrency);
+
+        setLoadingCurrencies(false);
+        return;
+      }
+
       try {
         const response = await fetch(CURRENCY_NAMES_API_URL);
         if (!response.ok) {
           throw new Error(`Failed to fetch currency names: ${response.statusText}`);
         }
         const data: Record<string, string> = await response.json();
-        const loadedCurrencies: Currency[] = Object.entries(data).map(([code, name]) => ({
-          code,
-          name,
-        }));
-        setAvailableCurrencies(loadedCurrencies);
+        const loadedCurrencies: Currency[] = Object.entries(data)
+          .map(([code, name]) => ({ code, name }))
+          .sort((a, b) => a.name.localeCompare(b.name));
 
-        const defaultCurrency = loadedCurrencies.find(c => c.code === defaultSelectedCurrencyCode) || loadedCurrencies[0];
-        if (defaultCurrency) {
-          setCurrency(defaultCurrency);
+        setAvailableCurrencies(loadedCurrencies);
+        setCachedCurrencies(loadedCurrencies);
+
+        if (loadedCurrencies.length > 0) {
+          const storedCurrencyCode = getStoredCurrency();
+          const targetCurrency = storedCurrencyCode || defaultSelectedCurrencyCode;
+          const selectedCurrency = loadedCurrencies.find(c => c.code === targetCurrency) || loadedCurrencies[0];
+          setCurrency(selectedCurrency);
+        } else {
+          setCurrency(undefined);
         }
 
       } catch (err) {
         console.error("Currency names API error:", err);
         setCurrenciesError(err instanceof Error ? err.message : "Failed to fetch currency names");
+        setAvailableCurrencies([]);
+        setCurrency(undefined);
       } finally {
         setLoadingCurrencies(false);
       }
     };
+
     fetchCurrencyNames();
-  }, [defaultSelectedCurrencyCode]);
+  }, []);
 
 
   const handleFetchRates = useCallback(async () => {
+    const cachedData = getCachedRates(fixedBaseCurrencyCode);
+    if (cachedData && !shouldRefetchRates(refetchIntervalMs, cachedData.timestamp)) {
+      setRates(cachedData.rates);
+      setLastRatesUpdate(cachedData.timestamp);
+      return;
+    }
+
     if (!fetchRatesFunction) {
       if (initialRates) {
         setRates(initialRates);
+        setCachedRates(initialRates, fixedBaseCurrencyCode);
+        setLastRatesUpdate(Date.now());
       }
       return;
     }
 
-    setLoadingRates(true)
-    setRatesError(null)
+    setLoadingRates(true);
+    setRatesError(null);
     try {
-      const newRates = await fetchRatesFunction()
-      setRates(newRates)
-      console.log(`Fetched new rates relative to base: ${fixedBaseCurrencyCode}`, newRates)
+      const newRates = await fetchRatesFunction();
+      const timestamp = Date.now();
+      setRates(newRates);
+      setLastRatesUpdate(timestamp);
+      setCachedRates(newRates, fixedBaseCurrencyCode);
+      console.log(`Fetched new rates relative to base: ${fixedBaseCurrencyCode}`, newRates);
     } catch (err) {
-      console.error("User provided fetchRatesFunction error:", err)
-      setRatesError(err instanceof Error ? err.message : "Failed to fetch exchange rates via provided function")
+      console.error("User provided fetchRatesFunction error:", err);
+      setRatesError(err instanceof Error ? err.message : "Failed to fetch exchange rates via provided function");
+
+      if (cachedData) {
+        setRates(cachedData.rates);
+        setLastRatesUpdate(cachedData.timestamp);
+        console.log("Using cached rates as fallback");
+      }
     } finally {
-      setLoadingRates(false)
+      setLoadingRates(false);
     }
-  }, [fetchRatesFunction, fixedBaseCurrencyCode, initialRates]);
+  }, [fetchRatesFunction, fixedBaseCurrencyCode, initialRates, refetchIntervalMs]);
 
   useEffect(() => {
     handleFetchRates();
 
     if (fetchRatesFunction && refetchIntervalMs && refetchIntervalMs > 0) {
-      const intervalId = setInterval(handleFetchRates, refetchIntervalMs)
-      return () => clearInterval(intervalId)
+      const intervalId = setInterval(() => {
+        if (shouldRefetchRates(refetchIntervalMs, lastRatesUpdate ?? undefined)) {
+          handleFetchRates();
+        }
+      }, refetchIntervalMs);
+      return () => clearInterval(intervalId);
     }
-  }, [handleFetchRates, refetchIntervalMs, fetchRatesFunction])
+  }, [handleFetchRates, refetchIntervalMs, fetchRatesFunction, lastRatesUpdate]);
 
 
   const convertValue = useCallback((value: number, fromCurrencyCode?: string) => {
@@ -163,22 +317,31 @@ export function CurrencyProvider({
 
   const handleCurrencyChange = (newCurrency: Currency) => {
     setCurrency(newCurrency);
-  }
+    setStoredCurrency(newCurrency.code);
+  };
 
   const LoaderToShow = loaderComponent;
 
   if (loadingCurrencies) {
-    return <div className="flex justify-center items-center h-screen"><LoaderToShow /> <span className="ml-2">Loading currencies...</span></div>;
+    return <div className="flex justify-center items-center min-h-[200px] p-4"><LoaderToShow /> <span className="ml-2">Loading currencies...</span></div>;
   }
 
   if (currenciesError) {
     return <div className="text-red-500 p-4">Error loading currencies: {currenciesError}</div>;
   }
 
-  if (!currency && !loadingCurrencies && availableCurrencies.length > 0) {
-    setCurrency(availableCurrencies.find(c => c.code === defaultSelectedCurrencyCode) || availableCurrencies[0]);
+  if (ratesError && Object.keys(rates).length === 0) {
+    return (
+      <div className="bg-yellow-50 dark:bg-yellow-950 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+        <p className="text-yellow-800 dark:text-yellow-200">
+          <strong>Warning:</strong> Failed to fetch exchange rates: {ratesError}
+          {initialRates && Object.keys(initialRates).length > 0 && (
+            <span className="block mt-1 text-sm">Using initial rates as fallback.</span>
+          )}
+        </p>
+      </div>
+    );
   }
-
 
   return (
     <CurrencyContext.Provider value={{
@@ -192,7 +355,9 @@ export function CurrencyProvider({
       LoaderComponent: loaderComponent,
       availableCurrencies,
       loadingCurrencies,
-      currenciesError
+      currenciesError,
+      fixedBaseCurrencyCode,
+      lastRatesUpdate,
     }}>
       {children}
     </CurrencyContext.Provider>
@@ -248,11 +413,20 @@ interface CurrencyDisplayProps {
 export function CurrencyDisplay({
   value,
   className,
-  sourceCurrency = "INR"
+  sourceCurrency
 }: CurrencyDisplayProps) {
-  const { formatValue, convertValue, loadingRates, LoaderComponent, currency } = useCurrency()
+  const {
+    formatValue,
+    convertValue,
+    loadingRates,
+    LoaderComponent,
+    currency,
+    fixedBaseCurrencyCode
+  } = useCurrency()
 
-  const convertedValue = currency ? convertValue(value, sourceCurrency) : value;
+  const actualSourceCurrency = sourceCurrency || fixedBaseCurrencyCode;
+
+  const convertedValue = currency ? convertValue(value, actualSourceCurrency) : value;
 
   return (
     <span className={cn("dark:text-gray-100", className)}>
