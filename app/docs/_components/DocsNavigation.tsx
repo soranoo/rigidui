@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { PanelLeft, ChevronDown, ChevronRight, PanelRight } from "lucide-react"
+import { PanelLeft, ChevronRight, PanelRight } from "lucide-react"
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import DocsSearch from './DocsSearch'
@@ -95,45 +95,60 @@ export function DocsNavigation({
 
   const NavItem = ({ item }: { item: NavigationItem }) => {
     const isActive = pathname === item.href
+    const hasActiveChild = item.items?.some(child => pathname === child.href)
 
     const manualExpansionState = expandedSections[item.href];
     const autoExpandCondition = item.items && item.items.length > 0 && pathname.startsWith(item.href);
     const isExpanded = manualExpansionState !== undefined ? manualExpansionState : autoExpandCondition;
 
     return (
-      <div className="mb-2">
-        <div className="flex items-center">
+      <div>
+        <div className="flex items-center group">
+          <Link
+            href={item.href}
+            className={cn(
+              "flex-1 flex items-center px-3 py-2 text-sm rounded-md transition-colors",
+              isActive
+                ? "bg-blue-50 text-blue-700 font-medium dark:bg-blue-950 dark:text-blue-300"
+                : hasActiveChild
+                  ? "text-gray-900 dark:text-gray-100"
+                  : "text-gray-700 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-gray-100 dark:hover:bg-gray-800"
+            )}
+          >
+            <span className={cn(
+              isActive ? "font-medium" : hasActiveChild ? "font-medium" : "font-normal"
+            )}>
+              {item.title}
+            </span>
+          </Link>
+
           {item.items && (
             <button
               onClick={() => toggleSection(item.href)}
-              className="mr-1 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors"
+              className="p-1 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-colors"
             >
-              {isExpanded ?
-                <ChevronDown className="w-4 h-4" /> :
-                <ChevronRight className="w-4 h-4" />
-              }
+              <ChevronRight
+                className={cn(
+                  "w-4 h-4 transition-transform duration-200",
+                  isExpanded && "rotate-90"
+                )}
+              />
             </button>
           )}
-          <Link
-            href={item.href}
-            className={`flex-grow px-3 py-2 text-sm rounded-md transition-all ${isActive
-              ? 'bg-gradient-to-r from-blue-50 to-blue-100 text-blue-800 font-medium dark:from-blue-900/20 dark:to-blue-800/20 dark:text-blue-300'
-              : 'text-gray-700 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-gray-100 dark:hover:bg-gray-800/50'
-              }`}
-          >
-            {item.title}
-          </Link>
         </div>
+
         {item.items && isExpanded && (
-          <div className="ml-4 pl-2 border-l border-gray-200 dark:border-gray-700 mt-1 space-y-1">
+          <div className="ml-4 mt-1 space-y-1">
             {item.items.map((child) => (
               <Link
                 key={child.href}
                 href={child.href}
-                className={`block px-3 py-1.5 text-sm rounded-md transition-colors ${pathname === child.href
-                  ? 'text-blue-600 font-medium dark:text-blue-400'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800/30'
-                  }`}
+                className={cn(
+                  "block px-3 py-1.5 text-sm rounded-md transition-colors",
+                  pathname === child.href
+                    ? "text-blue-600 bg-blue-50 font-medium dark:text-blue-400 dark:bg-blue-950"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800"
+                )}
               >
                 {child.title}
               </Link>
@@ -145,35 +160,63 @@ export function DocsNavigation({
   }
 
   return (
-    <nav className={`p-4 bg-white dark:bg-background transition-colors duration-200 ${className} ${collapsed && !isMobile ? 'px-2' : ''}`}>
-      <div className={`flex items-center ${collapsed && !isMobile ? 'justify-center flex-col space-y-4' : 'justify-between'} mb-4`}>
+    <nav className={cn(
+      "h-full bg-white dark:bg-background border-r border-gray-200 dark:border-gray-800",
+      className,
+      collapsed && !isMobile ? 'w-16' : 'w-full'
+    )}>
+      <div className={cn(
+        "flex items-center p-4 border-b border-gray-200 dark:border-gray-800",
+        collapsed && !isMobile ? 'justify-center flex-col space-y-3' : 'justify-between'
+      )}>
         <Link href="/" className="flex items-center">
-          <span className={cn('p-2 rounded-md mr-2', collapsed && "mr-0")}>
-            {collapsed ? <Image src="/short-logo.png" width={100} height={100} alt="Short Logo" /> :
-              <Image src="/logo.png" alt="Logo" width={100} height={100} />
-            }
-          </span>
+          {collapsed ?
+            <Image src="/short-logo.png" width={24} height={24} alt="Logo" /> :
+            <Image src="/logo.png" alt="Logo" width={100} height={24} className="h-6 w-auto" />
+          }
         </Link>
-        <div className={`flex items-center ${collapsed && !isMobile ? 'flex-col space-y-4' : 'space-x-2'}`}>
-          <div className='hidden md:block'>
-            <ModeToggle />
+
+        {!collapsed && (
+          <div className="flex items-center space-x-2">
+            <div className='hidden md:block'>
+              <ModeToggle />
+            </div>
+            {!isMobile && (
+              <button
+                onClick={onToggleSidebar}
+                className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                aria-label="Toggle sidebar"
+              >
+                <PanelLeft className="w-4 h-4" />
+              </button>
+            )}
           </div>
-          {!isMobile && (
+        )}
+
+        {collapsed && !isMobile && (
+          <div className="flex flex-col items-center space-y-2">
+            <div className='hidden md:block'>
+              <ModeToggle />
+            </div>
             <button
               onClick={onToggleSidebar}
-              className="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800 transition-colors"
-              aria-label="Toggle sidebar"
+              className="p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              aria-label="Expand sidebar"
             >
-              {collapsed ? <PanelRight className="w-5 h-5" /> : <PanelLeft className="w-5 h-5" />}
+              <PanelRight className="w-4 h-4" />
             </button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
-      <DocsSearch collapsed={collapsed && !isMobile} />
 
+      {!collapsed && (
+        <div className="p-4 dark:border-gray-800">
+          <DocsSearch collapsed={false} />
+        </div>
+      )}
 
-      {(!collapsed || isMobile) && (
-        <div className="space-y-1">
+      {!collapsed && (
+        <div className="p-4 space-y-2 overflow-y-auto">
           {navigationItems.map((item) => (
             <NavItem key={item.href} item={item} />
           ))}
