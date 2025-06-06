@@ -1,11 +1,11 @@
 "use client"
 import * as React from "react"
 import Link from "next/link"
-import { ArrowRight, Code, Zap, CheckCircle, ExternalLink, Sparkles, Stars, Grid3X3, Cpu } from "lucide-react"
-import Image from "next/image"
+import { ArrowRight, Code, Zap, CheckCircle, ExternalLink, Sparkles, Stars, Grid3X3 } from "lucide-react"
 import Sidebar from "@/components/sidebar"
 import FeaturesSection from "@/components/home/FeaturesSection"
 import HeroSection from "@/components/home/HeroSection"
+import Footer from "@/components/home/footer"
 
 export default function Home() {
 
@@ -18,8 +18,6 @@ export default function Home() {
         </div>
         <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#50657036,#000)]">
         </div>
-        {/* <div className="absolute left-0 right-0 top-[-10%] h-[1000px] w-[1000px] rounded-full bg-[radial-gradient(circle_400px_at_50%_300px,#fbfbfb36,#000)]">
-        </div> */}
       </div>
       <Sidebar />
 
@@ -37,16 +35,16 @@ export default function Home() {
               <Grid3X3 className="w-4 h-4" />
               <span>Component Showcase</span>
             </div>
-            <h2 className="text-4xl md:text-6xl font-bold mb-8 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-              Enterprise Components
+            <h2 className="text-4xl md:text-6xl py-2 font-bold mb-8 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+              Explore RigidUI Components
             </h2>
             <p className="text-muted-foreground max-w-3xl mx-auto text-xl leading-relaxed">
-              Professional-grade components that handle the most <span className="text-primary font-semibold">complex</span> enterprise scenarios
+              Discover our collection of <span className="text-primary font-semibold">advanced React components</span> built for modern applications
             </p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-10">
-            <Link href="/docs/components/data-grid" className="group">
+            <Link href="/docs/components/currency-manager" className="group">
               <div className="aspect-[4/3] bg-gradient-to-br from-primary/10 via-primary/5 to-purple-500/10 rounded-3xl border border-primary/20 overflow-hidden hover:border-primary/40 transition-all duration-500 relative shadow-2xl hover:shadow-3xl hover:-translate-y-2">
                 <div className="absolute inset-0 p-8 flex flex-col">
                   <div className="flex items-center justify-between mb-6">
@@ -55,7 +53,7 @@ export default function Home() {
                       <div className="w-3 h-3 bg-yellow-500 rounded-full" />
                       <div className="w-3 h-3 bg-green-500 rounded-full" />
                     </div>
-                    <h3 className="font-bold text-xl">Advanced Data Grid</h3>
+                    <h3 className="font-bold text-xl">Currency Manager</h3>
                     <div className="flex items-center gap-2 text-xs bg-background/70 backdrop-blur-sm text-muted-foreground px-3 py-1 rounded-full group-hover:bg-primary/10 group-hover:text-primary transition-colors">
                       <span>Explore</span>
                       <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
@@ -64,35 +62,44 @@ export default function Home() {
 
                   <div className="flex-1 bg-card/90 backdrop-blur-sm rounded-2xl border border-primary/10 overflow-hidden shadow-inner">
                     <div className="w-full h-full p-4">
-                      <div className="grid grid-cols-5 gap-3 mb-3 pb-2 border-b border-primary/10">
-                        {["Name", "Status", "Progress", "Date", "Actions"].map((header, i) => (
-                          <div key={i} className="text-xs font-semibold text-primary/80 flex items-center gap-1">
-                            {header}
-                            {i < 3 && <div className="w-1 h-3 bg-primary/20 rounded" />}
-                          </div>
-                        ))}
-                      </div>
-
-                      {Array(6).fill(0).map((_, i) => (
-                        <div key={i} className="grid grid-cols-5 gap-3 mb-2 p-2 rounded-lg hover:bg-primary/5 transition-colors group/row">
-                          <div className="text-xs font-medium">Project {i + 1}</div>
-                          <div className="flex items-center gap-1">
-                            <div className={`w-2 h-2 rounded-full ${i % 3 === 0 ? 'bg-green-500' : i % 3 === 1 ? 'bg-yellow-500' : 'bg-red-500'}`} />
-                            <span className="text-xs">{i % 3 === 0 ? 'Active' : i % 3 === 1 ? 'Pending' : 'Inactive'}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div className="w-full bg-muted/30 rounded-full h-1.5 overflow-hidden">
-                              <div className={`h-full bg-gradient-to-r from-primary to-purple-500 rounded-full transition-all duration-1000 group-hover:animate-pulse`} style={{ width: `${20 + (i * 15)}%` }} />
+                      <div className="space-y-4">
+                        <div className="text-center">
+                          <h4 className="text-sm font-semibold text-primary mb-3">Currency Exchange</h4>
+                          <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-lg p-4 border border-green-500/20">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="text-xs text-muted-foreground">From</span>
+                              <span className="text-xs text-muted-foreground">To</span>
                             </div>
-                            <span className="text-xs text-muted-foreground">{20 + (i * 15)}%</span>
-                          </div>
-                          <div className="text-xs text-muted-foreground">Jan {10 + i}</div>
-                          <div className="flex gap-1">
-                            <div className="w-4 h-4 bg-primary/20 rounded border group-hover/row:bg-primary/40 transition-colors" />
-                            <div className="w-4 h-4 bg-muted/40 rounded border group-hover/row:bg-muted/60 transition-colors" />
+                            <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-2 bg-background/70 rounded-lg p-2 flex-1">
+                                <div className="w-6 h-4 bg-blue-500 rounded-sm flex items-center justify-center text-xs text-white font-bold">$</div>
+                                <span className="text-sm font-medium">USD</span>
+                              </div>
+                              <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center">
+                                <ArrowRight className="w-4 h-4 text-primary" />
+                              </div>
+                              <div className="flex items-center gap-2 bg-background/70 rounded-lg p-2 flex-1">
+                                <div className="w-6 h-4 bg-yellow-500 rounded-sm flex items-center justify-center text-xs text-white font-bold">€</div>
+                                <span className="text-sm font-medium">EUR</span>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      ))}
+
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between bg-muted/30 rounded-lg p-3">
+                            <span className="text-xs font-medium">Amount</span>
+                            <div className="text-lg font-bold text-primary">$1,000.00</div>
+                          </div>
+                          <div className="flex items-center justify-between bg-green-500/10 rounded-lg p-3 border border-green-500/20">
+                            <span className="text-xs font-medium text-green-600">Converted</span>
+                            <div className="text-lg font-bold text-green-600">€850.50</div>
+                          </div>
+                          <div className="text-center text-xs text-muted-foreground">
+                            Rate: 1 USD = 0.8505 EUR
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -101,7 +108,7 @@ export default function Home() {
               </div>
             </Link>
 
-            <Link href="/docs/components/multi-step-form" className="group">
+            <Link href="/docs/components/multi-step-form-wrapper" className="group">
               <div className="aspect-[4/3] bg-gradient-to-br from-purple-500/10 via-primary/5 to-indigo-500/10 rounded-3xl border border-purple-500/20 overflow-hidden hover:border-purple-500/40 transition-all duration-500 relative shadow-2xl hover:shadow-3xl hover:-translate-y-2">
                 <div className="absolute inset-0 p-8 flex flex-col">
                   <div className="flex items-center justify-between mb-6">
@@ -110,7 +117,7 @@ export default function Home() {
                       <div className="w-3 h-3 bg-yellow-500 rounded-full" />
                       <div className="w-3 h-3 bg-green-500 rounded-full" />
                     </div>
-                    <h3 className="font-bold text-xl">Multi-Step Wizard</h3>
+                    <h3 className="font-bold text-xl">Multi-Step Form</h3>
                     <div className="flex items-center gap-2 text-xs bg-background/70 backdrop-blur-sm text-muted-foreground px-3 py-1 rounded-full group-hover:bg-purple-500/10 group-hover:text-purple-500 transition-colors">
                       <span>Explore</span>
                       <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
@@ -164,7 +171,7 @@ export default function Home() {
               </div>
             </Link>
 
-            <Link href="/docs/components/dashboard-widgets" className="group">
+            <Link href="/docs/components/location-picker" className="group">
               <div className="aspect-[4/3] bg-gradient-to-br from-indigo-500/10 via-primary/5 to-blue-500/10 rounded-3xl border border-indigo-500/20 overflow-hidden hover:border-indigo-500/40 transition-all duration-500 relative shadow-2xl hover:shadow-3xl hover:-translate-y-2">
                 <div className="absolute inset-0 p-8 flex flex-col">
                   <div className="flex items-center justify-between mb-6">
@@ -173,7 +180,7 @@ export default function Home() {
                       <div className="w-3 h-3 bg-yellow-500 rounded-full" />
                       <div className="w-3 h-3 bg-green-500 rounded-full" />
                     </div>
-                    <h3 className="font-bold text-xl">Analytics Dashboard</h3>
+                    <h3 className="font-bold text-xl">Location Picker</h3>
                     <div className="flex items-center gap-2 text-xs bg-background/70 backdrop-blur-sm text-muted-foreground px-3 py-1 rounded-full group-hover:bg-indigo-500/10 group-hover:text-indigo-500 transition-colors">
                       <span>Explore</span>
                       <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
@@ -181,42 +188,51 @@ export default function Home() {
                   </div>
 
                   <div className="flex-1 bg-card/90 backdrop-blur-sm rounded-2xl border border-indigo-500/10 overflow-hidden shadow-inner">
-                    <div className="w-full h-full p-4 grid grid-cols-3 gap-4">
-                      <div className="bg-gradient-to-br from-green-500/10 to-green-500/5 rounded-xl p-3 border border-green-500/20">
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="text-xs text-green-600 font-medium">Revenue</div>
-                          <div className="w-4 h-4 bg-green-500/20 rounded" />
+                    <div className="w-full h-full p-4">
+                      <div className="space-y-4">
+                        <div className="text-center">
+                          <h4 className="text-sm font-semibold text-indigo-600 mb-3">Select Location</h4>
                         </div>
-                        <div className="text-lg font-bold text-green-600">$24.5K</div>
-                        <div className="text-xs text-green-500">+12.5%</div>
-                      </div>
 
-                      <div className="bg-gradient-to-br from-blue-500/10 to-blue-500/5 rounded-xl p-3 border border-blue-500/20">
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="text-xs text-blue-600 font-medium">Users</div>
-                          <div className="w-4 h-4 bg-blue-500/20 rounded" />
-                        </div>
-                        <div className="text-lg font-bold text-blue-600">1,249</div>
-                        <div className="text-xs text-blue-500">+8.2%</div>
-                      </div>
+                        <div className="bg-gradient-to-br from-indigo-500/10 to-blue-500/10 rounded-xl p-4 border border-indigo-500/20">
+                          <div className="space-y-3">
+                            <div className="flex items-center gap-2 bg-background/70 rounded-lg p-2">
+                              <div className="w-4 h-4 bg-indigo-500/30 rounded" />
+                              <span className="text-sm">Search locations...</span>
+                            </div>
 
-                      <div className="bg-gradient-to-br from-purple-500/10 to-purple-500/5 rounded-xl p-3 border border-purple-500/20">
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="text-xs text-purple-600 font-medium">Orders</div>
-                          <div className="w-4 h-4 bg-purple-500/20 rounded" />
-                        </div>
-                        <div className="text-lg font-bold text-purple-600">89</div>
-                        <div className="text-xs text-red-500">-2.1%</div>
-                      </div>
+                            <div className="bg-gradient-to-br from-blue-500/5 to-indigo-500/5 rounded-lg p-3 border border-blue-500/10">
+                              <div className="flex items-center gap-3 mb-2">
+                                <div className="w-8 h-8 bg-red-500/20 rounded-full flex items-center justify-center">
+                                  <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+                                </div>
+                                <div>
+                                  <div className="text-sm font-medium">New York, NY</div>
+                                  <div className="text-xs text-muted-foreground">United States</div>
+                                </div>
+                              </div>
+                              <div className="text-xs text-blue-600 font-medium">📍 Current Location</div>
+                            </div>
 
-                      <div className="col-span-3 bg-gradient-to-br from-primary/5 to-indigo-500/5 rounded-xl p-4 border border-primary/10 relative overflow-hidden">
-                        <div className="text-xs font-medium text-primary mb-3">Performance Analytics</div>
-                        <div className="flex items-end justify-between h-16 gap-1">
-                          {Array(12).fill(0).map((_, i) => (
-                            <div key={i} className="flex-1 bg-gradient-to-t from-primary/60 to-primary/30 rounded-sm transition-all duration-500 hover:from-primary/80 hover:to-primary/50" style={{ height: `${30 + Math.sin(i * 0.8) * 20 + Math.random() * 15}%` }} />
-                          ))}
+                            <div className="space-y-2">
+                              {[
+                                { city: "San Francisco, CA", country: "United States", selected: false },
+                                { city: "London, UK", country: "United Kingdom", selected: true },
+                                { city: "Tokyo, JP", country: "Japan", selected: false }
+                              ].map((location, i) => (
+                                <div key={i} className={`flex items-center gap-3 p-2 rounded-lg cursor-pointer transition-colors ${location.selected ? 'bg-indigo-500/10 border border-indigo-500/20' : 'hover:bg-muted/20'}`}>
+                                  <div className={`w-4 h-4 rounded-full border-2 ${location.selected ? 'border-indigo-500 bg-indigo-500' : 'border-muted'}`}>
+                                    {location.selected && <div className="w-2 h-2 bg-white rounded-full m-0.5" />}
+                                  </div>
+                                  <div className="flex-1">
+                                    <div className="text-xs font-medium">{location.city}</div>
+                                    <div className="text-xs text-muted-foreground">{location.country}</div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
                         </div>
-                        <div className="absolute top-2 right-2 w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                       </div>
                     </div>
                   </div>
@@ -226,7 +242,7 @@ export default function Home() {
               </div>
             </Link>
 
-            <Link href="/docs/components/file-manager" className="group">
+            <Link href="/docs/components/file-explorer" className="group">
               <div className="aspect-[4/3] bg-gradient-to-br from-emerald-500/10 via-primary/5 to-teal-500/10 rounded-3xl border border-emerald-500/20 overflow-hidden hover:border-emerald-500/40 transition-all duration-500 relative shadow-2xl hover:shadow-3xl hover:-translate-y-2">
                 <div className="absolute inset-0 p-8 flex flex-col">
                   <div className="flex items-center justify-between mb-6">
@@ -235,7 +251,7 @@ export default function Home() {
                       <div className="w-3 h-3 bg-yellow-500 rounded-full" />
                       <div className="w-3 h-3 bg-green-500 rounded-full" />
                     </div>
-                    <h3 className="font-bold text-xl">File Manager Pro</h3>
+                    <h3 className="font-bold text-xl">File Explorer</h3>
                     <div className="flex items-center gap-2 text-xs bg-background/70 backdrop-blur-sm text-muted-foreground px-3 py-1 rounded-full group-hover:bg-emerald-500/10 group-hover:text-emerald-500 transition-colors">
                       <span>Explore</span>
                       <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
@@ -315,7 +331,7 @@ export default function Home() {
               className="inline-flex items-center justify-center text-primary hover:text-primary/80 text-xl group font-semibold"
             >
               <span className="bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-                Explore All 40+ Components
+                Explore All 7 Components
               </span>
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
             </Link>
@@ -323,7 +339,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-gradient-to-br from-primary/30 via-primary/20 to-primary/5 relative overflow-hidden">
+      <section className="py-20 px-4 bg-gray-900/20 relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full bg-grid-pattern opacity-[0.03] pointer-events-none" />
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
@@ -354,13 +370,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-32 px-6 bg-gradient-to-br from-primary/20 via-primary/10 to-purple-500/20 relative overflow-hidden">
+      <section className="py-32 px-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern opacity-[0.03] pointer-events-none" />
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/10 via-transparent to-purple-500/10" />
 
         <div className="absolute top-20 left-20 w-40 h-40 border-2 border-primary/30 rounded-3xl rotate-12 animate-float-complex" />
         <div className="absolute bottom-20 right-20 w-32 h-32 bg-gradient-to-br from-purple-500/20 to-primary/20 rounded-full animate-pulse-slow" />
-        <div className="absolute top-1/2 left-10 w-6 h-6 bg-primary/40 rounded-full animate-ping" />
         <div className="absolute top-1/3 right-10 w-4 h-4 bg-purple-500/40 rounded-full animate-bounce" />
 
         <div className="max-w-5xl mx-auto text-center relative z-10">
@@ -386,16 +400,16 @@ export default function Home() {
           </h2>
 
           <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
-            Join thousands of developers building
-            <span className="text-primary font-bold"> exceptional interfaces</span> with
-            the most <span className="text-primary font-bold">advanced UI library</span> ever created.
+            Join developers building
+            <span className="text-primary font-bold"> sophisticated interfaces</span> with
+            <span className="text-primary font-bold"> RigidUI&apos;s advanced components</span>
           </p>
 
           <div className="grid md:grid-cols-3 gap-6 mb-12">
             {[
-              { icon: <Cpu className="w-6 h-6" />, title: "Zero Runtime", desc: "No JavaScript overhead" },
-              { icon: <Zap className="w-6 h-6" />, title: "Lightning Fast", desc: "< 1ms render times" },
-              { icon: <Stars className="w-6 h-6" />, title: "Enterprise Ready", desc: "Battle-tested components" }
+              { icon: <Code className="w-6 h-6" />, title: "TypeScript First", desc: "Full type safety built-in" },
+              { icon: <Zap className="w-6 h-6" />, title: "Modern Stack", desc: "React 19 + Next.js 15" },
+              { icon: <Stars className="w-6 h-6" />, title: "Production Ready", desc: "Real-world components" }
             ].map((feature, i) => (
               <div key={i} className="bg-background/80 backdrop-blur-xl rounded-2xl p-6 border border-primary/20 hover:border-primary/40 transition-all duration-300 hover:-translate-y-1 group">
                 <div className="text-primary mb-3 group-hover:scale-110 transition-transform duration-300 flex justify-center">
@@ -410,150 +424,31 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <Link
               href="/docs/getting-started"
-              className="group relative inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-primary via-purple-600 to-primary text-white px-12 py-5 font-bold text-xl hover:scale-105 transition-all duration-300 shadow-3xl shadow-primary/30 hover:shadow-4xl hover:shadow-primary/50 overflow-hidden"
+              className="group relative inline-flex items-center justify-center rounded-2xl border text-black dark:text-white px-12 py-5 font-bold text-xl hover:scale-105 transition-all duration-300 shadow-3xl shadow-primary/30 hover:shadow-4xl hover:shadow-primary/50 overflow-hidden"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-purple-600/90 to-primary/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-shimmer" />
               <span className="relative z-10 flex items-center gap-3">
                 <Sparkles className="w-6 h-6 group-hover:rotate-12 transition-transform duration-300" />
                 Start Building Now
                 <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
               </span>
             </Link>
-
-            <a
-              href="https://github.com/FgrReloaded/rigidui"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group relative inline-flex items-center justify-center rounded-2xl border-2 border-primary/40 bg-background/90 backdrop-blur-xl px-12 py-5 font-bold text-xl hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-3xl hover:border-primary/60 overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-purple-500/10 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <span className="relative z-10 flex items-center gap-3 text-foreground group-hover:text-primary transition-colors duration-300">
-                <Code className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />
-                View on GitHub
-                <ExternalLink className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
-              </span>
-            </a>
           </div>
 
           <div className="mt-16 flex flex-col items-center gap-6">
-            <p className="text-muted-foreground font-medium">Trusted by developers at</p>
+            <p className="text-muted-foreground font-medium">Built with modern technologies</p>
             <div className="flex items-center gap-8 opacity-60">
-              {["Microsoft", "Google", "Netflix", "Spotify", "Airbnb"].map((company, i) => (
+              {["React 19", "TypeScript", "Tailwind CSS", "shadcn/ui"].map((tech, i) => (
                 <div key={i} className="text-lg font-bold text-muted-foreground hover:text-primary transition-colors cursor-pointer">
-                  {company}
+                  {tech}
                 </div>
               ))}
             </div>
           </div>
         </div>
       </section>
+      <Footer />
 
-      <footer className="py-16 px-6 border-t border-primary/10 bg-gradient-to-br from-muted/20 via-background to-primary/5 relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-[0.01] pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row justify-between items-start gap-12">
-            <div className="flex flex-col gap-6 lg:w-1/3">
-              <Link href="/" className="group flex items-center gap-4">
-                <div className="relative">
-                  <Image
-                    src="/logo.png"
-                    alt="rigidui"
-                    width={60}
-                    height={60}
-                    className="group-hover:scale-110 transition-all duration-300 drop-shadow-lg"
-                  />
-                  <div className="absolute -inset-2 bg-gradient-to-r from-primary/30 to-purple-500/30 rounded-full blur opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-black text-2xl bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-                    RigidUI
-                  </span>
-                  <span className="text-sm text-muted-foreground font-medium">
-                    v0.1.0 • Enterprise UI Components
-                  </span>
-                </div>
-              </Link>
-
-              <p className="text-muted-foreground leading-relaxed max-w-md">
-                The most sophisticated collection of React components for building
-                enterprise-grade applications that demand perfection.
-              </p>
-
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                  <span>40+ Components</span>
-                </div>
-                <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-                  <span>TypeScript Ready</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:w-2/3">
-              <div>
-                <h3 className="font-bold text-foreground mb-4 text-lg">Documentation</h3>
-                <div className="space-y-3">
-                  {["Getting Started", "Installation", "Components", "Examples"].map((link, i) => (
-                    <Link key={i} href="/docs" className="block text-muted-foreground hover:text-primary transition-colors duration-200 hover:translate-x-1 transform">
-                      {link}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h3 className="font-bold text-foreground mb-4 text-lg">Components</h3>
-                <div className="space-y-3">
-                  {["Data Grid", "Forms", "Charts", "File Manager"].map((link, i) => (
-                    <Link key={i} href="/docs/components" className="block text-muted-foreground hover:text-primary transition-colors duration-200 hover:translate-x-1 transform">
-                      {link}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h3 className="font-bold text-foreground mb-4 text-lg">Resources</h3>
-                <div className="space-y-3">
-                  {["GitHub", "Examples", "Blog", "Changelog"].map((link, i) => (
-                    <a key={i} href="#" className="block text-muted-foreground hover:text-primary transition-colors duration-200 hover:translate-x-1 transform">
-                      {link}
-                    </a>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h3 className="font-bold text-foreground mb-4 text-lg">Community</h3>
-                <div className="space-y-3">
-                  {["Discord", "Twitter", "LinkedIn", "Support"].map((link, i) => (
-                    <a key={i} href="#" className="block text-muted-foreground hover:text-primary transition-colors duration-200 hover:translate-x-1 transform">
-                      {link}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-12 pt-8 border-t border-primary/10 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="text-sm text-muted-foreground">
-              © 2024 RigidUI. Built with shadcn/ui • Designed for developers
-            </div>
-            <div className="flex items-center gap-6 text-sm">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Terms of Service</a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">MIT License</a>
-            </div>
-          </div>
-        </div>
-      </footer>
-
-      <style jsx global>{`
+        <style jsx global>{`
         @keyframes gradient-x {
           0%, 100% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }

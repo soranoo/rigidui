@@ -1,4 +1,4 @@
-import { Code, Component, Layers, Package, Zap, Stars, Cpu, Gauge } from "lucide-react"
+import { Code, Component, Layers, Package, Zap, Stars, Shield } from "lucide-react"
 
 const FeaturesSection = () => {
   return (
@@ -11,14 +11,14 @@ const FeaturesSection = () => {
         <div className="text-center mb-20">
           <div className="inline-flex items-center gap-2 text-sm font-medium text-primary bg-gradient-to-r from-primary/15 to-purple-500/15 px-4 py-2 rounded-full border border-primary/20 mb-6">
             <Stars className="w-4 h-4" />
-            <span>Enterprise Benefits</span>
+            <span>Built on shadcn/ui</span>
           </div>
-          <h2 className="text-4xl md:text-6xl font-bold mb-8 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-            Why RigidUI Dominates
+          <h2 className="text-4xl md:text-6xl py-4 font-bold mb-8 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+            Powerful Component Library
           </h2>
           <p className="text-muted-foreground max-w-3xl mx-auto text-xl leading-relaxed">
-            Built for enterprises that demand <span className="text-primary font-semibold">excellence</span>,
-            designed for developers who won&apos;t <span className="text-primary font-semibold">compromise</span>
+            Sophisticated React components with <span className="text-primary font-semibold">real-world functionality</span>,
+            built for developers who need <span className="text-primary font-semibold">complex UI patterns</span>
           </p>
         </div>
 
@@ -26,45 +26,45 @@ const FeaturesSection = () => {
           {[
             {
               icon: <Component className="h-12 w-12 text-primary" />,
-              title: "Advanced Components",
-              description: "Enterprise-grade patterns with micro-interactions, accessibility, and performance optimization built-in",
+              title: "Complex Components",
+              description: "Sophisticated components like file explorers, multi-step forms, and currency managers with real-world functionality",
               color: "primary",
-              features: ["40+ Components", "TypeScript", "Accessibility"]
+              features: ["7 Components", "TypeScript", "Form validation"]
             },
             {
               icon: <Zap className="h-12 w-12 text-yellow-500" />,
-              title: "Lightning Performance",
-              description: "Optimized for speed with lazy loading, virtualization, and intelligent caching mechanisms",
+              title: "Performance Optimized",
+              description: "Infinite scroll with virtual rendering, lazy loading, and intelligent caching for smooth user experiences",
               color: "yellow-500",
-              features: ["< 1ms render", "Virtual scrolling", "Smart caching"]
+              features: ["Virtual scrolling", "Lazy loading", "Smart caching"]
             },
             {
               icon: <Layers className="h-12 w-12 text-blue-500" />,
-              title: "Infinitely Composable",
-              description: "Mix, match, and extend components with a powerful composition API and plugin system",
+              title: "Modern Architecture",
+              description: "Built with React 19, Next.js 15, and leverages the latest React patterns like Context API and hooks",
               color: "blue-500",
-              features: ["Plugin system", "Custom hooks", "Flexible API"]
+              features: ["React 19", "Next.js 15", "Modern hooks"]
             },
             {
               icon: <Package className="h-12 w-12 text-green-500" />,
-              title: "Zero Dependencies",
-              description: "No external dependencies, no bloat. Pure React components that work everywhere",
+              title: "Minimal Dependencies",
+              description: "Carefully selected dependencies with focus on bundle size optimization and tree shaking support",
               color: "green-500",
-              features: ["0 dependencies", "Tree shaking", "Lightweight"]
+              features: ["Tree shaking", "Bundle optimized", "Lightweight"]
             },
             {
               icon: <Code className="h-12 w-12 text-purple-500" />,
               title: "Developer Experience",
-              description: "Intuitive APIs, comprehensive docs, and TypeScript support for maximum productivity",
+              description: "Full TypeScript support, comprehensive validation with Zod, and intuitive APIs for maximum productivity",
               color: "purple-500",
-              features: ["IntelliSense", "Auto-complete", "Error hints"]
+              features: ["TypeScript", "Zod validation", "IntelliSense"]
             },
             {
-              icon: <Cpu className="h-12 w-12 text-pink-500" />,
+              icon: <Shield className="h-12 w-12 text-pink-500" />,
               title: "Production Ready",
-              description: "Battle-tested in enterprise applications with monitoring, analytics, and error boundaries",
+              description: "Enterprise-grade components with proper error handling, accessibility, and real-world API integrations",
               color: "pink-500",
-              features: ["Error boundaries", "Analytics", "Monitoring"]
+              features: ["Error handling", "Accessibility", "API ready"]
             }
           ].map((feature, index) => (
             <div
@@ -109,10 +109,10 @@ const FeaturesSection = () => {
 
         <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
-            { value: "40+", label: "Components", icon: <Component className="w-6 h-6" /> },
-            { value: "99.9%", label: "Uptime", icon: <Gauge className="w-6 h-6" /> },
-            { value: "<1ms", label: "Render Time", icon: <Zap className="w-6 h-6" /> },
-            { value: "0", label: "Dependencies", icon: <Package className="w-6 h-6" /> }
+            { value: "7", label: "Components", icon: <Component className="w-6 h-6" /> },
+            { value: "100%", label: "TypeScript", icon: <Code className="w-6 h-6" /> },
+            { value: "Fast", label: "Performance", icon: <Zap className="w-6 h-6" /> },
+            { value: "Modern", label: "Stack", icon: <Package className="w-6 h-6" /> }
           ].map((stat, index) => (
             <div key={index} className="text-center group">
               <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-xl mb-4 group-hover:bg-primary/20 transition-colors duration-300">

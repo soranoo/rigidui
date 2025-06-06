@@ -1,5 +1,7 @@
-import { ArrowRight, Component, Layers, Code2, Zap, Box, Cpu, Database, GitBranch } from "lucide-react"
+import { ArrowRight, Component, Layers, Code2, Zap, Box, Database, GitBranch } from "lucide-react"
 import Link from "next/link"
+import localFont from 'next/font/local'
+const titleFont = localFont({ src: '../../app/Nippo-Variable.ttf' })
 
 const HeroSection = () => {
   return (
@@ -12,7 +14,7 @@ const HeroSection = () => {
 
       <section className="min-h-screen py-20 px-4 relative overflow-hidden mt-12">
         <div className="max-w-7xl mx-auto flex flex-col items-center text-center gap-12 relative z-10">
-            <h1 className="text-5xl md:text-9xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-primary to-purple-600 dark:from-blue-400 dark:via-primary dark:to-violet-500 py-6 animate-gradient relative">
+          <h1 className="text-5xl md:text-9xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-gray-500 to-purple-500 dark:from-blue-400 dark:via-primary dark:to-violet-500 py-6 animate-gradient relative" style={titleFont.style}>
             Rigid
             <span className="relative inline-block">
               <span className="absolute inset-0 [-webkit-text-stroke:1.5px_rgba(0,0,0,0.5)] dark:[-webkit-text-stroke:1.5px_rgba(255,255,255,0.5)]">UI</span>
@@ -23,12 +25,12 @@ const HeroSection = () => {
 
           <div className="max-w-4xl space-y-4">
             <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
-              <span className="font-mono text-primary">[SYSTEM.INIT]</span> Engineering{" "}
-              <span className="text-foreground font-bold bg-gradient-to-r from-primary/10 to-purple-500/10 px-2 py-1 rounded">precision-crafted</span>{" "}
-              component architectures
+              <span className="font-mono text-primary">[PROTOCOL.ACTIVE]</span> Building{" "}
+              <span className="text-foreground font-bold bg-gradient-to-r from-primary/10 to-purple-500/10 px-2 py-1 rounded">enterprise-grade</span>{" "}
+              React components with uncompromising quality
             </p>
             <p className="text-lg text-muted-foreground/80 font-mono">
-              &gt; shadcn.foundation + rigidity.protocols = infinite.possibilities
+              &gt; shadcn/ui.foundation + typescript.safety + modern.design = rigidui.excellence
             </p>
           </div>
 
@@ -40,7 +42,7 @@ const HeroSection = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
               <span className="relative flex items-center gap-2">
                 <Zap className="w-4 h-4" />
-                INITIALIZE.SYSTEM
+                START.BUILDING
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </span>
             </Link>
@@ -50,72 +52,21 @@ const HeroSection = () => {
             >
               <span className="flex items-center gap-2">
                 <Database className="w-4 h-4" />
-                EXPLORE.MODULES
+                EXPLORE.COMPONENTS
               </span>
             </Link>
           </div>
 
-          <div className="relative mt-20 w-full max-w-5xl">
+          <div className="relative mt-2 w-full max-w-6xl">
             <div className="absolute -top-8 -left-8 md:-left-20 md:-top-12 transform rotate-12 bg-gradient-to-br from-background to-primary/5 rounded-xl border border-primary/20 shadow-2xl w-20 h-20 md:w-28 md:h-28 flex items-center justify-center animate-float-slow z-10 backdrop-blur-sm">
               <Box className="h-8 w-8 text-primary animate-pulse" />
             </div>
             <div className="absolute -bottom-6 -right-6 md:-right-16 md:-bottom-8 transform -rotate-12 bg-gradient-to-br from-background to-purple-500/5 rounded-xl border border-purple-500/20 shadow-2xl w-24 h-24 md:w-32 md:h-32 flex items-center justify-center animate-float z-10 backdrop-blur-sm">
-              <Cpu className="h-8 w-8 text-purple-500 animate-spin-slow" />
-            </div>
-            <div className="absolute top-1/2 -left-4 md:-left-12 transform -translate-y-1/2 rotate-45 bg-gradient-to-br from-background to-blue-500/5 rounded-lg border border-blue-500/20 shadow-xl w-16 h-16 md:w-20 md:h-20 flex items-center justify-center animate-bounce z-10">
               <GitBranch className="h-6 w-6 text-blue-500 -rotate-45" />
-            </div>
-
-            <div className="relative bg-gradient-to-br from-slate-900 to-slate-800 dark:from-slate-950 dark:to-slate-900 rounded-2xl shadow-2xl overflow-hidden border border-slate-700/50">
-              <div className="flex items-center justify-between bg-slate-800/80 dark:bg-slate-900/80 px-6 py-4 border-b border-slate-700/50">
-                <div className="flex items-center space-x-3">
-                  <div className="flex space-x-2">
-                    <div className="w-3 h-3 bg-red-500 rounded-full shadow-lg shadow-red-500/50"></div>
-                    <div className="w-3 h-3 bg-yellow-500 rounded-full shadow-lg shadow-yellow-500/50"></div>
-                    <div className="w-3 h-3 bg-green-500 rounded-full shadow-lg shadow-green-500/50"></div>
-                  </div>
-                  <span className="text-sm font-mono text-slate-400">rigid-terminal v2.1.0</span>
-                </div>
-                <div className="flex items-center gap-2 text-slate-400">
-                  <Component className="w-4 h-4" />
-                  <span className="text-xs font-mono">SYSTEM.READY</span>
-                </div>
-              </div>
-
-              <div className="p-6 space-y-4 font-mono text-sm">
-                <div className="flex items-center gap-2">
-                  <span className="text-green-400">➜</span>
-                  <span className="text-blue-400">rigid-system</span>
-                  <span className="text-slate-400">git:(main)</span>
-                  <span className="text-white">npx shadcn@latest add</span>
-                </div>
-                <div className="pl-4 text-primary animate-pulse">
-                  data-grid multi-step-form dashboard-widgets file-manager
-                </div>
-                <div className="pl-4 space-y-2 text-slate-300">
-                  <div className="flex items-center gap-2">
-                    <span className="text-green-400">✓</span>
-                    <span>Initializing rigid component architecture...</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-green-400">✓</span>
-                    <span>Compiling precision-engineered modules...</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-yellow-400 animate-pulse">⚡</span>
-                    <span>Deploying unbreakable UI foundations...</span>
-                  </div>
-                </div>
-                <div className="border-l-2 border-primary/50 pl-4 text-slate-400 text-xs">
-                  # Advanced components engineered for maximum rigidity
-                  <br />
-                  # Zero-compromise architecture | Infinite customization
-                </div>
-              </div>
             </div>
           </div>
 
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-4xl">
+          <div className=" grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-4xl">
             {[
               { icon: Layers, label: "MODULAR", value: "∞" },
               { icon: Component, label: "RIGID", value: "100%" },
