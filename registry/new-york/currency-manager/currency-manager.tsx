@@ -1,14 +1,21 @@
 "use client"
 
 import { createContext, useContext, useState, ReactNode, useEffect, ComponentType, useCallback } from 'react'
+import { Button } from "@/components/ui/button"
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { Loader } from 'lucide-react'
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import { Loader, Check, ChevronsUpDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export type Currency = {
@@ -225,7 +232,7 @@ export function CurrencyProvider({
     };
 
     fetchCurrencyNames();
-  }, []);
+  }, [defaultSelectedCurrencyCode]);
 
 
   const handleFetchRates = useCallback(async () => {
@@ -374,33 +381,68 @@ function useCurrency() {
 
 export function CurrencySelector({ className }: { className?: string }) {
   const { currency, setCurrency, loadingRates, availableCurrencies, loadingCurrencies } = useCurrency()
+  const [open, setOpen] = useState(false)
 
   if (loadingCurrencies || !currency) {
-    return <Select disabled={true}><SelectTrigger className={cn("w-[180px]", className)}><SelectValue placeholder="Loading currencies..." /></SelectTrigger></Select>;
+    return (
+      <Button
+        variant="outline"
+        role="combobox"
+        disabled={true}
+        className={cn("w-[200px] justify-between", className)}
+      >
+        Loading currencies...
+        <Loader className="ml-2 h-4 w-4 animate-spin" />
+      </Button>
+    )
   }
 
   return (
-    <Select
-      value={currency.code}
-      onValueChange={(value) => {
-        const selectedCurrency = availableCurrencies.find((c) => c.code === value)
-        if (selectedCurrency) {
-          setCurrency(selectedCurrency)
-        }
-      }}
-      disabled={loadingRates || availableCurrencies.length === 0}
-    >
-      <SelectTrigger className={cn("w-[180px]", className)}>
-        <SelectValue placeholder="Select currency" />
-      </SelectTrigger>
-      <SelectContent>
-        {availableCurrencies.map((c) => (
-          <SelectItem key={c.code} value={c.code}>
-            {c.name} ({c.code})
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className={cn("w-[200px] justify-between", className)}
+          disabled={loadingRates || availableCurrencies.length === 0}
+        >
+          {currency ? `${currency.code} - ${currency.name}` : "Select currency..."}
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-[300px] p-0">
+        <Command>
+          <CommandInput placeholder="Search currencies..." className="h-9" />
+          <CommandList>
+            <CommandEmpty>No currency found.</CommandEmpty>
+            <CommandGroup>
+              {availableCurrencies.map((c) => (
+                <CommandItem
+                  key={c.code}
+                  value={`${c.code} ${c.name}`}
+                  onSelect={() => {
+                    setCurrency(c)
+                    setOpen(false)
+                  }}
+                >
+                  <div className="flex flex-col">
+                    <span className="font-medium">{c.code}</span>
+                    <span className="text-sm text-muted-foreground">{c.name}</span>
+                  </div>
+                  <Check
+                    className={cn(
+                      "ml-auto h-4 w-4",
+                      currency?.code === c.code ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
   )
 }
 
