@@ -1,6 +1,11 @@
+"use client"
 import React from 'react'
 import { FileExplorer } from '@/registry/new-york/file-explorer/file-explorer'
 import ComponentDocTemplate from '../../_components/ComponentDocTemplate'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { CodeBlock } from "../../_components/CodeBlock"
+import { advancedUsageExamples } from './_components/AdvancedUsage'
+import { FileCode, FolderClosed, FolderOpen, ImageIcon } from 'lucide-react'
 
 export default function FileExplorerPage() {
   const propsData = [
@@ -64,6 +69,48 @@ export default function FileExplorerPage() {
       defaultValue: '<FolderOpen className="h-4 w-4 text-yellow-500" />',
       description: 'Default icon to use for open folders without a custom icon',
     },
+    {
+      name: 'onFileSelect',
+      type: '(file: FileType) => void',
+      defaultValue: 'undefined',
+      description: 'Callback function called when a file is selected',
+    },
+    {
+      name: 'onFolderToggle',
+      type: '(folderId: string, isExpanded: boolean) => void',
+      defaultValue: 'undefined',
+      description: 'Callback function called when a folder is expanded or collapsed',
+    },
+    {
+      name: 'readOnly',
+      type: 'boolean',
+      defaultValue: 'false',
+      description: 'Whether the file explorer is in read-only mode',
+    },
+    {
+      name: 'allowedFileTypes',
+      type: 'string[]',
+      defaultValue: 'undefined',
+      description: 'Array of allowed file extensions for filtering',
+    },
+    {
+      name: 'maxFileSize',
+      type: 'number',
+      defaultValue: 'undefined',
+      description: 'Maximum file size in bytes for validation',
+    },
+    {
+      name: 'loading',
+      type: 'boolean',
+      defaultValue: 'false',
+      description: 'Whether the component is in a loading state',
+    },
+    {
+      name: 'onRefresh',
+      type: '() => void',
+      defaultValue: 'undefined',
+      description: 'Callback function for the refresh button',
+    },
   ]
 
   const features = [
@@ -102,6 +149,42 @@ export default function FileExplorerPage() {
       ),
       title: "Syntax Highlighting",
       description: "View file contents with language-specific syntax highlighting for better readability."
+    },
+    {
+      icon: (
+        <svg className="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      ),
+      title: "Image Preview",
+      description: "Preview images directly in the explorer with support for multiple formats."
+    },
+    {
+      icon: (
+        <svg className="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      title: "Accessibility",
+      description: "Full keyboard navigation support and screen reader compatibility."
+    },
+    {
+      icon: (
+        <svg className="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      ),
+      title: "Performance Optimized",
+      description: "Memoized components and optimized rendering for large file structures."
+    },
+    {
+      icon: (
+        <svg className="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+        </svg>
+      ),
+      title: "Error Handling",
+      description: "Robust error boundaries and graceful fallbacks for better user experience."
     }
   ]
 
@@ -109,19 +192,27 @@ export default function FileExplorerPage() {
     {
       type: 'do' as const,
       items: [
-        'Provide meaningful file and folder names',
-        'Limit the number of files for better performance',
-        'Include a variety of file types to showcase syntax highlighting',
-        'Customize the height to fit your UI requirements',
+        'Provide meaningful file and folder names for better user experience',
+        'Use appropriate file icons to help users identify file types quickly',
+        'Implement proper error handling for file operations',
+        'Optimize performance for large file structures using memoization',
+        'Provide loading states for better user feedback',
+        'Use proper ARIA labels for accessibility compliance',
+        'Test keyboard navigation thoroughly',
+        'Implement proper image fallbacks for preview failures',
       ]
     },
     {
       type: 'dont' as const,
       items: [
-        'Use extremely large files that might slow down rendering',
-        'Include sensitive information in the file contents',
-        'Nest folders too deeply, making navigation difficult',
-        'Forget to handle errors for file operations',
+        'Load extremely large file trees without virtualization',
+        'Include sensitive information in file contents for demos',
+        'Nest folders too deeply without proper UX considerations',
+        'Forget to handle clipboard API failures gracefully',
+        'Ignore accessibility requirements for keyboard users',
+        'Use the component without proper error boundaries',
+        'Implement file operations without proper validation',
+        'Forget to provide meaningful feedback for user actions',
       ]
     }
   ]
@@ -129,50 +220,77 @@ export default function FileExplorerPage() {
   const usageCode = `import { FileExplorer } from "@/components/ui/file-explorer"
 import { FileCode, FolderClosed, FolderOpen, ImageIcon, FileText } from "lucide-react"
 
-// Define your file system structure with custom icons
-const myFileSystem = {
+const previewFileSystem = {
   id: 'root',
   name: 'my-project',
-  type: 'folder',
+  type: 'folder' as const,
   expanded: true,
   icon: <FolderClosed className="h-4 w-4 text-blue-500" />,
   expandedIcon: <FolderOpen className="h-4 w-4 text-blue-500" />,
   children: [
     {
-      id: 'file1',
-      name: 'example.ts',
-      type: 'file',
-      language: 'typescript',
-      content: 'console.log("Hello world!");',
-      icon: <FileCode className="h-4 w-4 text-green-500" />
-    },
-    {
-      id: 'images',
-      name: 'images',
-      type: 'folder',
-      icon: <FolderClosed className="h-4 w-4 text-purple-500" />,
-      expandedIcon: <FolderOpen className="h-4 w-4 text-purple-500" />,
+      id: 'src',
+      name: 'src',
+      type: 'folder' as const,
       children: [
         {
-          id: 'logo.png',
-          name: 'logo.png',
-          type: 'file',
-          content: '/logo.png',
-          icon: <ImageIcon className="h-4 w-4 text-orange-500" />
+          id: 'file1',
+          name: 'example.ts',
+          type: 'file' as const,
+          language: 'typescript',
+          content: 'console.log("Hello world!");',
+          icon: <FileCode className="h-4 w-4 text-green-500" />
+        },
+        {
+          id: 'images',
+          name: 'images',
+          type: 'folder' as const,
+          icon: <FolderClosed className="h-4 w-4 text-purple-500" />,
+          expandedIcon: <FolderOpen className="h-4 w-4 text-purple-500" />,
+          children: [{
+            id: 'logo.png',
+            name: 'logo.png',
+            type: 'file' as const,
+            isImage: true,
+            imageUrl: 'https://via.placeholder.com/300x200/3B82F6/FFFFFF?text=Logo',
+            content: 'Binary image data',
+            icon: <ImageIcon className="h-4 w-4 text-orange-500" />
+          }]
         }
       ]
     }
-    // Add more files and folders
   ]
 }
 
+
+
 export default function MyComponent() {
+  const [loading, setLoading] = useState(false)
+
+  const handleFileSelect = (file) => {
+    console.log('Selected file:', file.name)
+  }
+
+  const handleFolderToggle = (folderId, isExpanded) => {
+    console.log(\`Folder \${folderId} is now \${isExpanded ? 'expanded' : 'collapsed'}\`)
+  }
+
+  const handleRefresh = () => {
+    setLoading(true)
+    // Simulate loading
+    setTimeout(() => setLoading(false), 1000)
+  }
+
   return (
     <FileExplorer
-      initialData={myFileSystem}
+      initialData={previewFileSystem}
       height="500px"
       showTitle={false}
-      // You can also customize default icons used for files without custom icons
+      loading={loading}
+      onFileSelect={handleFileSelect}
+      onFolderToggle={handleFolderToggle}
+      onRefresh={handleRefresh}
+      // Customize default icons used for files without custom icons
       defaultFileIcon={<FileText className="h-4 w-4 text-gray-500" />}
       defaultFolderIcon={<FolderClosed className="h-4 w-4 text-amber-500" />}
       defaultFolderOpenIcon={<FolderOpen className="h-4 w-4 text-amber-500" />}
@@ -185,12 +303,8 @@ export default function MyComponent() {
     name: 'my-project',
     type: 'folder' as const,
     expanded: true,
-    icon: <svg className="h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-    </svg>,
-    expandedIcon: <svg className="h-4 w-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z" />
-    </svg>,
+    icon: <FolderClosed className="h-4 w-4 text-blue-500" />,
+    expandedIcon: <FolderOpen className="h-4 w-4 text-blue-500" />,
     children: [
       {
         id: 'src',
@@ -203,43 +317,35 @@ export default function MyComponent() {
             type: 'file' as const,
             language: 'typescript',
             content: 'console.log("Hello world!");',
-            icon: <svg className="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-            </svg>
+            icon: <FileCode className="h-4 w-4 text-green-500" />
           },
           {
             id: 'images',
             name: 'images',
             type: 'folder' as const,
-            icon: <svg className="h-4 w-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-            </svg>,
-            expandedIcon: <svg className="h-4 w-4 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z" />
-            </svg>,
-            children: [
-              {
-                id: 'logo.png',
-                name: 'logo.png',
-                type: 'file' as const,
-                content: '/logo.png',
-                icon: <svg className="h-4 w-4 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-              }
-            ]
+            icon: <FolderClosed className="h-4 w-4 text-purple-500" />,
+            expandedIcon: <FolderOpen className="h-4 w-4 text-purple-500" />,
+            children: [{
+              id: 'logo.png',
+              name: 'logo.png',
+              type: 'file' as const,
+              isImage: true,
+              imageUrl: 'https://via.placeholder.com/300x200/3B82F6/FFFFFF?text=Logo',
+              content: 'Binary image data',
+              icon: <ImageIcon className="h-4 w-4 text-orange-500" />
+            }]
           }
         ]
       }
     ]
-
   }
+
 
 
   return (
     <ComponentDocTemplate
       title="File Explorer"
-      description="A customizable file explorer component for navigating and viewing file systems."
+      description="A fully-featured, accessible file explorer component with syntax highlighting, image preview, search functionality, and keyboard navigation support. Perfect for showcasing code structures, documentation sites, or any hierarchical data visualization."
       previewComponent={
         <FileExplorer
           initialData={previewFileSystem}
@@ -250,11 +356,71 @@ export default function MyComponent() {
       }
       githubPath="registry/new-york/file-explorer/file-explorer.tsx"
       usageCode={usageCode}
-      usageDescription="The File Explorer component provides an interface for browsing and viewing a hierarchical file system structure."
+      usageDescription="The File Explorer component provides a comprehensive interface for browsing and viewing hierarchical file system structures with full accessibility support, performance optimizations, and extensive customization options."
       propsData={propsData}
       features={features}
       bestPractices={bestPractices}
       componentName="https://rigidui.vercel.app/registry/file-explorer"
+      additionalSections={
+        <section className="space-y-8">
+          <div className="flex items-center space-x-3">
+            <svg className="h-7 w-7 text-indigo-500 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+            </svg>
+            <h2 id="advanced-usage" className="md:text-3xl text-2xl font-bold text-gray-900 dark:text-white">
+              Advanced Usage
+            </h2>
+          </div>
+          <p className="md:text-lg text-gray-700 dark:text-gray-300 max-w-3xl">
+            Explore different configurations and use cases for the File Explorer component with various project structures and interactive features.
+          </p>
+
+          <div className="space-y-12">
+            {advancedUsageExamples.map((example, index) => (
+              <div key={index} className="space-y-6">
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                    {example.title}
+                  </h3>
+                  <p className="text-gray-700 dark:text-gray-300">
+                    {example.description}
+                  </p>
+                </div>
+
+                <div className="bg-white dark:bg-background rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+                  <Tabs defaultValue="preview" className="w-full pb-4">
+                    <TabsList className="flex justify-start border-b border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900/70">
+                      <TabsTrigger
+                        value="preview"
+                        className="data-[state=active]:bg-white dark:data-[state=active]:bg-background data-[state=active]:shadow-sm"
+                      >
+                        Preview
+                      </TabsTrigger>
+                      <TabsTrigger
+                        value="code"
+                        className="data-[state=active]:bg-white dark:data-[state=active]:bg-background data-[state=active]:shadow-sm"
+                      >
+                        Code
+                      </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="preview" className="px-8 flex flex-col justify-start">
+                      <div className="mb-4 mt-4 text-sm font-medium text-gray-500 dark:text-gray-400">Live Preview</div>
+                      {example.component}
+                    </TabsContent>
+                    <TabsContent value="code" className="max-h-[500px] overflow-auto">
+                      <CodeBlock
+                        code={example.code}
+                        language='typescript'
+                        filename={`${example.title.replace(/\s+/g, '')}.tsx`}
+                      />
+                    </TabsContent>
+                  </Tabs>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      }
     />
   )
 }
