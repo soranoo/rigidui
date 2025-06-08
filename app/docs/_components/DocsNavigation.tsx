@@ -12,6 +12,7 @@ interface NavigationItem {
   title: string
   href: string
   items?: NavigationItem[]
+  isCollapsed?: boolean
 }
 
 const navigationItems: NavigationItem[] = [
@@ -22,6 +23,7 @@ const navigationItems: NavigationItem[] = [
   {
     title: 'Components',
     href: '/docs/components',
+    isCollapsed: false,
     items: [
       { title: 'Location Picker', href: '/docs/components/location-picker' },
       { title: 'Infinite Scroll', href: '/docs/components/infinite-scroll' },
@@ -39,15 +41,7 @@ const navigationItems: NavigationItem[] = [
       { title: 'useToggle', href: '/docs/hooks/use-toggle' },
       { title: 'useLocalStorage', href: '/docs/hooks/use-local-storage' },
     ]
-  },
-  {
-    title: 'Utilities',
-    href: '/docs/utilities',
-    items: [
-      { title: 'Colors', href: '/docs/utilities/colors' },
-      { title: 'Typography', href: '/docs/utilities/typography' },
-    ]
-  },
+  }
 ]
 
 export function DocsNavigation({
@@ -95,7 +89,8 @@ export function DocsNavigation({
 
     const manualExpansionState = expandedSections[item.href];
     const autoExpandCondition = item.items && item.items.length > 0 && pathname.startsWith(item.href);
-    const isExpanded = manualExpansionState !== undefined ? manualExpansionState : autoExpandCondition;
+    const defaultExpandCondition = item.isCollapsed === false && item.items && item.items.length > 0;
+    const isExpanded = manualExpansionState !== undefined ? manualExpansionState : (autoExpandCondition || defaultExpandCondition);
 
     return (
       <div>

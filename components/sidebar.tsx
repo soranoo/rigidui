@@ -60,19 +60,6 @@ const Sidebar = () => {
             </span>
           </Link>
 
-          <Link href="/docs/examples" className="flex items-center lg:gap-3 gap-1.5 px-4 py-2.5 rounded-lg hover:bg-amber-50 dark:hover:bg-amber-900/30 transition-all duration-200 group border border-transparent hover:border-amber-100 dark:hover:border-amber-800 hover:shadow-sm dark:hover:shadow-amber-900/20">
-            <div className="p-1.5 rounded-md bg-amber-100 dark:bg-amber-900/50 group-hover:bg-amber-200 dark:group-hover:bg-amber-800/60 transition-colors">
-              <svg viewBox="0 0 24 24" className="w-4 h-4 text-amber-600 dark:text-amber-400 transition-colors" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                <circle cx="9" cy="9" r="2" />
-                <path d="M21 15l-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
-              </svg>
-            </div>
-            <span className="lg:text-sm text-xs max-sm:hidden font-medium text-gray-700 dark:text-gray-300 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors">
-              Examples
-            </span>
-          </Link>
-
           <Link href="/docs/components" className="flex items-center lg:gap-3 gap-1.5 px-4 py-2.5 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/30 transition-all duration-200 group border border-transparent hover:border-purple-100 dark:hover:border-purple-800 hover:shadow-sm dark:hover:shadow-purple-900/20">
             <div className="p-1.5 rounded-md bg-purple-100 dark:bg-purple-900/50 group-hover:bg-purple-200 dark:group-hover:bg-purple-800/60 transition-colors">
               <svg viewBox="0 0 24 24" className="w-4 h-4 text-purple-600 dark:text-purple-400 transition-colors" fill="none" stroke="currentColor" strokeWidth="2">
