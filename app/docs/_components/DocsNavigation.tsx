@@ -18,10 +18,6 @@ const navigationItems: NavigationItem[] = [
   {
     title: 'Getting Started',
     href: '/docs/getting-started',
-    items: [
-      { title: 'Installation', href: '/docs/getting-started/installation' },
-      { title: 'Usage', href: '/docs/getting-started/usage' },
-    ]
   },
   {
     title: 'Components',

@@ -1,13 +1,7 @@
 # RigidUI
 
 <p align="center">
-  <img src="/public/logo.png" alt="RigidUI Logo" width="300" />
-</p>
-
-<p align="center">
-  <a href="https://www.npmjs.com/package/rigidui"><img src="https://img.shields.io/npm/v/rigidui?style=flat&colorA=18181B&colorB=28CF8D" alt="npm version"></a>
-  <a href="https://www.npmjs.com/package/rigidui"><img src="https://img.shields.io/npm/dm/rigidui.svg?style=flat&colorA=18181B&colorB=28CF8D" alt="npm downloads"></a>
-  <a href="https://github.com/FgrReloaded/rigidui/blob/main/LICENSE"><img src="https://img.shields.io/github/license/FgrReloaded/rigidui?style=flat&colorA=18181B&colorB=28CF8D" alt="license"></a>
+  <img src="public/logo.png" alt="RigidUI Logo" width="300" />
 </p>
 
 <p align="center">
@@ -39,73 +33,50 @@ RigidUI extends shadcn/ui with additional enterprise-grade components:
 
 ## Installation
 
-1. **Set up a Next.js project with Tailwind CSS:**
+### Prerequisites
+
+RigidUI components require a project with the following setup:
+
+- ✅ **Tailwind CSS** installed and configured
+- ✅ **shadcn/ui** initialized in your project
+- ✅ **TypeScript** support
+
+
+### Install Components
+
+Add RigidUI components to your project with a single command:
 
 ```bash
-npx create-next-app@latest my-app --typescript --tailwind --eslint
-cd my-app
+# Currency Manager
+npx shadcn@latest add https://rigidui.vercel.app/registry/currency-manager
+
+# File Explorer
+npx shadcn@latest add https://rigidui.vercel.app/registry/file-explorer
+
+# Location Picker
+npx shadcn@latest add https://rigidui.vercel.app/registry/location-picker
+
+# Password Strength Meter
+npx shadcn@latest add https://rigidui.vercel.app/registry/strength-meter
+
+# File Uploader
+npx shadcn@latest add https://rigidui.vercel.app/registry/file-uploader
+
+# Infinite Scroll
+npx shadcn@latest add https://rigidui.vercel.app/registry/infinite-scroll
+
+# Multi-Step Form Wrapper
+npx shadcn@latest add https://rigidui.vercel.app/registry/multi-step-form-wrapper
 ```
 
-2. **Install shadcn CLI and initialize:**
+That's it! Components will be added to your `components/ui` directory and are fully customizable.
 
-```bash
-npm install -g shadcn
-npx shadcn init
-```
+## Next Steps
 
-3. **Configure your project to use RigidUI:**
+Once you have RigidUI components installed:
 
-When asked for a custom registry URL during initialization, use:
-
-```
-https://rigidui.vercel.app
-```
-
-4. **Install components:**
-
-```bash
-npx shadcn add button
-npx shadcn add location-picker
-npx shadcn add currency-manager
-# Add more components as needed
-```
-
-## Usage
-
-Here's an example of using the Currency Manager component:
-
-```tsx
-import {
-  CurrencyDisplay,
-  CurrencyProvider,
-  CurrencySelector,
-} from "@/components/ui/currency-manager";
-
-export default function App() {
-  return (
-    <CurrencyProvider>
-      <div className="p-4">
-        <h1 className="text-2xl font-bold mb-4">Product Pricing</h1>
-
-        <div className="flex items-center justify-between mb-6">
-          <p>Select your preferred currency:</p>
-          <CurrencySelector className="w-40" />
-        </div>
-
-        <div className="space-y-4">
-          <div className="p-4 border rounded-lg">
-            <h2 className="font-medium">Premium Package</h2>
-            <p className="text-gray-600 mb-2">Enterprise-grade solution</p>
-            <div className="text-xl font-bold">
-              <CurrencyDisplay value={199.99} sourceCurrency="USD" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </CurrencyProvider>
-  );
-}
-```
+- **Browse Components** - Explore all available components with live examples in our [documentation](https://rigidui.vercel.app/docs/components)
+- **View on GitHub** - Star the repo and contribute to the project at [github.com/FgrReloaded/rigidui](https://github.com/FgrReloaded/rigidui)
 
 ## Documentation
 

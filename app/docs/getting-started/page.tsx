@@ -1,7 +1,6 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CodeBlock } from "../_components/CodeBlock";
 import Link from "next/link";
-import { ArrowRight, CheckCircle, Workflow, Paintbrush, Wrench } from "lucide-react";
+import { ArrowRight, CheckCircle, Terminal, AlertTriangle, Sparkles, Zap, Package, Download, Eye, Layers, Workflow } from "lucide-react";
 
 export default function GettingStartedPage() {
   return (
@@ -12,275 +11,210 @@ export default function GettingStartedPage() {
             Getting Started
           </h1>
           <p className="text-xl text-muted-foreground">
-            Install and configure RigidUI components in your project
+            Get up and running with RigidUI components in minutes
           </p>
         </div>
       </div>
 
       <div className="mt-8 border-t pt-8">
-        <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-          <div className="overflow-hidden text-ellipsis whitespace-nowrap">
-            A guide to installing and using RigidUI components in your project.
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border border-blue-200 dark:border-blue-800/50 rounded-xl p-6">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-white">
+              <Sparkles className="h-4 w-4" />
+            </div>
+            <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100">
+              Enterprise-grade components for complex applications
+            </h3>
           </div>
+          <p className="text-blue-800 dark:text-blue-200">
+            RigidUI extends shadcn/ui with production-ready components. Simply copy, paste, and customize.
+          </p>
         </div>
       </div>
 
-      <div className="mt-8 grid gap-8">
-        <section className="space-y-4">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-              <span className="text-sm font-bold text-primary">1</span>
+      <div className="mt-12 grid gap-12">
+        <section className="space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-100 dark:bg-orange-900/30">
+              <AlertTriangle className="h-5 w-5 text-orange-600 dark:text-orange-400" />
             </div>
-            <h2 className="text-2xl font-bold">Prerequisites</h2>
+            <div>
+              <h2 className="text-2xl font-bold">Prerequisites</h2>
+              <p className="text-sm text-muted-foreground">Set up your project with the required dependencies</p>
+            </div>
           </div>
 
-          <p className="text-muted-foreground">
-            Before you start, make sure you have a Next.js project set up with Tailwind CSS.
-          </p>
+          <div className="bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-800 rounded-lg p-6">
+            <h3 className="font-semibold text-orange-900 dark:text-orange-200 mb-3">
+              ⚠️ Important: Tailwind CSS Setup Required
+            </h3>
+            <p className="text-orange-800 dark:text-orange-300 mb-4">
+              RigidUI components require a project with Tailwind CSS and shadcn/ui properly configured.
+            </p>
 
-          <CodeBlock
-            language="bash"
-            code={`# Create a Next.js app with Tailwind CSS
-npx create-next-app@latest my-app --typescript --tailwind --eslint`}
-          />
-        </section>
-
-        <section className="space-y-4">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-              <span className="text-sm font-bold text-primary">2</span>
-            </div>
-            <h2 className="text-2xl font-bold">Install the shadcn CLI</h2>
-          </div>
-
-          <p className="text-muted-foreground">
-            RigidUI components are installed using the shadcn CLI. First, install it globally:
-          </p>
-
-          <Tabs defaultValue="npm" className="mt-4">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="npm">npm</TabsTrigger>
-              <TabsTrigger value="yarn">yarn</TabsTrigger>
-              <TabsTrigger value="pnpm">pnpm</TabsTrigger>
-            </TabsList>
-            <TabsContent value="npm">
-              <CodeBlock
-                language="bash"
-                code="npm install -g shadcn"
-              />
-            </TabsContent>
-            <TabsContent value="yarn">
-              <CodeBlock
-                language="bash"
-                code="yarn global add shadcn"
-              />
-            </TabsContent>
-            <TabsContent value="pnpm">
-              <CodeBlock
-                language="bash"
-                code="pnpm add -g shadcn"
-              />
-            </TabsContent>
-          </Tabs>
-        </section>
-
-        <section className="space-y-4">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-              <span className="text-sm font-bold text-primary">3</span>
-            </div>
-            <h2 className="text-2xl font-bold">Configure your project</h2>
-          </div>
-
-          <p className="text-muted-foreground">
-            Initialize shadcn in your project and configure it to use the RigidUI registry:
-          </p>
-
-          <CodeBlock
-            language="bash"
-            code="npx shadcn init"
-          />
-
-          <p className="text-muted-foreground mt-4">
-            During initialization, select your preferences for styling and components. When asked about a custom registry URL, use:
-          </p>
-
-          <CodeBlock
-            language="bash"
-            code="https://rigidui.yoursite.com"
-          />
-        </section>
-
-        <section className="space-y-4">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-              <span className="text-sm font-bold text-primary">4</span>
-            </div>
-            <h2 className="text-2xl font-bold">Installing Components</h2>
-          </div>
-
-          <p className="text-muted-foreground">
-            Now you can install components from the RigidUI registry using the shadcn CLI:
-          </p>
-
-          <CodeBlock
-            language="bash"
-            code="npx shadcn add button"
-          />
-
-          <p className="text-muted-foreground mt-4">
-            To see all available components, you can run:
-          </p>
-
-          <CodeBlock
-            language="bash"
-            code="npx shadcn ls"
-          />
-        </section>
-
-        <section className="space-y-4">
-          <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-              <span className="text-sm font-bold text-primary">5</span>
-            </div>
-            <h2 className="text-2xl font-bold">Using Components</h2>
-          </div>
-
-          <p className="text-muted-foreground">
-            After installing a component, you can import and use it in your application:
-          </p>
-
-          <CodeBlock
-            language="tsx"
-            code={`import { Button } from "@/components/ui/button";
-
-export default function MyComponent() {
-  return (
-    <div>
-      <h1>Welcome to my app</h1>
-      <Button variant="default">Click me</Button>
-    </div>
-  );
-}`}
-          />
-        </section>
-
-        <section className="space-y-4 mt-8">
-          <h2 className="text-2xl font-bold">Features</h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="flex items-start gap-2">
-              <Paintbrush className="h-5 w-5 text-primary mt-0.5" />
-              <div>
-                <h3 className="font-medium">Style Customization</h3>
-                <p className="text-sm text-muted-foreground">
-                  Components use Tailwind CSS classes for easy customization
-                </p>
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-orange-600" />
+                <span className="text-sm text-orange-800 dark:text-orange-300">Tailwind CSS installed and configured</span>
               </div>
-            </div>
-            <div className="flex items-start gap-2">
-              <CheckCircle className="h-5 w-5 text-primary mt-0.5" />
-              <div>
-                <h3 className="font-medium">TypeScript Support</h3>
-                <p className="text-sm text-muted-foreground">
-                  Full TypeScript definitions for all components
-                </p>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-orange-600" />
+                <span className="text-sm text-orange-800 dark:text-orange-300">shadcn/ui initialized</span>
               </div>
-            </div>
-            <div className="flex items-start gap-2">
-              <Workflow className="h-5 w-5 text-primary mt-0.5" />
-              <div>
-                <h3 className="font-medium">Component Registry</h3>
-                <p className="text-sm text-muted-foreground">
-                  Install only the components you need
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start gap-2">
-              <Wrench className="h-5 w-5 text-primary mt-0.5" />
-              <div>
-                <h3 className="font-medium">Fully Customizable</h3>
-                <p className="text-sm text-muted-foreground">
-                  Source code is added to your project for complete control
-                </p>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-orange-600" />
+                <span className="text-sm text-orange-800 dark:text-orange-300">TypeScript support</span>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="space-y-4 bg-primary/5 p-6 rounded-lg mt-6">
-          <h2 className="text-2xl font-bold">Customizing Components</h2>
-          <p className="text-muted-foreground">
-            RigidUI components are installed directly into your project, giving you full control to modify them:
-          </p>
+        <section className="space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/30">
+              <Terminal className="h-5 w-5 text-green-600 dark:text-green-400" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold">Install Components</h2>
+              <p className="text-sm text-muted-foreground">Add RigidUI components to your project with a single command</p>
+            </div>
+          </div>
 
-          <ul className="list-disc list-inside space-y-2 text-muted-foreground ml-4 mt-2">
-            <li>Components are added to your <code className="text-xs bg-muted px-1 py-0.5 rounded">components/ui</code> directory</li>
-            <li>Modify the styles by editing the Tailwind classes</li>
-            <li>Extend functionality by modifying the component code</li>
-            <li>Configure theme variables in your <code className="text-xs bg-muted px-1 py-0.5 rounded">tailwind.config.js</code></li>
-          </ul>
+          <div className="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 border border-green-200 dark:border-green-800/50 rounded-xl p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-500 text-white">
+                <Zap className="h-4 w-4" />
+              </div>
+              <h3 className="text-lg font-semibold text-green-900 dark:text-green-100">
+                One command installation
+              </h3>
+            </div>
+            <p className="text-green-800 dark:text-green-200 mb-4">
+              Copy and paste any of these commands to add components to your project:
+            </p>
 
-          <div className="mt-4">
-            <CodeBlock
-              language="js"
-              code={`// tailwind.config.js
-module.exports = {
-  theme: {
-    extend: {
-      colors: {
-        // Customize your color palette
-        primary: {
-          DEFAULT: "#0070f3",
-          foreground: "#ffffff",
-        },
-      },
-      // Add more customizations here
-    },
-  },
-}`}
-            />
+            <div className="grid gap-4">
+              <div className="bg-white dark:bg-gray-900 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Package className="h-4 w-4 text-blue-600" />
+                  <span className="font-medium text-sm">Currency Manager</span>
+                </div>
+                <CodeBlock
+                  language="bash"
+                  code="npx shadcn@latest add https://rigidui.vercel.app/registry/currency-manager"
+                />
+              </div>
+
+              <div className="bg-white dark:bg-gray-900 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Terminal className="h-4 w-4 text-green-600" />
+                  <span className="font-medium text-sm">File Explorer</span>
+                </div>
+                <CodeBlock
+                  language="bash"
+                  code="npx shadcn@latest add https://rigidui.vercel.app/registry/file-explorer"
+                />
+              </div>
+
+              <div className="bg-white dark:bg-gray-900 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Layers className="h-4 w-4 text-purple-600" />
+                  <span className="font-medium text-sm">Location Picker</span>
+                </div>
+                <CodeBlock
+                  language="bash"
+                  code="npx shadcn@latest add https://rigidui.vercel.app/registry/location-picker"
+                />
+              </div>
+
+              <div className="bg-white dark:bg-gray-900 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Eye className="h-4 w-4 text-red-600" />
+                  <span className="font-medium text-sm">Password Strength Meter</span>
+                </div>
+                <CodeBlock
+                  language="bash"
+                  code="npx shadcn@latest add https://rigidui.vercel.app/registry/strength-meter"
+                />
+              </div>
+
+              <div className="bg-white dark:bg-gray-900 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Download className="h-4 w-4 text-orange-600" />
+                  <span className="font-medium text-sm">File Uploader</span>
+                </div>
+                <CodeBlock
+                  language="bash"
+                  code="npx shadcn@latest add https://rigidui.vercel.app/registry/file-uploader"
+                />
+              </div>
+
+              <div className="bg-white dark:bg-gray-900 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Zap className="h-4 w-4 text-yellow-600" />
+                  <span className="font-medium text-sm">Infinite Scroll</span>
+                </div>
+                <CodeBlock
+                  language="bash"
+                  code="npx shadcn@latest add https://rigidui.vercel.app/registry/infinite-scroll"
+                />
+              </div>
+
+              <div className="bg-white dark:bg-gray-900 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Workflow className="h-4 w-4 text-cyan-600" />
+                  <span className="font-medium text-sm">Multi-Step Form Wrapper</span>
+                </div>
+                <CodeBlock
+                  language="bash"
+                  code="npx shadcn@latest add https://rigidui.vercel.app/registry/multi-step-form-wrapper"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
+            <h4 className="font-medium text-amber-900 dark:text-amber-200 mb-2">💡 Pro Tip</h4>
+            <p className="text-sm text-amber-800 dark:text-amber-300">
+              Components will be added to your <code className="bg-amber-100 dark:bg-amber-900 px-1 rounded">components/ui</code> directory and are fully customizable.
+            </p>
           </div>
         </section>
 
-        <section className="space-y-4 mt-6">
+        {/* Next Steps */}
+        <section className="space-y-6">
           <h2 className="text-2xl font-bold">Next Steps</h2>
           <p className="text-muted-foreground">
-            Now that you have RigidUI set up, explore these resources:
+            Now that you have RigidUI set up, explore what&apos;s possible:
           </p>
-          <div className="grid gap-4 mt-4 sm:grid-cols-2">
+
+          <div className="grid gap-4 sm:grid-cols-2">
             <Link
               href="/docs/components"
-              className="flex items-center justify-between p-4 bg-card rounded-md border hover:border-primary transition-colors"
+              className="group flex items-center justify-between p-6 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 border border-blue-200 dark:border-blue-800 rounded-lg hover:border-blue-300 dark:hover:border-blue-700 transition-colors"
             >
               <div>
-                <h3 className="font-medium">Browse Components</h3>
-                <p className="text-sm text-muted-foreground">
-                  Explore all available components
+                <h3 className="font-semibold text-blue-900 dark:text-blue-100">Browse Components</h3>
+                <p className="text-sm text-blue-700 dark:text-blue-300">
+                  Explore all available components with live examples
                 </p>
               </div>
-              <ArrowRight className="h-5 w-5 text-muted-foreground" />
+              <ArrowRight className="h-5 w-5 text-blue-600 dark:text-blue-400 group-hover:translate-x-1 transition-transform" />
             </Link>
-            <Link
-              href="/docs/customization"
-              className="flex items-center justify-between p-4 bg-card rounded-md border hover:border-primary transition-colors"
-            >
-              <div>
-                <h3 className="font-medium">Customization Guide</h3>
-                <p className="text-sm text-muted-foreground">
-                  Learn how to customize components
-                </p>
-              </div>
-              <ArrowRight className="h-5 w-5 text-muted-foreground" />
-            </Link>
-          </div>
-          <div className="mt-4">
+
             <a
               href="https://github.com/FgrReloaded/rigidui"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center text-primary hover:underline"
+              className="group flex items-center justify-between p-6 bg-gradient-to-r from-gray-50 to-slate-50 dark:from-gray-950/30 dark:to-slate-950/30 border border-gray-200 dark:border-gray-800 rounded-lg hover:border-gray-300 dark:hover:border-gray-700 transition-colors"
             >
-              View on GitHub <ArrowRight className="ml-1 h-4 w-4" />
+              <div>
+                <h3 className="font-semibold text-gray-900 dark:text-gray-100">View on GitHub</h3>
+                <p className="text-sm text-gray-700 dark:text-gray-300">
+                  Star the repo and contribute to the project
+                </p>
+              </div>
+              <ArrowRight className="h-5 w-5 text-gray-600 dark:text-gray-400 group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
         </section>
