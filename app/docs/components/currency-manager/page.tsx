@@ -78,7 +78,7 @@ export default function CurrencyManagerPage() {
 
   const usageCode = `import { CurrencyDisplay, CurrencyProvider, CurrencySelector } from "@/components/ui/currency-manager"
 
-const LIVE_API_KEY = "fb4a1b3c17c74a147b758edb";
+const LIVE_API_KEY = process.env.EXCHANGERATE_API_KEY; // Replace with your actual API key
 const LIVE_API_URL = \`https://v6.exchangerate-api.com/v6/\${LIVE_API_KEY}/latest/USD\`;
 
 async function liveRateFetcher(): Promise<Record<string, number>> {
@@ -276,7 +276,7 @@ function ShoppingCartLayout() {
   }
 
   const previewLiveRateFetcher = async (): Promise<Record<string, number>> => {
-    const apiKey = "fb4a1b3c17c74a147b758edb";
+    const apiKey = process.env.EXCHANGERATE_API_KEY; 
     const apiUrl = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`;
     try {
       console.log("Fetching live rates from exchangerate-api.com:", apiUrl);
