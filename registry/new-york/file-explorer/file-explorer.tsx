@@ -431,12 +431,16 @@ export function FileExplorer({
     onRefresh?.()
   }, [initialData, onRefresh])
 
+  const handleCloseFile = useCallback(() => {
+    setSelectedFile(null)
+  }, [])
+
   return (
     <FileExplorerErrorBoundary>
       <div className={cn("container p-0", className)}>
         {showTitle && <h1 className="text-3xl font-bold mb-6 text-center">{title}</h1>}
 
-        <div className="grid grid-cols-1 lg:grid-cols-6 gap-6">
+        <div className="relative grid grid-cols-1 lg:grid-cols-6 gap-6">
           <Card className={cn("lg:col-span-2 p-4 overflow-auto", cardClassName)} style={{ height }}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">Files</h2>
@@ -501,11 +505,30 @@ export function FileExplorer({
             )}
           </Card>
 
-          <Card className={cn("lg:col-span-4 overflow-hidden flex flex-col", cardClassName)} style={{ height }}>
+          <Card
+            className={cn(
+              "lg:col-span-4 overflow-hidden flex flex-col",
+              "lg:static lg:translate-x-0 lg:opacity-100",
+              selectedFile
+                ? "absolute inset-0 z-50 lg:relative lg:inset-auto lg:z-auto translate-x-0 opacity-100"
+                : "absolute inset-0 z-50 lg:relative lg:inset-auto lg:z-auto translate-x-full opacity-0 lg:translate-x-0 lg:opacity-100",
+              "transition-all duration-300 ease-in-out",
+              cardClassName
+            )}
+            style={{ height }}
+          >
             {selectedFile ? (
               <>
                 <div className="flex items-center justify-between border-b p-4">
                   <div className="flex items-center">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={handleCloseFile}
+                      className="h-8 w-8 mr-2 lg:hidden"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
                     <span className="mr-2">{getFileIcon(selectedFile, defaultFileIcon)}</span>
                     <span className="font-medium">{selectedFile.name}</span>
                   </div>
