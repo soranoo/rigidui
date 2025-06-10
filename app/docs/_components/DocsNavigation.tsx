@@ -38,8 +38,8 @@ const navigationItems: NavigationItem[] = [
     title: 'Hooks',
     href: '/docs/hooks',
     items: [
-      { title: 'useToggle', href: '/docs/hooks/use-toggle' },
-      { title: 'useLocalStorage', href: '/docs/hooks/use-local-storage' },
+      { title: 'useLocation', href: '/docs/hooks/use-location' },
+      { title: 'useCurrency', href: '/docs/hooks/use-currency' },
     ]
   }
 ]
