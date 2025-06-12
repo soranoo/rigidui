@@ -2,7 +2,6 @@ import { NextResponse } from "next/server"
 import path from "path"
 import { promises as fs } from "fs"
 import { registryItemSchema } from "shadcn/registry"
-export const runtime = 'edge';
 // This route shows an example for serving a component using a route handler.
 export async function GET(
   request: Request,
