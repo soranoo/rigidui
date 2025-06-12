@@ -39,7 +39,6 @@ const navigationItems: NavigationItem[] = [
     href: '/docs/hooks',
     items: [
       { title: 'useLocation', href: '/docs/hooks/use-location' },
-      { title: 'useCurrency', href: '/docs/hooks/use-currency' },
     ]
   }
 ]
