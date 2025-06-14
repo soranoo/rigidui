@@ -68,6 +68,11 @@
       "registryDependencies": [
         "button"
       ],
+      "dependencies": [
+        "react-hook-form",
+        "zod",
+        "@hookform/resolvers"
+      ],
       "files": [
         {
           "path": "registry/new-york/multi-step-form-wrapper/multi-step-form-wrapper.tsx",
