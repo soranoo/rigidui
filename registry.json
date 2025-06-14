@@ -123,6 +123,19 @@
         }
       ],
       "author": "Nitish Singh <devxnitish@gmail.com>"
+    },
+    {
+      "name": "use-location",
+      "type": "registry:hook",
+      "title": "Use Location",
+      "description": "A custom hook to get the manage location",
+      "files": [
+        {
+          "path": "registry/new-york/use-location/use-location.ts",
+          "type": "registry:hook"
+        }
+      ],
+      "author": "Nitish Singh <devxnitish@gmail.com>"
     }
   ]
 }
