@@ -279,7 +279,6 @@ function ShoppingCartLayout() {
     const apiKey = process.env.NEXT_PUBLIC_EXCHANGERATE_API_KEY;
     const apiUrl = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/USD`;
     try {
-      console.log("Fetching live rates from exchangerate-api.com:", apiUrl);
       const response = await fetch(apiUrl);
       if (!response.ok) {
         console.error(`Preview API request failed: ${response.status}`);
