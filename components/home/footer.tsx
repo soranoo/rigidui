@@ -48,48 +48,58 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:w-2/3">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 lg:w-2/3">
             <div>
               <h3 className="font-bold text-foreground mb-4 text-lg">Documentation</h3>
               <div className="space-y-3">
-                {["Getting Started", "Installation", "Components", "Examples"].map((link, i) => (
-                  <Link key={i} href="/docs" className="block text-muted-foreground hover:text-primary transition-colors duration-200 hover:translate-x-1 transform">
-                    {link}
-                  </Link>
-                ))}
+                <Link href="/docs" className="block text-muted-foreground hover:text-primary transition-colors duration-200 hover:translate-x-1 transform">
+                  Documentation
+                </Link>
+                <Link href="/docs/getting-started" className="block text-muted-foreground hover:text-primary transition-colors duration-200 hover:translate-x-1 transform">
+                  Getting Started
+                </Link>
+                <Link href="/docs/components" className="block text-muted-foreground hover:text-primary transition-colors duration-200 hover:translate-x-1 transform">
+                  Components
+                </Link>
+                <Link href="/docs/hooks" className="block text-muted-foreground hover:text-primary transition-colors duration-200 hover:translate-x-1 transform">
+                  Hooks
+                </Link>
               </div>
             </div>
 
             <div>
               <h3 className="font-bold text-foreground mb-4 text-lg">Components</h3>
               <div className="space-y-3">
-                {["Currency Manager", "File Explorer", "Location Picker", "Multi-Step Form"].map((link, i) => (
-                  <Link key={i} href="/docs/components" className="block text-muted-foreground hover:text-primary transition-colors duration-200 hover:translate-x-1 transform">
-                    {link}
-                  </Link>
-                ))}
+                <Link href="/docs/components/currency-manager" className="block text-muted-foreground hover:text-primary transition-colors duration-200 hover:translate-x-1 transform">
+                  Currency Manager
+                </Link>
+                <Link href="/docs/components/file-explorer" className="block text-muted-foreground hover:text-primary transition-colors duration-200 hover:translate-x-1 transform">
+                  File Explorer
+                </Link>
+                <Link href="/docs/components/location-picker" className="block text-muted-foreground hover:text-primary transition-colors duration-200 hover:translate-x-1 transform">
+                  Location Picker
+                </Link>
+                <Link href="/docs/components/file-uploader" className="block text-muted-foreground hover:text-primary transition-colors duration-200 hover:translate-x-1 transform">
+                  File Uploader
+                </Link>
+                <Link href="/docs/components/strength-meter" className="block text-muted-foreground hover:text-primary transition-colors duration-200 hover:translate-x-1 transform">
+                  Password Strength
+                </Link>
               </div>
             </div>
 
             <div>
-              <h3 className="font-bold text-foreground mb-4 text-lg">Resources</h3>
+              <h3 className="font-bold text-foreground mb-4 text-lg">More</h3>
               <div className="space-y-3">
-                {["GitHub", "Examples", "Blog", "Changelog"].map((link, i) => (
-                  <a key={i} href="#" className="block text-muted-foreground hover:text-primary transition-colors duration-200 hover:translate-x-1 transform">
-                    {link}
-                  </a>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h3 className="font-bold text-foreground mb-4 text-lg">Community</h3>
-              <div className="space-y-3">
-                {["Discord", "Twitter", "LinkedIn", "Support"].map((link, i) => (
-                  <a key={i} href="#" className="block text-muted-foreground hover:text-primary transition-colors duration-200 hover:translate-x-1 transform">
-                    {link}
-                  </a>
-                ))}
+                <Link href="/docs/components/infinite-scroll" className="block text-muted-foreground hover:text-primary transition-colors duration-200 hover:translate-x-1 transform">
+                  Infinite Scroll
+                </Link>
+                <Link href="/docs/components/multi-step-form-wrapper" className="block text-muted-foreground hover:text-primary transition-colors duration-200 hover:translate-x-1 transform">
+                  Multi-Step Form
+                </Link>
+                <Link href="/docs/hooks/use-location" className="block text-muted-foreground hover:text-primary transition-colors duration-200 hover:translate-x-1 transform">
+                  useLocation Hook
+                </Link>
               </div>
             </div>
           </div>
@@ -100,9 +110,15 @@ const Footer = () => {
             © 2025 RigidUI. Built with shadcn/ui • Designed for developers
           </div>
           <div className="flex items-center gap-6 text-sm">
-            <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</a>
-            <a href="#" className="text-muted-foreground hover:text-primary transition-colors">Terms of Service</a>
-            <a href="#" className="text-muted-foreground hover:text-primary transition-colors">MIT License</a>
+            <Link href="/docs" className="text-muted-foreground hover:text-primary transition-colors">
+              Documentation
+            </Link>
+            <Link href="/docs/components" className="text-muted-foreground hover:text-primary transition-colors">
+              Components
+            </Link>
+            <Link href="/docs/hooks" className="text-muted-foreground hover:text-primary transition-colors">
+              Hooks
+            </Link>
           </div>
         </div>
       </div>
