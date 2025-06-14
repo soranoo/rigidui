@@ -436,9 +436,9 @@ export default function Home() {
 
           <div className="mt-16 flex flex-col items-center gap-6">
             <p className="text-muted-foreground font-medium">Built with modern technologies</p>
-            <div className="flex items-center gap-8 opacity-60">
+            <div className="flex items-center md:gap-8 gap-4 opacity-60">
               {["React 19", "TypeScript", "Tailwind CSS", "shadcn/ui"].map((tech, i) => (
-                <div key={i} className="text-lg font-bold text-muted-foreground hover:text-primary transition-colors cursor-pointer">
+                <div key={i} className="md:text-lg text-xs font-bold text-muted-foreground hover:text-primary transition-colors cursor-pointer">
                   {tech}
                 </div>
               ))}
