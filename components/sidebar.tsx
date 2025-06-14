@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import localFont from 'next/font/local'
 import dynamic from 'next/dynamic'
+import Image from 'next/image'
 const navFont = localFont({ src: '../app/34.otf' })
 
 
@@ -19,12 +20,10 @@ const Sidebar = () => {
 
   return (
     <div style={navFont.style} className="fixed top-1.5 left-0 w-screen h-16 bg-transparent z-50 flex gap-2 items-center justify-center">
-      <div className="h-full sm:w-[8vw] w-[20vw] bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 dark:from-blue-600 dark:via-purple-600 dark:to-pink-600 rounded-lg flex items-center justify-center hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl dark:shadow-gray-900/50 dark:hover:shadow-gray-900/70 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 via-purple-400/20 to-pink-400/20 dark:from-blue-300/30 dark:via-purple-300/30 dark:to-pink-300/30 animate-pulse"></div>
-        <div className="w-8 h-8 flex items-center justify-center relative z-10">
-          <svg viewBox="0 0 24 24" className="w-7 h-7 text-white drop-shadow-lg" fill="currentColor">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-          </svg>
+      <div className="h-full sm:w-[8vw] w-[20vw] dark:bg-transparent backdrop-blur-lg rounded-lg flex items-center justify-center hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl dark:shadow-black/50 dark:hover:shadow-black/70 relative overflow-hidden group">
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-200/20 via-gray-200/20 to-gray-400/20 dark:from-gray-600/30 dark:via-gray-500/30 dark:to-gray-800/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div>
+          <Image src="/logo.png" alt="Logo" width={80} height={80} />
         </div>
       </div>
 
