@@ -392,7 +392,7 @@ function ShoppingCartLayout() {
       features={features}
       usageDescription="The Currency Manager allows users to select their preferred currency and see values converted in real-time."
       propsData={[]}
-      componentName="https://rigidui.vercel.app/registry/currency-manager"
+      componentName="https://rigidui.com/registry/currency-manager"
       subComponents={subComponents}
     />
   )

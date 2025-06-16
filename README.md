@@ -41,32 +41,31 @@ RigidUI components require a project with the following setup:
 - ✅ **shadcn/ui** initialized in your project
 - ✅ **TypeScript** support
 
-
 ### Install Components
 
 Add RigidUI components to your project with a single command:
 
 ```bash
 # Currency Manager
-npx shadcn@latest add https://rigidui.vercel.app/registry/currency-manager
+npx shadcn@latest add https://rigidui.com/registry/currency-manager
 
 # File Explorer
-npx shadcn@latest add https://rigidui.vercel.app/registry/file-explorer
+npx shadcn@latest add https://rigidui.com/registry/file-explorer
 
 # Location Picker
-npx shadcn@latest add https://rigidui.vercel.app/registry/location-picker
+npx shadcn@latest add https://rigidui.com/registry/location-picker
 
 # Password Strength Meter
-npx shadcn@latest add https://rigidui.vercel.app/registry/strength-meter
+npx shadcn@latest add https://rigidui.com/registry/strength-meter
 
 # File Uploader
-npx shadcn@latest add https://rigidui.vercel.app/registry/file-uploader
+npx shadcn@latest add https://rigidui.com/registry/file-uploader
 
 # Infinite Scroll
-npx shadcn@latest add https://rigidui.vercel.app/registry/infinite-scroll
+npx shadcn@latest add https://rigidui.com/registry/infinite-scroll
 
 # Multi-Step Form Wrapper
-npx shadcn@latest add https://rigidui.vercel.app/registry/multi-step-form-wrapper
+npx shadcn@latest add https://rigidui.com/registry/multi-step-form-wrapper
 ```
 
 That's it! Components will be added to your `components/ui` directory and are fully customizable.
@@ -75,14 +74,14 @@ That's it! Components will be added to your `components/ui` directory and are fu
 
 Once you have RigidUI components installed:
 
-- **Browse Components** - Explore all available components with live examples in our [documentation](https://rigidui.vercel.app/docs/components)
+- **Browse Components** - Explore all available components with live examples in our [documentation](https://rigidui.com/docs/components)
 - **View on GitHub** - Star the repo and contribute to the project at [github.com/FgrReloaded/rigidui](https://github.com/FgrReloaded/rigidui)
 
 ## Documentation
 
 Visit our documentation site for detailed usage examples and API references:
 
-[RigidUI Documentation](https://rigidui.vercel.app/docs)
+[RigidUI Documentation](https://rigidui.com/docs)
 
 ## Development
 

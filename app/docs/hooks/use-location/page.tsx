@@ -159,7 +159,7 @@ export default function MyComponent() {
       usageDescription="The useLocation hook provides a simple interface for getting user location through browser geolocation API and converting coordinates to readable location names. It handles loading states, errors, and provides both automatic and manual location detection."
       propsData={propsData}
       features={features}
-      componentName="https://rigidui.vercel.app/registry/use-location"
+      componentName="https://rigidui.com/registry/use-location"
       additionalSections={
         <>
           <section className="space-y-8">

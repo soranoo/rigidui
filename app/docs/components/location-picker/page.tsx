@@ -110,7 +110,7 @@ export default function MyComponent() {
       usageDescription="The Location Picker component provides an interface for searching and selecting locations. It supports both popover and inline variants to fit different UI contexts."
       propsData={propsData}
       features={features}
-      componentName="https://rigidui.vercel.app/registry/location-picker"
+      componentName="https://rigidui.com/registry/location-picker"
       additionalSections={
         <section className="space-y-8">
           <div className="flex items-center space-x-3">

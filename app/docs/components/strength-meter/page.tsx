@@ -309,7 +309,7 @@ export default function MyComponent() {
       propsData={propsData}
       features={features}
       bestPractices={bestPractices}
-      componentName="https://rigidui.vercel.app/registry/strength-meter"
+      componentName="https://rigidui.com/registry/strength-meter"
       additionalSections={
         <section className="space-y-8">
           <div className="flex items-center space-x-3">

@@ -360,7 +360,7 @@ export default function MyComponent() {
       propsData={propsData}
       features={features}
       bestPractices={bestPractices}
-      componentName="https://rigidui.vercel.app/registry/file-explorer"
+      componentName="https://rigidui.com/registry/file-explorer"
       additionalSections={
         <section className="space-y-8">
           <div className="flex items-center space-x-3">

@@ -305,7 +305,7 @@ return (
       propsData={propsData}
       features={features}
       bestPractices={bestPractices}
-      componentName="https://rigidui.vercel.app/registry/infinite-scroll"
+      componentName="https://rigidui.com/registry/infinite-scroll"
     />
   )
 }

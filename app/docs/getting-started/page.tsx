@@ -101,7 +101,7 @@ export default function GettingStartedPage() {
                 </div>
                 <CodeBlock
                   language="bash"
-                  code="npx shadcn@latest add https://rigidui.vercel.app/registry/currency-manager"
+                  code="npx shadcn@latest add https://rigidui.com/registry/currency-manager"
                 />
               </div>
 
@@ -112,7 +112,7 @@ export default function GettingStartedPage() {
                 </div>
                 <CodeBlock
                   language="bash"
-                  code="npx shadcn@latest add https://rigidui.vercel.app/registry/file-explorer"
+                  code="npx shadcn@latest add https://rigidui.com/registry/file-explorer"
                 />
               </div>
 
@@ -123,7 +123,7 @@ export default function GettingStartedPage() {
                 </div>
                 <CodeBlock
                   language="bash"
-                  code="npx shadcn@latest add https://rigidui.vercel.app/registry/location-picker"
+                  code="npx shadcn@latest add https://rigidui.com/registry/location-picker"
                 />
               </div>
 
@@ -134,7 +134,7 @@ export default function GettingStartedPage() {
                 </div>
                 <CodeBlock
                   language="bash"
-                  code="npx shadcn@latest add https://rigidui.vercel.app/registry/strength-meter"
+                  code="npx shadcn@latest add https://rigidui.com/registry/strength-meter"
                 />
               </div>
 
@@ -145,7 +145,7 @@ export default function GettingStartedPage() {
                 </div>
                 <CodeBlock
                   language="bash"
-                  code="npx shadcn@latest add https://rigidui.vercel.app/registry/file-uploader"
+                  code="npx shadcn@latest add https://rigidui.com/registry/file-uploader"
                 />
               </div>
 
@@ -156,7 +156,7 @@ export default function GettingStartedPage() {
                 </div>
                 <CodeBlock
                   language="bash"
-                  code="npx shadcn@latest add https://rigidui.vercel.app/registry/infinite-scroll"
+                  code="npx shadcn@latest add https://rigidui.com/registry/infinite-scroll"
                 />
               </div>
 
@@ -167,7 +167,7 @@ export default function GettingStartedPage() {
                 </div>
                 <CodeBlock
                   language="bash"
-                  code="npx shadcn@latest add https://rigidui.vercel.app/registry/multi-step-form-wrapper"
+                  code="npx shadcn@latest add https://rigidui.com/registry/multi-step-form-wrapper"
                 />
               </div>
             </div>

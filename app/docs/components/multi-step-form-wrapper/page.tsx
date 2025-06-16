@@ -400,7 +400,7 @@ function MessageStep() {
       propsData={propsData}
       features={features}
       bestPractices={bestPractices}
-      componentName="https://rigidui.vercel.app/registry/multi-step-form-wrapper"
+      componentName="https://rigidui.com/registry/multi-step-form-wrapper"
       additionalSections={
         <section className="space-y-8">
           <div className="flex items-center space-x-3">
