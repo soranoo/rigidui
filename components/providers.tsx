@@ -7,6 +7,7 @@ import { ThemeProvider } from "next-themes"
 
 export function Providers({ children }: { children: React.ReactNode }) {
   useEffect(() => {
+    if (window.location.host.includes("localhost")) return;
     posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
       api_host: "/ingest",
       ui_host: "https://us.posthog.com",
