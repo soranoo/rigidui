@@ -374,7 +374,7 @@ export const advancedUsageExamples = [
   {
     title: "Basic Multi-Step Form",
     description: "A simple two-step form with validation and progress tracking.",
-    code: `import { MultiStepFormWrapper, Step } from "@/components/ui/multi-step-form-wrapper"
+    code: `import { MultiStepFormWrapper, Step } from "@/components/multi-step-form-wrapper"
 
 export default function BasicExample() {
   return (

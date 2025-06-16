@@ -6,7 +6,7 @@ export const advancedUsageExamples = [
     title: "Basic Password Strength Meter",
     description:
       "Simple password strength meter with default settings. Perfect for most use cases with standard security requirements.",
-    code: `import { PasswordStrengthMeter } from "@/components/ui/password-strength-meter"
+    code: `import { PasswordStrengthMeter } from "@/components/password-strength-meter"
 
 export default function BasicExample() {
   return (
@@ -27,7 +27,7 @@ export default function BasicExample() {
     title: "With Auto Password Generation",
     description:
       "Enable automatic password generation to help users create strong passwords with a single click.",
-    code: `import { PasswordStrengthMeter } from "@/components/ui/password-strength-meter"
+    code: `import { PasswordStrengthMeter } from "@/components/password-strength-meter"
 
 export default function AutoGenerateExample() {
   return (
@@ -52,7 +52,7 @@ export default function AutoGenerateExample() {
     title: "Compact with Auto Generation",
     description:
       "A space-efficient version with auto-generation enabled, perfect for forms with limited space.",
-    code: `import { PasswordStrengthMeter } from "@/components/ui/password-strength-meter"
+    code: `import { PasswordStrengthMeter } from "@/components/password-strength-meter"
 
 export default function CompactAutoGenerateExample() {
   return (
@@ -83,7 +83,7 @@ export default function CompactAutoGenerateExample() {
     title: "Custom Segments and Size",
     description:
       "Customize the number of segments and size of the strength meter for different visual presentations.",
-    code: `import { PasswordStrengthMeter } from "@/components/ui/password-strength-meter"
+    code: `import { PasswordStrengthMeter } from "@/components/password-strength-meter"
 
 export default function CustomSegmentsExample() {
   return (
@@ -108,7 +108,7 @@ export default function CustomSegmentsExample() {
     title: "Custom Strength Labels",
     description:
       "Personalize the strength level labels to match your application's tone and brand voice.",
-    code: `import { PasswordStrengthMeter } from "@/components/ui/password-strength-meter"
+    code: `import { PasswordStrengthMeter } from "@/components/password-strength-meter"
 
 export default function CustomLabelsExample() {
   return (
@@ -143,7 +143,7 @@ export default function CustomLabelsExample() {
     title: "Custom Requirements",
     description:
       "Define your own password requirements with custom validators to meet specific security policies.",
-    code: `import { PasswordStrengthMeter } from "@/components/ui/password-strength-meter"
+    code: `import { PasswordStrengthMeter } from "@/components/password-strength-meter"
 
 export default function CustomRequirementsExample() {
   return (
@@ -214,7 +214,7 @@ export default function CustomRequirementsExample() {
     title: "Custom Strength Thresholds",
     description:
       "Adjust the score thresholds for different strength levels to make the meter more or less strict.",
-    code: `import { PasswordStrengthMeter } from "@/components/ui/password-strength-meter"
+    code: `import { PasswordStrengthMeter } from "@/components/password-strength-meter"
 
 export default function CustomThresholdsExample() {
   return (
@@ -263,7 +263,7 @@ export default function CustomThresholdsExample() {
     title: "Without Requirements List",
     description:
       "Hide the requirements checklist for a cleaner interface when space is limited.",
-    code: `import { PasswordStrengthMeter } from "@/components/ui/password-strength-meter"
+    code: `import { PasswordStrengthMeter } from "@/components/password-strength-meter"
 
 export default function NoRequirementsExample() {
   return (
@@ -288,7 +288,7 @@ export default function NoRequirementsExample() {
     title: "With Form Integration",
     description:
       "Integrate with form state management to handle password changes and validation, including auto-generation.",
-    code: `import { PasswordStrengthMeter } from "@/components/ui/password-strength-meter"
+    code: `import { PasswordStrengthMeter } from "@/components/password-strength-meter"
 import { useState } from "react"
 
 export default function FormIntegrationExample() {
@@ -358,7 +358,7 @@ export default function FormIntegrationExample() {
     title: "Auto-Generation Configurations",
     description:
       "Different configurations for auto-generated passwords with varying lengths and complexity requirements.",
-    code: `import { PasswordStrengthMeter } from "@/components/ui/password-strength-meter"
+    code: `import { PasswordStrengthMeter } from "@/components/password-strength-meter"
 
 export default function AutoGenerationConfigsExample() {
   return (
@@ -459,7 +459,7 @@ export default function AutoGenerationConfigsExample() {
     title: "Custom Calculation Function",
     description:
       "Implement your own strength calculation algorithm for specialized security requirements.",
-    code: `import { PasswordStrengthMeter } from "@/components/ui/password-strength-meter"
+    code: `import { PasswordStrengthMeter } from "@/components/password-strength-meter"
 
 export default function CustomCalculationExample() {
   const customStrengthCalculator = (password: string): number => {

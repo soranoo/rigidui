@@ -9,7 +9,7 @@ export const advancedUsageExamples = [
     title: "Basic File Uploader",
     description:
       "Simple file uploader with default settings supporting images, PDFs, and text files.",
-    code: `import { FileUploader } from "@/components/ui/file-uploader"
+    code: `import { FileUploader } from "@/components/file-uploader"
 
 export default function BasicExample() {
   const handleFilesReady = (files) => {
@@ -34,7 +34,7 @@ export default function BasicExample() {
     title: "Single Image Uploader",
     description:
       "Restrict uploads to a single image file with a smaller size limit, perfect for profile pictures or avatars.",
-    code: `import { FileUploader } from "@/components/ui/file-uploader"
+    code: `import { FileUploader } from "@/components/file-uploader"
 
 export default function SingleImageExample() {
   return (
@@ -61,7 +61,7 @@ export default function SingleImageExample() {
     title: "Document Uploader",
     description:
       "Accept only document files (PDF, DOC, DOCX) with larger size limits for business documents.",
-    code: `import { FileUploader } from "@/components/ui/file-uploader"
+    code: `import { FileUploader } from "@/components/file-uploader"
 
 export default function DocumentExample() {
   return (
@@ -96,7 +96,7 @@ export default function DocumentExample() {
     title: "Media Files Uploader",
     description:
       "Upload various media types including images, videos, and audio files with appropriate size limits.",
-    code: `import { FileUploader } from "@/components/ui/file-uploader"
+    code: `import { FileUploader } from "@/components/file-uploader"
 
 export default function MediaExample() {
   return (
@@ -123,7 +123,7 @@ export default function MediaExample() {
     title: "Complete Upload Flow",
     description:
       "Full implementation with server upload, progress tracking, and success/error handling.",
-    code: `import { FileUploader } from "@/components/ui/file-uploader"
+    code: `import { FileUploader } from "@/components/file-uploader"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 
@@ -191,7 +191,7 @@ export default function CompleteFlowExample() {
     title: "Custom Styled Uploader",
     description:
       "Customize the appearance and behavior with specific styling and constraints.",
-    code: `import { FileUploader } from "@/components/ui/file-uploader"
+    code: `import { FileUploader } from "@/components/file-uploader"
 
 export default function CustomStyledExample() {
   return (

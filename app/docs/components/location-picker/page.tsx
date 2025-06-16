@@ -92,7 +92,7 @@ export default function LocationPickerPage() {
     }
   ]
 
-  const usageCode = `import { LocationPicker } from "@/components/ui/location-picker"
+  const usageCode = `import { LocationPicker } from "@/components/location-picker"
 
 export default function MyComponent() {
   return (

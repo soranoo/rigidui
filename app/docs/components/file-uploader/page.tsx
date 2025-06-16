@@ -98,7 +98,7 @@ export default function FileUploaderPage() {
     }
   ]
 
-  const usageCode = `import { FileUploader } from "@/components/ui/file-uploader"
+  const usageCode = `import { FileUploader } from "@/components/file-uploader"
 
 export default function MyComponent() {
   const handleFilesReady = (files) => {

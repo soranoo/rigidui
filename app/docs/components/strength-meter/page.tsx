@@ -271,7 +271,7 @@ export default function StrengthMeterPage() {
     },
   ];
 
-  const usageCode = `import { PasswordStrengthMeter } from "@/components/ui/password-strength-meter"
+  const usageCode = `import { PasswordStrengthMeter } from "@/components/password-strength-meter"
 
 export default function MyComponent() {
   // Basic usage

@@ -237,7 +237,7 @@ import {
   MultiStepFormWrapper,
   Step,
   useMultiStepForm
-} from "./multi-step-form-wrapper"
+} from "@/components/multi-step-form-wrapper"
 
 const basicInfoSchema = z.object({
   name: z.string().min(1, { message: "Name is required" }),

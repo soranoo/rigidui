@@ -76,7 +76,7 @@ export default function CurrencyManagerPage() {
   ]
 
 
-  const usageCode = `import { CurrencyDisplay, CurrencyProvider, CurrencySelector } from "@/components/ui/currency-manager"
+  const usageCode = `import { CurrencyDisplay, CurrencyProvider, CurrencySelector } from "@/components/currency-manager"
 
 const LIVE_API_KEY = process.env.NEXT_PUBLIC_EXCHANGERATE_API_KEY; // Replace with your actual API key
 const LIVE_API_URL = \`https://v6.exchangerate-api.com/v6/\${LIVE_API_KEY}/latest/USD\`;

@@ -5,7 +5,7 @@ export const advancedUsageExamples = [
     title: "Popover Variant (Default)",
     description:
       "Compact trigger that opens a popover with location search functionality. Perfect for navigation bars or space-constrained layouts.",
-    code: `import { LocationPicker } from "@/components/ui/location-picker"
+    code: `import { LocationPicker } from "@/components/location-picker"
 
 export default function PopoverExample() {
   return (
@@ -22,7 +22,7 @@ export default function PopoverExample() {
     title: "Inline Variant",
     description:
       "Full-featured inline interface with immediate access to search functionality. Ideal for forms or dedicated location selection pages.",
-    code: `import { LocationPicker } from "@/components/ui/location-picker"
+    code: `import { LocationPicker } from "@/components/location-picker"
 
 export default function InlineExample() {
   return (
@@ -40,7 +40,7 @@ export default function InlineExample() {
     title: "Auto-detect Location",
     description:
       "Automatically detect user's current location when the component loads.",
-    code: `import { LocationPicker } from "@/components/ui/location-picker"
+    code: `import { LocationPicker } from "@/components/location-picker"
 
 export default function AutoDetectExample() {
   return (
@@ -65,7 +65,7 @@ export default function AutoDetectExample() {
     title: "Custom Styling",
     description:
       "Customize the appearance with className and custom placeholder text.",
-    code: `import { LocationPicker } from "@/components/ui/location-picker"
+    code: `import { LocationPicker } from "@/components/location-picker"
 
 export default function CustomExample() {
   return (
@@ -90,7 +90,7 @@ export default function CustomExample() {
     title: "With Change Handler",
     description:
       "Handle location changes with a callback function for integration with forms or state management.",
-    code: `import { LocationPicker } from "@/components/ui/location-picker"
+    code: `import { LocationPicker } from "@/components/location-picker"
 import { useState } from "react"
 
 export default function HandlerExample() {

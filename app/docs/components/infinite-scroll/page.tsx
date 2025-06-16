@@ -244,7 +244,7 @@ export default function InfiniteScrollPage() {
   ]
 
   const usageCode = `
-import { InfiniteScroll } from "@/components/ui/infinite-scroll"
+import { InfiniteScroll } from "@/components/infinite-scroll"
 import { useState, useCallback } from "react"
 
 export default function MyComponent() {
