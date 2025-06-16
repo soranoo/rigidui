@@ -24,6 +24,62 @@ export default function BasicExample() {
     ),
   },
   {
+    title: "With Auto Password Generation",
+    description:
+      "Enable automatic password generation to help users create strong passwords with a single click.",
+    code: `import { PasswordStrengthMeter } from "@/components/ui/password-strength-meter"
+
+export default function AutoGenerateExample() {
+  return (
+    <PasswordStrengthMeter
+      placeholder="Generate or type password"
+      enableAutoGenerate={true}
+      autoGenerateLength={16}
+      className="max-w-md"
+    />
+  )
+}`,
+    component: (
+      <PasswordStrengthMeter
+        placeholder="Generate or type password"
+        enableAutoGenerate={true}
+        autoGenerateLength={16}
+        className="max-w-md"
+      />
+    ),
+  },
+  {
+    title: "Compact with Auto Generation",
+    description:
+      "A space-efficient version with auto-generation enabled, perfect for forms with limited space.",
+    code: `import { PasswordStrengthMeter } from "@/components/ui/password-strength-meter"
+
+export default function CompactAutoGenerateExample() {
+  return (
+    <PasswordStrengthMeter
+      placeholder="Password"
+      enableAutoGenerate={true}
+      autoGenerateLength={12}
+      showRequirements={false}
+      size="sm"
+      segments={3}
+      className="max-w-md"
+    />
+  )
+}`,
+    component: (
+      <PasswordStrengthMeter
+        placeholder="Password"
+        enableAutoGenerate={true}
+        autoGenerateLength={12}
+        showRequirements={false}
+        size="sm"
+        segments={3}
+        className="max-w-md"
+      />
+    ),
+  },
+  {
     title: "Custom Segments and Size",
     description:
       "Customize the number of segments and size of the strength meter for different visual presentations.",
@@ -231,7 +287,7 @@ export default function NoRequirementsExample() {
   {
     title: "With Form Integration",
     description:
-      "Integrate with form state management to handle password changes and validation.",
+      "Integrate with form state management to handle password changes and validation, including auto-generation.",
     code: `import { PasswordStrengthMeter } from "@/components/ui/password-strength-meter"
 import { useState } from "react"
 
@@ -251,6 +307,8 @@ export default function FormIntegrationExample() {
         value={password}
         onValueChange={handlePasswordChange}
         placeholder="Form-integrated password"
+        enableAutoGenerate={true}
+        autoGenerateLength={14}
       />
       <div className="text-sm">
         <p className={\`font-medium \${isValid ? 'text-green-600' : 'text-red-600'}\`}>
@@ -279,6 +337,8 @@ export default function FormIntegrationExample() {
               value={password}
               onValueChange={handlePasswordChange}
               placeholder="Form-integrated password"
+              enableAutoGenerate={true}
+              autoGenerateLength={14}
             />
             <div className="text-sm">
               <p className={`font-medium ${isValid ? 'text-green-600' : 'text-red-600'}`}>
@@ -293,6 +353,107 @@ export default function FormIntegrationExample() {
       }
       return <FormIntegrationComponent />
     })(),
+  },
+  {
+    title: "Auto-Generation Configurations",
+    description:
+      "Different configurations for auto-generated passwords with varying lengths and complexity requirements.",
+    code: `import { PasswordStrengthMeter } from "@/components/ui/password-strength-meter"
+
+export default function AutoGenerationConfigsExample() {
+  return (
+    <div className="space-y-6 max-w-md">
+      <div>
+        <h4 className="text-sm font-medium mb-2">Short Password (8 chars)</h4>
+        <PasswordStrengthMeter
+          placeholder="8-character password"
+          enableAutoGenerate={true}
+          autoGenerateLength={8}
+          showRequirements={false}
+          strengthLabels={{
+            empty: "Empty",
+            weak: "Basic",
+            fair: "Acceptable",
+            good: "Good",
+            strong: "Strong"
+          }}
+        />
+      </div>
+
+      <div>
+        <h4 className="text-sm font-medium mb-2">Enterprise (20 chars)</h4>
+        <PasswordStrengthMeter
+          placeholder="Enterprise-grade password"
+          enableAutoGenerate={true}
+          autoGenerateLength={20}
+          showRequirements={false}
+          requirements={[
+            {
+              label: "At least 16 characters",
+              validator: (password) => password.length >= 16,
+            },
+            {
+              label: "Mixed case letters",
+              validator: (password) =>
+                /[A-Z]/.test(password) && /[a-z]/.test(password),
+            },
+            {
+              label: "Numbers and symbols",
+              validator: (password) =>
+                /\\d/.test(password) && /[!@#$%^&*(),.?":{}|<>]/.test(password),
+            },
+          ]}
+        />
+      </div>
+    </div>
+  )
+}`,
+    component: (
+      <div className="space-y-6 max-w-md">
+        <div>
+          <h4 className="text-sm font-medium mb-2">Short Password (8 chars)</h4>
+          <PasswordStrengthMeter
+            placeholder="8-character password"
+            enableAutoGenerate={true}
+            autoGenerateLength={8}
+            showRequirements={false}
+            strengthLabels={{
+              empty: "Empty",
+              weak: "Basic",
+              fair: "Acceptable",
+              good: "Good",
+              strong: "Strong"
+            }}
+          />
+        </div>
+
+        <div>
+          <h4 className="text-sm font-medium mb-2">Enterprise (20 chars)</h4>
+          <PasswordStrengthMeter
+            placeholder="Enterprise-grade password"
+            enableAutoGenerate={true}
+            autoGenerateLength={20}
+            showRequirements={false}
+            requirements={[
+              {
+                label: "At least 16 characters",
+                validator: (password) => password.length >= 16,
+              },
+              {
+                label: "Mixed case letters",
+                validator: (password) =>
+                  /[A-Z]/.test(password) && /[a-z]/.test(password),
+              },
+              {
+                label: "Numbers and symbols",
+                validator: (password) =>
+                  /\d/.test(password) && /[!@#$%^&*(),.?":{}|<>]/.test(password),
+              },
+            ]}
+          />
+        </div>
+      </div>
+    ),
   },
   {
     title: "Custom Calculation Function",

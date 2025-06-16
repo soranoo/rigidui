@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { Eye, EyeOff, Check, X } from "lucide-react"
+import { Eye, EyeOff, Check, X, RefreshCw } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { cva, type VariantProps } from "class-variance-authority"
 
@@ -74,6 +74,8 @@ export interface PasswordStrengthMeterProps
   meterClassName?: string
   inputClassName?: string
   placeholder?: string
+  enableAutoGenerate?: boolean
+  autoGenerateLength?: number
 }
 
 const defaultRequirements: PasswordStrengthRequirement[] = [
@@ -132,6 +134,8 @@ export function PasswordStrengthMeter({
   placeholder = "Enter password",
   size,
   animated = true,
+  enableAutoGenerate = false,
+  autoGenerateLength = 10,
   ...props
 }: PasswordStrengthMeterProps) {
   const [password, setPassword] = React.useState(value)
@@ -140,6 +144,34 @@ export function PasswordStrengthMeter({
   React.useEffect(() => {
     setPassword(value)
   }, [value])
+
+  const generateStrongPassword = (length: number = autoGenerateLength): string => {
+    const lowercase = 'abcdefghijklmnopqrstuvwxyz'
+    const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    const numbers = '0123456789'
+    const specialChars = '!@#$%^&*(),.?":{}|<>'
+
+    const allChars = lowercase + uppercase + numbers + specialChars
+
+    let password = ''
+
+    password += lowercase[Math.floor(Math.random() * lowercase.length)]
+    password += uppercase[Math.floor(Math.random() * uppercase.length)]
+    password += numbers[Math.floor(Math.random() * numbers.length)]
+    password += specialChars[Math.floor(Math.random() * specialChars.length)]
+
+    for (let i = 4; i < length; i++) {
+      password += allChars[Math.floor(Math.random() * allChars.length)]
+    }
+
+    return password.split('').sort(() => Math.random() - 0.5).join('')
+  }
+
+  const handleGeneratePassword = () => {
+    const newPassword = generateStrongPassword(autoGenerateLength)
+    setPassword(newPassword)
+    onValueChange?.(newPassword)
+  }
 
   const calculateBaseStrength = (password: string): number => {
     if (!password) return 0
@@ -224,23 +256,39 @@ export function PasswordStrengthMeter({
           type={showPassword ? "text" : "password"}
           value={password}
           onChange={handleChange}
-          className={cn("pr-10", inputClassName)}
+          className={cn(
+            showPasswordToggle && enableAutoGenerate ? "pr-20" : showPasswordToggle || enableAutoGenerate ? "pr-10" : "",
+            inputClassName
+          )}
           placeholder={placeholder}
         />
-        {showPasswordToggle && (
-          <button
-            type="button"
-            onClick={togglePasswordVisibility}
-            className="absolute right-3 top-1/2 -translate-y-1/2 "
-            aria-label={showPassword ? "Hide password" : "Show password"}
-          >
-            {showPassword ? (
-              <EyeOff className="h-4 w-4" />
-            ) : (
-              <Eye className="h-4 w-4" />
-            )}
-          </button>
-        )}
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
+          {enableAutoGenerate && (
+            <button
+              type="button"
+              onClick={handleGeneratePassword}
+              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors"
+              aria-label="Generate strong password"
+              title="Generate strong password"
+            >
+              <RefreshCw className="h-4 w-4" />
+            </button>
+          )}
+          {showPasswordToggle && (
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 transition-colors"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+            >
+              {showPassword ? (
+                <EyeOff className="h-4 w-4" />
+              ) : (
+                <Eye className="h-4 w-4" />
+              )}
+            </button>
+          )}
+        </div>
       </div>
 
       <div
@@ -278,29 +326,48 @@ export function PasswordStrengthMeter({
       )}
 
       {showRequirements && (
-        <ul className="mt-3 space-y-1.5">
-          {requirements.map((requirement, index) => {
-            const passed = requirement.validator(password)
-            return (
-              <li
-                key={index}
-                className={cn(
-                  "flex items-center gap-2 text-sm",
-                  passed
-                    ? "text-green-600 dark:text-green-500"
-                    : "text-gray-500 dark:text-gray-400"
-                )}
+        <div className="space-y-3">
+          {enableAutoGenerate && (
+            <div className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-800">
+              <div className="flex items-center gap-2">
+                <RefreshCw className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                <span className="text-sm font-medium text-blue-800 dark:text-blue-200">
+                  Auto-generate strong password
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={handleGeneratePassword}
+                className="px-3 py-1 text-xs font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 dark:text-blue-300 dark:bg-blue-900 dark:hover:bg-blue-800 rounded-md transition-colors"
               >
-                {passed ? (
-                  <Check className="h-4 w-4 text-green-500" />
-                ) : (
-                  <X className="h-4 w-4 text-gray-400" />
-                )}
-                {requirement.label}
-              </li>
-            )
-          })}
-        </ul>
+                Generate
+              </button>
+            </div>
+          )}
+          <ul className="space-y-1.5">
+            {requirements.map((requirement, index) => {
+              const passed = requirement.validator(password)
+              return (
+                <li
+                  key={index}
+                  className={cn(
+                    "flex items-center gap-2 text-sm",
+                    passed
+                      ? "text-green-600 dark:text-green-500"
+                      : "text-gray-500 dark:text-gray-400"
+                  )}
+                >
+                  {passed ? (
+                    <Check className="h-4 w-4 text-green-500" />
+                  ) : (
+                    <X className="h-4 w-4 text-gray-400" />
+                  )}
+                  {requirement.label}
+                </li>
+              )
+            })}
+          </ul>
+        </div>
       )}
     </div>
   )
