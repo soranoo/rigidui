@@ -177,7 +177,7 @@ export default function NotificationCenterPage() {
     }
   ]
 
-  const usageCode = `import { NotificationCenter } from "@/components/ui/notification-center"
+  const usageCode = `import { Notification, NotificationCenter } from "@/components/notification-center"
 
  const sampleNotifications = [
     {
