@@ -25,13 +25,14 @@ const navigationItems: NavigationItem[] = [
     href: '/docs/components',
     isCollapsed: false,
     items: [
-      { title: 'Location Picker', href: '/docs/components/location-picker' },
-      { title: 'Infinite Scroll', href: '/docs/components/infinite-scroll' },
       { title: 'Currency Manager', href: '/docs/components/currency-manager' },
       { title: 'File Explorer', href: '/docs/components/file-explorer' },
-      { title: 'Multi-Step Form Wrapper', href: '/docs/components/multi-step-form-wrapper' },
-      { title: 'Password Strength Meter', href: '/docs/components/strength-meter' },
       { title: 'File Uploader', href: '/docs/components/file-uploader' },
+      { title: 'Infinite Scroll', href: '/docs/components/infinite-scroll' },
+      { title: 'Location Picker', href: '/docs/components/location-picker' },
+      { title: 'Multi-Step Form Wrapper', href: '/docs/components/multi-step-form-wrapper' },
+      { title: 'Notification Center', href: '/docs/components/notification-center' },
+      { title: 'Password Strength Meter', href: '/docs/components/strength-meter' },
     ]
   },
   {

@@ -23,13 +23,14 @@
 
 RigidUI extends shadcn/ui with additional enterprise-grade components:
 
-- **File Explorer** - Hierarchical file system browser with syntax highlighting
 - **Currency Manager** - Multi-currency conversion and display system
-- **Location Picker** - Geographic location selection with search functionality
-- **Infinite Scroll** - Efficiently load large datasets with infinite scrolling
-- **Multi-Step Form Wrapper** - Guided step-by-step form interfaces
-- **Password Strength Meter** - Visual password strength evaluation component
+- **File Explorer** - Hierarchical file system browser with syntax highlighting
 - **File Uploader** - Drag and drop file upload with previews and validation
+- **Infinite Scroll** - Efficiently load large datasets with infinite scrolling
+- **Location Picker** - Geographic location selection with search functionality
+- **Multi-Step Form Wrapper** - Guided step-by-step form interfaces
+- **Notification Center** - Notification management system
+- **Password Strength Meter** - Visual password strength evaluation component
 
 ## Installation
 
@@ -52,20 +53,24 @@ npx shadcn@latest add https://rigidui.com/registry/currency-manager
 # File Explorer
 npx shadcn@latest add https://rigidui.com/registry/file-explorer
 
-# Location Picker
-npx shadcn@latest add https://rigidui.com/registry/location-picker
-
-# Password Strength Meter
-npx shadcn@latest add https://rigidui.com/registry/strength-meter
-
 # File Uploader
 npx shadcn@latest add https://rigidui.com/registry/file-uploader
 
 # Infinite Scroll
 npx shadcn@latest add https://rigidui.com/registry/infinite-scroll
 
+# Location Picker
+npx shadcn@latest add https://rigidui.com/registry/location-picker
+
 # Multi-Step Form Wrapper
 npx shadcn@latest add https://rigidui.com/registry/multi-step-form-wrapper
+
+# Notification Center
+npx shadcn@latest add https://rigidui.com/registry/notification-center
+
+# Password Strength Meter
+npx shadcn@latest add https://rigidui.com/registry/strength-meter
+
 ```
 
 That's it! Components will be added to your `components/ui` directory and are fully customizable.

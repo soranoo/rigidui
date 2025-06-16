@@ -141,6 +141,30 @@
         }
       ],
       "author": "Nitish Singh <devxnitish@gmail.com>"
+    },
+    {
+      "name": "notification-center",
+      "type": "registry:component",
+      "title": "Notification Center",
+      "description": "A notification center component",
+      "registryDependencies": [
+        "button",
+        "badge",
+        "popover",
+        "card",
+        "scroll-area",
+        "dropdown-menu"
+      ],
+      "dependencies": [
+        "@tanstack/react-query"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/notification-center/notification-center.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "author": "Nitish Singh <devxnitish@gmail.com>"
     }
   ]
 }

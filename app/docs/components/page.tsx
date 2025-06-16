@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { PasswordStrengthMeter } from '@/registry/new-york/strength-meter/strength-meter'
-import { Check, FileCode, FolderClosed, FolderOpen, MapPin } from 'lucide-react'
+import { Check, FileCode, FolderClosed, FolderOpen, MapPin, Bell } from 'lucide-react'
 
 const componentsData = [
   {
@@ -63,6 +63,12 @@ const componentsData = [
         name: 'Infinite Scroll',
         href: '/docs/components/infinite-scroll',
         description: 'Efficiently display large datasets with automatic loading and smooth user experience',
+        image: '/window.svg'
+      },
+      {
+        name: 'Notification Center',
+        href: '/docs/components/notification-center',
+        description: 'Centralized hub for managing and displaying user notifications',
         image: '/window.svg'
       }
     ]
@@ -232,6 +238,43 @@ const ComponentCard = ({ name, description, image, href }: ComponentCardProps) =
                 Select Location
               </div>
               <Input className="text-xs h-8" placeholder="Search location..." />
+            </Card>
+          </div>
+        )
+      case 'Notification Center':
+        return (
+          <div className="p-3 h-full">
+            <Card className="p-3 shadow-sm bg-white dark:bg-transparent h-full w-3/4 mx-auto">
+              <div className="flex items-center justify-between mb-3 border-b border-slate-200 dark:border-slate-700 pb-2">
+                <div className="flex items-center gap-2">
+                  <div className="relative">
+                    <Bell className="h-4 w-4 text-slate-600 dark:text-slate-300" />
+                    <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-3 w-3 flex items-center justify-center font-medium">
+                      3
+                    </div>
+                  </div>
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Notifications</span>
+                </div>
+                <Badge variant="secondary" className="text-xs px-1.5 py-0.5">
+                  3 new
+                </Badge>
+              </div>
+              <div className="space-y-2 max-h-20 overflow-y-auto">
+                <div className="flex items-start gap-2 p-2 bg-blue-50/30 dark:bg-blue-950/10 rounded-md border-l-2 border-l-blue-500">
+                  <Bell className="h-3 w-3 text-blue-500 mt-0.5 flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xs font-medium text-slate-700 dark:text-slate-200">Welcome Message</div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400 truncate">Your account has been created successfully</div>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2 p-2 bg-slate-50 dark:bg-slate-800/50 rounded-md">
+                  <Bell className="h-3 w-3 text-slate-500 mt-0.5 flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <div className="text-xs text-slate-600 dark:text-slate-300">System Update</div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400 truncate">New features available</div>
+                  </div>
+                </div>
+              </div>
             </Card>
           </div>
         )

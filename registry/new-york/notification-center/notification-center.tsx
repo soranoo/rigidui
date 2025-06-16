@@ -29,9 +29,7 @@ import {
   X
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { toast } from 'sonner'
 
-// Simple notification interface - just the essentials
 export interface Notification {
   id: string
   title: string
@@ -274,7 +272,6 @@ export function NotificationCenter({
       queryClient.setQueryData(['notifications'], (old: Notification[] = []) =>
         old.map(n => n.id === id ? { ...n, isRead: true } : n)
       )
-      toast.success('Marked as read')
     }
   })
 
@@ -286,7 +283,6 @@ export function NotificationCenter({
       queryClient.setQueryData(['notifications'], (old: Notification[] = []) =>
         old.map(n => ({ ...n, isRead: true }))
       )
-      toast.success('All notifications marked as read')
     }
   })
 
@@ -298,7 +294,6 @@ export function NotificationCenter({
       queryClient.setQueryData(['notifications'], (old: Notification[] = []) =>
         old.filter(n => n.id !== id)
       )
-      toast.success('Notification deleted')
     }
   })
 
@@ -335,7 +330,7 @@ export function NotificationCenter({
           </p>
         </div>
       ) : (
-        <div className="space-y-2 p-1">
+        <div className="space-y-2 px-3">
           {filteredNotifications.map((notification) => (
             <NotificationItem
               key={notification.id}
@@ -392,9 +387,9 @@ export function NotificationCenter({
             </div>
           </div>
 
-          <div className="p-3">
+          <div className="px-1 py-3">
             {(showFilter || (showMarkAllRead && unreadCount > 0)) && (
-              <div className="flex items-center gap-2 mb-3">
+              <div className="flex items-center gap-2 mb-3 px-4 justify-between">
                 {showFilter && (
                   <Button
                     variant="outline"

@@ -21,39 +21,31 @@ interface SearchItem {
 const navigationItems: NavigationItem[] = [
   {
     title: 'Getting Started',
-    href: '/docs/getting-started',
+    href: '/docs',
     items: [
-      { title: 'Installation', href: '/docs/getting-started/installation' },
-      { title: 'Usage', href: '/docs/getting-started/usage' },
+      { title: 'Docs', href: '/docs' },
+      { title: 'Getting Started', href: '/docs/getting-started' },
     ]
   },
   {
     title: 'Components',
     href: '/docs/components',
     items: [
-      { title: 'Location Picker', href: '/docs/components/location-picker' },
       { title: 'Currency Manager', href: '/docs/components/currency-manager' },
       { title: 'File Explorer', href: '/docs/components/file-explorer' },
-      { title: 'Infinite Scroll', href: '/docs/components/infinite-scroll' },
-      { title: 'Multi-Step Form Wrapper', href: '/docs/components/multi-step-form-wrapper' },
-      { title: 'Password Strength Meter', href: '/docs/components/strength-meter' },
       { title: 'File Uploader', href: '/docs/components/file-uploader' },
+      { title: 'Infinite Scroll', href: '/docs/components/infinite-scroll' },
+      { title: 'Location Picker', href: '/docs/components/location-picker' },
+      { title: 'Multi-Step Form Wrapper', href: '/docs/components/multi-step-form-wrapper' },
+      { title: 'Notification Center', href: '/docs/components/notification-center' },
+      { title: 'Password Strength Meter', href: '/docs/components/strength-meter' },
     ]
   },
   {
     title: 'Hooks',
     href: '/docs/hooks',
     items: [
-      { title: 'useToggle', href: '/docs/hooks/use-toggle' },
-      { title: 'useLocalStorage', href: '/docs/hooks/use-local-storage' },
-    ]
-  },
-  {
-    title: 'Utilities',
-    href: '/docs/utilities',
-    items: [
-      { title: 'Colors', href: '/docs/utilities/colors' },
-      { title: 'Typography', href: '/docs/utilities/typography' },
+      { title: 'useLocation', href: '/docs/hooks/use-location' },
     ]
   },
 ]
