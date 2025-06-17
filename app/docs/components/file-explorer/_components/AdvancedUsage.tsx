@@ -523,38 +523,7 @@ export default function LoadingExample() {
     component: (
       <LoadingStateExample />
     ),
-  },
-  {
-    title: "Read-Only Mode with Custom Styling",
-    description:
-      "Display files in read-only mode with custom styling. Perfect for documentation or showcasing code without allowing modifications.",
-    code: `import { FileExplorer } from "@/components/ui/file-explorer"
-
-export default function ReadOnlyExample() {
-  return (
-    <FileExplorer
-      initialData={projectData}
-      readOnly={true}
-      title="Documentation"
-      className="border-2 border-blue-200"
-      cardClassName="bg-blue-50"
-      height="400px"
-      showTitle={true}
-    />
-  )
-}`,
-    component: (
-      <FileExplorer
-        initialData={basicProjectData}
-        readOnly={true}
-        title="Documentation (Read-Only)"
-        className="border-2 border-blue-200"
-        cardClassName="bg-blue-50 dark:bg-blue-950"
-        height="400px"
-        showTitle={true}
-      />
-    ),
-  },
+  }
 ];
 
 // Helper component for the loading state example
