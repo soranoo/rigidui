@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import { SmartForm, SmartFormField } from '@/registry/new-york/smart-form/smart-form'
+import { ConditionalField, SmartForm, SmartFormField } from '@/registry/new-york/smart-form/smart-form'
 import ComponentDocTemplate from '../../_components/ComponentDocTemplate'
 import { z } from 'zod'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
@@ -9,6 +9,7 @@ const demoSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   role: z.enum(["admin", "user", "moderator"]),
+  adminCode: z.string().optional(),
   isActive: z.boolean(),
   bio: z.string().optional(),
 })
@@ -266,25 +267,20 @@ const demoSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
   role: z.enum(["admin", "user", "moderator"]),
+  adminCode: z.string().optional(),
   isActive: z.boolean(),
   bio: z.string().optional(),
 })
 
 type DemoFormData = z.infer<typeof demoSchema>
 
-const mockMutationFn = async (data: DemoFormData) => {
-  await new Promise(resolve => setTimeout(resolve, 1000))
-  console.log('Form submitted:', data)
-  return { success: true, data }
-}
 
 export default function MyForm() {
-  const handleSubmit = async (data) => {
-    const response = await fetch('/api/users', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    })
-    return response.json()
+
+  const mockMutationFn = async (data: DemoFormData) => {
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    console.log('Form submitted:', data)
+    return { success: true, data }
   }
 
   return (
@@ -398,6 +394,16 @@ export default function MyForm() {
                   { value: "moderator", label: "Moderator" }
                 ]}
               />
+              <ConditionalField form={form} when="role" equals="admin">
+                <SmartFormField
+                  form={form}
+                  name="adminCode"
+                  type="text"
+                  label="Admin Code"
+                  placeholder="Enter your admin code"
+                  description="Required for admin users"
+                />
+              </ConditionalField>
               <SmartFormField
                 form={form}
                 name="isActive"
