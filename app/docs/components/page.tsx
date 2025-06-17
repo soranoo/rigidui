@@ -14,28 +14,22 @@ const componentsData = [
     category: 'Core',
     items: [
       {
-        name: 'Location Picker',
-        href: '/docs/components/location-picker',
-        description: 'Interactive component for selecting geographic locations with map integration',
-        image: '/globe.svg'
-      },
-      {
         name: 'Currency Manager',
         href: '/docs/components/currency-manager',
         description: 'Manage and convert between different currencies with real-time exchange rates',
         image: '/window.svg'
+      },
+      {
+        name: 'Location Picker',
+        href: '/docs/components/location-picker',
+        description: 'Interactive component for selecting geographic locations with map integration',
+        image: '/globe.svg'
       }
     ]
   },
   {
     category: 'Form Elements',
     items: [
-      {
-        name: 'Password Strength Meter',
-        href: '/docs/components/strength-meter',
-        description: 'Interactive password strength meter with customizable requirements and visual feedback',
-        image: '/images/components/strength-meter.png'
-      },
       {
         name: 'File Uploader',
         href: '/docs/components/file-uploader',
@@ -46,6 +40,18 @@ const componentsData = [
         name: 'Multi-Step Form Wrapper',
         href: '/docs/components/multi-step-form-wrapper',
         description: 'Guide users through complex forms with a structured step-by-step interface',
+        image: '/window.svg'
+      },
+      {
+        name: 'Password Strength Meter',
+        href: '/docs/components/strength-meter',
+        description: 'Interactive password strength meter with customizable requirements and visual feedback',
+        image: '/images/components/strength-meter.png'
+      },
+      {
+        name: 'Smart Form',
+        href: '/docs/components/smart-form',
+        description: 'Powerful form component with built-in validation, mutation handling, and TypeScript support',
         image: '/window.svg'
       },
     ]
@@ -274,6 +280,22 @@ const ComponentCard = ({ name, description, image, href }: ComponentCardProps) =
                     <div className="text-xs text-slate-500 dark:text-slate-400 truncate">New features available</div>
                   </div>
                 </div>
+              </div>
+            </Card>
+          </div>
+        )
+      case 'Smart Form':
+        return (
+          <div className="p-3 h-full">
+            <Card className="p-3 shadow-sm bg-white dark:bg-transparent h-full">
+              <div className="flex items-center justify-between mb-3 border-b border-slate-200 dark:border-slate-700 pb-2">
+                <h3 className="text-sm font-medium text-slate-700 dark:text-slate-200">Smart Form</h3>
+                <Badge variant="outline" className="text-xs px-1.5 py-0.5 border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300">Form</Badge>
+              </div>
+              <div className="space-y-1.5">
+                <Input placeholder="Enter your name" className="h-8 text-xs" />
+                <Input type="email" placeholder="Enter your email" className="h-8 text-xs" />
+                <Button size="sm" className="w-full text-xs h-7 mt-1.5 border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 text-white dark:text-black">Submit</Button>
               </div>
             </Card>
           </div>

@@ -33,6 +33,7 @@ const navigationItems: NavigationItem[] = [
       { title: 'Multi-Step Form Wrapper', href: '/docs/components/multi-step-form-wrapper' },
       { title: 'Notification Center', href: '/docs/components/notification-center' },
       { title: 'Password Strength Meter', href: '/docs/components/strength-meter' },
+      { title: 'Smart Form', href: '/docs/components/smart-form' },
     ]
   },
   {

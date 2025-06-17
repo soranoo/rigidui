@@ -165,6 +165,35 @@
         }
       ],
       "author": "Nitish Singh <devxnitish@gmail.com>"
+    },
+    {
+      "name": "smart-form",
+      "type": "registry:component",
+      "title": "Smart Form",
+      "description": "A smart form component",
+      "registryDependencies": [
+        "button",
+        "input",
+        "select",
+        "textarea",
+        "checkbox",
+        "radio-group",
+        "card",
+        "form"
+      ],
+      "dependencies": [
+        "react-hook-form",
+        "zod",
+        "@hookform/resolvers",
+        "@tanstack/react-query"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/smart-form/smart-form.tsx",
+          "type": "registry:component"
+        }
+      ]
+
     }
   ]
 }
