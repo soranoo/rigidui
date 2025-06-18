@@ -29,7 +29,7 @@ const FeaturesSection = () => {
               title: "Complex Components",
               description: "Sophisticated components like file explorers, multi-step forms, and currency managers with real-world functionality",
               color: "primary",
-              features: ["7 Components", "TypeScript", "Form validation"]
+              features: ["10 Components", "TypeScript", "Form validation"]
             },
             {
               icon: <Zap className="h-12 w-12 text-yellow-500" />,
@@ -109,7 +109,7 @@ const FeaturesSection = () => {
 
         <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
-            { value: "7", label: "Components", icon: <Component className="w-6 h-6" /> },
+            { value: "10", label: "Components", icon: <Component className="w-6 h-6" /> },
             { value: "100%", label: "TypeScript", icon: <Code className="w-6 h-6" /> },
             { value: "Fast", label: "Performance", icon: <Zap className="w-6 h-6" /> },
             { value: "Modern", label: "Stack", icon: <Package className="w-6 h-6" /> }

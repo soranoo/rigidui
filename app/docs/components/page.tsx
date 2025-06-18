@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { PasswordStrengthMeter } from '@/registry/new-york/strength-meter/strength-meter'
+import { SmartSearch } from '@/registry/new-york/smart-search/smart-search'
 import { Check, FileCode, FolderClosed, FolderOpen, MapPin, Bell } from 'lucide-react'
 
 const componentsData = [
@@ -24,7 +25,13 @@ const componentsData = [
         href: '/docs/components/location-picker',
         description: 'Interactive component for selecting geographic locations with map integration',
         image: '/globe.svg'
-      }
+      },
+      {
+        name: 'Smart Search',
+        href: '/docs/components/smart-search',
+        description: 'Intelligent search component with suggestions, history, filters, and keyboard navigation',
+        image: '/window.svg'
+      },
     ]
   },
   {
@@ -296,6 +303,28 @@ const ComponentCard = ({ name, description, image, href }: ComponentCardProps) =
                 <Input placeholder="Enter your name" className="h-8 text-xs" />
                 <Input type="email" placeholder="Enter your email" className="h-8 text-xs" />
                 <Button size="sm" className="w-full text-xs h-7 mt-1.5 border-slate-300 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800 text-white dark:text-black">Submit</Button>
+              </div>
+            </Card>
+          </div>
+        )
+      case 'Smart Search':
+        return (
+          <div className="p-3 h-full">
+            <Card className="p-3 shadow-sm bg-white dark:bg-transparent h-full">
+              <div className="flex items-center justify-between mb-3 border-b border-slate-200 dark:border-slate-700 pb-2">
+                <h3 className="text-sm font-medium text-slate-700 dark:text-slate-200">Smart Search</h3>
+                <Badge variant="outline" className="text-xs px-1.5 py-0.5 border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300">Search</Badge>
+              </div>
+              <div className="space-y-2">
+                <SmartSearch
+                  placeholder="Search components..."
+                  className="h-8 text-xs"
+                  suggestions={['React', 'TypeScript', 'Components']}
+                  urlSync={false}
+                />
+                <div className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1">
+                  <span>✨ Intelligent search with suggestions</span>
+                </div>
               </div>
             </Card>
           </div>

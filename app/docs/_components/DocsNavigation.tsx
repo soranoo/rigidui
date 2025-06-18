@@ -34,6 +34,7 @@ const navigationItems: NavigationItem[] = [
       { title: 'Notification Center', href: '/docs/components/notification-center' },
       { title: 'Password Strength Meter', href: '/docs/components/strength-meter' },
       { title: 'Smart Form', href: '/docs/components/smart-form' },
+      { title: 'Smart Search', href: '/docs/components/smart-search' },
     ]
   },
   {
