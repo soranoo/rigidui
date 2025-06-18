@@ -46,7 +46,6 @@ export function SmartSearch({
   const router = useRouter()
   const searchParams = useSearchParams()
   const [query, setQuery] = useState('')
-  const [isTyping, setIsTyping] = useState(false)
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [searchHistoryList, setSearchHistoryList] = useState<string[]>([])
   const [selectedIndex, setSelectedIndex] = useState(-1)
@@ -54,12 +53,12 @@ export function SmartSearch({
   const [searchState, setSearchState] = useState<'idle' | 'searching' | 'success' | 'error'>('idle')
   const inputRef = useRef<HTMLInputElement>(null)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const isInternalUpdate = useRef(false)
 
   const searchDebouncer = useDebouncer(
     (searchQuery: string, filters: string[] = []) => {
       setSearchState('searching')
       onSearch?.(searchQuery, filters)
-      setIsTyping(false)
       saveToHistory(searchQuery)
       setTimeout(() => setSearchState('success'), 200)
     },
@@ -146,19 +145,25 @@ export function SmartSearch({
         setSelectedIndex(-1)
         inputRef.current?.blur()
         break
-      case '/':
-        if (e.ctrlKey || e.metaKey) {
-          e.preventDefault()
-          inputRef.current?.focus()
-        }
-        break
     }
   }
 
-  const handleSearch = (value: string) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    isInternalUpdate.current = true
     setQuery(value)
-    setIsTyping(true)
     setSearchState('idle')
+
+    if (value.trim()) {
+      const { filters, cleanQuery } = parseSearchQuery(value)
+      const combinedFilters = [...activeFilters, ...filters]
+      searchDebouncer.maybeExecute(cleanQuery, combinedFilters)
+      onFilterChange?.(combinedFilters)
+    } else {
+      searchDebouncer.cancel()
+      onSearch?.(value, activeFilters)
+      setSearchState('idle')
+    }
 
     if (urlSync) {
       const params = new URLSearchParams(searchParams)
@@ -169,6 +174,14 @@ export function SmartSearch({
       }
       router.replace(`${window.location.pathname}?${params.toString()}`, { scroll: false })
     }
+    setTimeout(() => {
+      isInternalUpdate.current = false
+    }, 0)
+  }
+
+  const handleSearch = (value: string) => {
+    setQuery(value)
+    setSearchState('idle')
 
     if (value.trim()) {
       const { filters, cleanQuery } = parseSearchQuery(value)
@@ -178,7 +191,6 @@ export function SmartSearch({
     } else {
       searchDebouncer.cancel()
       onSearch?.(value, activeFilters)
-      setIsTyping(false)
       setSearchState('idle')
     }
   }
@@ -209,6 +221,13 @@ export function SmartSearch({
     setSelectedIndex(-1)
     setSearchState('idle')
     onSearch?.('', activeFilters)
+
+    if (urlSync) {
+      const params = new URLSearchParams(searchParams)
+      params.delete('q')
+      router.replace(`${window.location.pathname}?${params.toString()}`, { scroll: false })
+    }
+
     inputRef.current?.focus()
   }
 
@@ -220,33 +239,33 @@ export function SmartSearch({
       }
     }
 
+    const handleGlobalKeyDown = (event: KeyboardEvent) => {
+      if (event.key === '/' && (event.ctrlKey || event.metaKey)) {
+        event.preventDefault()
+        inputRef.current?.focus()
+      }
+    }
+
     document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
+    document.addEventListener('keydown', handleGlobalKeyDown)
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('keydown', handleGlobalKeyDown)
+    }
   }, [])
 
   useEffect(() => {
     if (urlSync) {
       const urlQuery = searchParams.get('q') || ''
-      setQuery(urlQuery)
-      if (urlQuery.trim()) {
+      if (urlQuery && !query) {
+        setQuery(urlQuery)
         const { filters, cleanQuery } = parseSearchQuery(urlQuery)
         searchDebouncer.maybeExecute(cleanQuery, [...activeFilters, ...filters])
       }
     }
-  }, [urlSync, searchParams, searchDebouncer, activeFilters])
-
-  useEffect(() => {
-    if (urlSync && !isTyping) {
-      const urlQuery = searchParams.get('q') || ''
-      if (urlQuery !== query) {
-        setQuery(urlQuery)
-        if (urlQuery.trim()) {
-          const { filters, cleanQuery } = parseSearchQuery(urlQuery)
-          searchDebouncer.maybeExecute(cleanQuery, [...activeFilters, ...filters])
-        }
-      }
-    }
-  }, [searchParams, urlSync, isTyping, query, searchDebouncer, activeFilters])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const filteredSuggestions = suggestions.filter(s =>
     s.toLowerCase().includes(query.toLowerCase()) && s !== query
@@ -266,8 +285,8 @@ export function SmartSearch({
               className={cn(
                 "inline-flex items-center gap-1 px-2 py-1 text-xs rounded-full border transition-colors",
                 activeFilters.includes(filter.key)
-                  ? "bg-blue-100 border-blue-300 text-blue-700"
-                  : "bg-gray-100 border-gray-300 text-gray-600 hover:bg-gray-200"
+                  ? "bg-primary/10 border-primary/20 text-primary"
+                  : "bg-muted border-border text-muted-foreground hover:bg-muted/80"
               )}
             >
               {filter.icon && <span className="w-3 h-3">{filter.icon}</span>}
@@ -281,10 +300,10 @@ export function SmartSearch({
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <Search className={cn(
             "h-5 w-5 transition-colors duration-200",
-            searchState === 'searching' && "text-blue-500",
+            searchState === 'searching' && "text-primary",
             searchState === 'success' && "text-green-500",
-            searchState === 'error' && "text-red-500",
-            searchState === 'idle' && "text-gray-400 group-focus-within:text-gray-600"
+            searchState === 'error' && "text-destructive",
+            searchState === 'idle' && "text-muted-foreground group-focus-within:text-foreground"
           )} />
         </div>
 
@@ -292,15 +311,11 @@ export function SmartSearch({
           ref={inputRef}
           type="text"
           value={query}
-          onChange={(e) => handleSearch(e.target.value)}
+          onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onFocus={() => setShowSuggestions(true)}
           placeholder={placeholder}
-          className={cn(
-            "pl-10 pr-10 transition-all duration-200",
-            "focus:ring-2 focus:ring-blue-500/20",
-            showSuggestions && (filteredSuggestions.length > 0 || filteredHistory.length > 0) && "rounded-b-none border-b-0"
-          )}
+          className="pl-10 pr-10 transition-all duration-200"
         />
 
         {query && (
@@ -308,31 +323,31 @@ export function SmartSearch({
             onClick={clearQuery}
             className="absolute inset-y-0 right-8 flex items-center pr-1"
           >
-            <X className="h-4 w-4 text-gray-400 hover:text-gray-600" />
+            <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
           </button>
         )}
 
         {isLoading && query.trim() && (
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
             <div className="relative">
-              <div className="animate-spin rounded-full h-4 w-4 border-2 border-blue-500/30 border-t-blue-500"></div>
-              <div className="absolute inset-0 rounded-full bg-blue-500/10 animate-pulse"></div>
+              <div className="animate-spin rounded-full h-4 w-4 border-2 border-primary/30 border-t-primary"></div>
+              <div className="absolute inset-0 rounded-full bg-primary/10 animate-pulse"></div>
             </div>
           </div>
         )}
 
         {query.trim() && !isLoading && resultCount !== undefined && (
-          <div className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full shadow-lg">
+          <div className="absolute -top-2 -right-2 bg-primary text-primary-foreground text-xs px-2 py-1 rounded-full shadow-lg">
             {resultCount}
           </div>
         )}
       </div>
 
       {showSuggestions && (filteredSuggestions.length > 0 || filteredHistory.length > 0) && (
-        <div className="absolute top-full left-0 right-0 bg-white border border-t-0 rounded-b-lg shadow-lg z-50 max-h-64 overflow-y-auto">
+        <div className="absolute top-full left-0 right-0 z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 max-h-64 overflow-y-auto">
           {filteredSuggestions.length > 0 && (
             <div className="p-1">
-              <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
+              <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground">
                 Suggestions
               </div>
               {filteredSuggestions.map((suggestion, index) => (
@@ -340,11 +355,11 @@ export function SmartSearch({
                   key={`suggestion-${index}`}
                   onClick={() => handleSuggestionClick(suggestion)}
                   className={cn(
-                    "w-full text-left px-2 py-1.5 text-sm rounded hover:bg-gray-100 flex items-center gap-2",
-                    selectedIndex === index && "bg-blue-50 text-blue-700"
+                    "relative flex w-full cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 hover:bg-accent hover:text-accent-foreground",
+                    selectedIndex === index && "bg-accent text-accent-foreground"
                   )}
                 >
-                  <Hash className="h-3 w-3 text-gray-400" />
+                  <Hash className="h-3 w-3 text-muted-foreground" />
                   {suggestion}
                 </button>
               ))}
@@ -352,12 +367,15 @@ export function SmartSearch({
           )}
 
           {filteredHistory.length > 0 && (
-            <div className="p-1 border-t">
+            <div className="p-1">
+              {filteredSuggestions.length > 0 && (
+                <div className="-mx-1 my-1 h-px bg-muted" />
+              )}
               <div className="flex items-center justify-between px-2 py-1.5">
-                <span className="text-xs font-medium text-muted-foreground">Recent Searches</span>
+                <span className="text-xs font-semibold text-muted-foreground">Recent Searches</span>
                 <button
                   onClick={clearHistory}
-                  className="text-xs text-gray-400 hover:text-gray-600"
+                  className="text-xs text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Clear
                 </button>
@@ -367,18 +385,19 @@ export function SmartSearch({
                   key={`history-${index}`}
                   onClick={() => handleSuggestionClick(historyItem)}
                   className={cn(
-                    "w-full text-left px-2 py-1.5 text-sm rounded hover:bg-gray-100 flex items-center gap-2",
-                    selectedIndex === filteredSuggestions.length + index && "bg-blue-50 text-blue-700"
+                    "relative flex w-full cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 hover:bg-accent hover:text-accent-foreground",
+                    selectedIndex === filteredSuggestions.length + index && "bg-accent text-accent-foreground"
                   )}
                 >
-                  <Clock className="h-3 w-3 text-gray-400" />
+                  <Clock className="h-3 w-3 text-muted-foreground" />
                   {historyItem}
                 </button>
               ))}
             </div>
           )}
 
-          <div className="p-2 border-t bg-gray-50 text-xs text-gray-500">
+          <div className="-mx-1 my-1 h-px bg-muted" />
+          <div className="px-2 py-1.5 bg-muted/50 text-xs text-muted-foreground">
             <div className="flex justify-between">
               <span>↑↓ Navigate • ⏎ Select • ⎋ Close</span>
               <span>Ctrl+/ Focus</span>

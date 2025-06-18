@@ -1,7 +1,163 @@
 "use client"
-import React from 'react'
+import React, { useState } from 'react'
 import { SmartSearch } from '@/registry/new-york/smart-search/smart-search'
 import ComponentDocTemplate from '../../_components/ComponentDocTemplate'
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { User, Tag, Calendar, FileText, Search } from 'lucide-react'
+
+function SmartSearchDemo() {
+  const [searchResults, setSearchResults] = useState<string[]>([])
+  const [activeFilters, setActiveFilters] = useState<string[]>([])
+  const [lastQuery, setLastQuery] = useState('')
+  const [searchCount, setSearchCount] = useState(0)
+
+  const suggestions = [
+    'React Components',
+    'TypeScript',
+    'Next.js',
+    'Tailwind CSS'
+  ]
+
+  const searchFilters = [
+    { key: 'type', label: 'Type', icon: <Tag className="w-3 h-3" /> },
+    { key: 'author', label: 'Author', icon: <User className="w-3 h-3" /> },
+    { key: 'date', label: 'Recent', icon: <Calendar className="w-3 h-3" /> },
+    { key: 'docs', label: 'Documentation', icon: <FileText className="w-3 h-3" /> }
+  ]
+
+  const sampleResults = [
+    'Smart Search Component Documentation',
+    'React Search Best Practices',
+    'TypeScript Search Implementation',
+    'Advanced Search Patterns',
+    'Search UX Guidelines',
+    'Debounced Search Tutorial',
+    'Keyboard Navigation Guide',
+    'Search History Management',
+    'Filter Integration Patterns',
+    'Real-time Search Optimization'
+  ]
+
+  const handleSearch = (query: string, filters?: string[]) => {
+    setLastQuery(query)
+    setSearchCount(prev => prev + 1)
+
+    if (query.trim()) {
+      const filtered = sampleResults.filter(result =>
+        result.toLowerCase().includes(query.toLowerCase())
+      )
+      setSearchResults(filtered.slice(0, 5))
+    } else {
+      setSearchResults([])
+    }
+
+    console.log('Active filters:', filters)
+  }
+
+  const handleFilterChange = (filters: string[]) => {
+    setActiveFilters(filters)
+  }
+
+  const handleSuggestionSelect = (suggestion: string) => {
+    console.log('Selected suggestion:', suggestion)
+  }
+
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Search className="w-5 h-5" />
+            Interactive Demo
+          </CardTitle>
+          <CardDescription>
+            Try searching, using filters, and exploring all features
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <SmartSearch
+            className="w-full"
+            placeholder="Search documentation, guides, tutorials..."
+            searchHistory={true}
+            suggestions={suggestions}
+            searchFilters={searchFilters}
+            onSearch={handleSearch}
+            onFilterChange={handleFilterChange}
+            onSuggestionSelect={handleSuggestionSelect}
+            resultCount={searchResults.length}
+            debounceMs={300}
+            urlSync={true}
+          />
+
+          <div className="flex flex-wrap gap-2">
+            <Badge variant="secondary" className="text-xs">
+              <Search className="w-3 h-3 mr-1" />
+              {searchCount} searches
+            </Badge>
+            {activeFilters.length > 0 && (
+              <Badge variant="outline" className="text-xs">
+                {activeFilters.length} filter(s) active
+              </Badge>
+            )}
+            {lastQuery && (
+              <Badge variant="outline" className="text-xs">
+                Last: &ldquo;{lastQuery}&rdquo;
+              </Badge>
+            )}
+          </div>
+
+          {searchResults.length > 0 && (
+            <div className="mt-4">
+              <h4 className="text-sm font-medium mb-2 text-muted-foreground">
+                Search Results ({searchResults.length})
+              </h4>
+              <div className="space-y-2">
+                {searchResults.map((result, index) => (
+                  <div
+                    key={index}
+                    className="p-3 bg-muted/50 rounded-lg text-sm hover:bg-muted/70 transition-colors cursor-pointer"
+                  >
+                    {result}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Keyboard Shortcuts</CardTitle>
+          <CardDescription>
+            Smart Search supports full keyboard navigation
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+            <div className="space-y-1">
+              <kbd className="px-2 py-1 bg-muted rounded text-xs">↑↓</kbd>
+              <p className="text-muted-foreground">Navigate suggestions</p>
+            </div>
+            <div className="space-y-1">
+              <kbd className="px-2 py-1 bg-muted rounded text-xs">Enter</kbd>
+              <p className="text-muted-foreground">Select suggestion</p>
+            </div>
+            <div className="space-y-1">
+              <kbd className="px-2 py-1 bg-muted rounded text-xs">Esc</kbd>
+              <p className="text-muted-foreground">Close dropdown</p>
+            </div>
+            <div className="space-y-1">
+              <kbd className="px-2 py-1 bg-muted rounded text-xs">Ctrl+/</kbd>
+              <p className="text-muted-foreground">Focus search</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
 
 export default function SmartSearchPage() {
   const propsData = [
@@ -119,10 +275,44 @@ export default function SmartSearchPage() {
   ]
 
   const usageCode = `import { SmartSearch } from "@/components/smart-search"
+import { useState } from "react"
+import { User, Tag, Calendar } from "lucide-react"
 
 export default function MyComponent() {
+  const [searchResults, setSearchResults] = useState([])
+
+  const suggestions = [
+    'React Components',
+    'TypeScript',
+    'Next.js',
+    'Tailwind CSS'
+  ]
+
+  const searchFilters = [
+    { key: 'author', label: 'Author', icon: <User className="w-3 h-3" /> },
+    { key: 'tag', label: 'Tag', icon: <Tag className="w-3 h-3" /> },
+    { key: 'recent', label: 'Recent', icon: <Calendar className="w-3 h-3" /> }
+  ]
+
+  const handleSearch = (query, filters) => {
+    // Perform your search logic here
+    console.log('Searching for:', query, 'with filters:', filters)
+    // Update search results
+    setSearchResults(/* your search results */)
+  }
+
   return (
-    <SmartSearch />
+    <SmartSearch
+      placeholder="Search documentation..."
+      searchHistory={true}
+      suggestions={suggestions}
+      searchFilters={searchFilters}
+      onSearch={handleSearch}
+      onSuggestionSelect={(suggestion) => console.log('Selected:', suggestion)}
+      resultCount={searchResults.length}
+      debounceMs={300}
+      urlSync={true}
+    />
   )
 }`
 
@@ -130,10 +320,10 @@ export default function MyComponent() {
     <ComponentDocTemplate
       title="Smart Search"
       description="An intelligent search component with suggestions, history, filters, and keyboard navigation."
-      previewComponent={<SmartSearch className='w-full max-w-md' />}
+      previewComponent={<SmartSearchDemo />}
       githubPath="registry/new-york/smart-search/smart-search.tsx"
       usageCode={usageCode}
-      usageDescription="The Smart Search component provides a comprehensive search interface with features like debounced input, search suggestions, history tracking, and customizable filters."
+      usageDescription="The Smart Search component provides a comprehensive search interface with real-time suggestions, persistent search history, customizable filters, and full keyboard navigation. Perfect for documentation sites, data tables, or any application requiring advanced search functionality."
       propsData={propsData}
       features={features}
       componentName="https://rigidui.com/registry/smart-search"
