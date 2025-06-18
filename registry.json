@@ -192,8 +192,27 @@
           "path": "registry/new-york/smart-form/smart-form.tsx",
           "type": "registry:component"
         }
-      ]
-
+      ],
+      "author": "Nitish Singh <devxnitish@gmail.com>"
+    },
+    {
+      "name": "smart-search",
+      "type": "registry:component",
+      "title": "Smart Search",
+      "description": "A smart search component",
+      "registryDependencies": [
+        "input"
+      ],
+      "dependencies": [
+        "@tanstack/react-pacer"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/smart-search/smart-search.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "author": "Nitish Singh <devxnitish@gmail.com>"
     }
   ]
 }
