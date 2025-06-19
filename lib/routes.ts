@@ -3,6 +3,7 @@ export const navigationItems = [
   { title: 'Usage', href: '/docs/getting-started' },
   { title: 'Components', href: '/docs/components' },
   { title: 'Currency Manager', href: '/docs/components/currency-manager' },
+  { title: 'Draggable Dashboard', href: '/docs/components/draggable-dashboard' },
   { title: 'File Explorer', href: '/docs/components/file-explorer' },
   { title: 'File Uploader', href: '/docs/components/file-uploader' },
   { title: 'Infinite Scroll', href: '/docs/components/infinite-scroll' },

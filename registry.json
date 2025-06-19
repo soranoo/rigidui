@@ -213,6 +213,29 @@
         }
       ],
       "author": "Nitish Singh <devxnitish@gmail.com>"
+    },
+    {
+      "name": "draggable-dashboard",
+      "type": "registry:component",
+      "title": "Draggable Dashboard",
+      "description": "A draggable dashboard component",
+      "registryDependencies": [
+        "switch",
+        "label",
+        "separator"
+      ],
+      "dependencies": [
+        "@dnd-kit/core",
+        "@dnd-kit/sortable",
+        "@dnd-kit/utilities"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/draggable-dashboard/draggable-dashboard.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "author": "Nitish Singh <devxnitish@gmail.com>"
     }
   ]
 }

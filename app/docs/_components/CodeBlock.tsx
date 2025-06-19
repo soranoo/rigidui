@@ -1,8 +1,6 @@
-'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Check, Copy } from 'lucide-react'
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs'
+import { highlightCode } from '@/lib/highlight-code'
 
 interface CodeBlockProps {
   code: string
@@ -14,10 +12,28 @@ interface CodeBlockProps {
 
 export function CodeBlock({
   code,
-  language = 'tsx',
+  language = 'jsx',
   showCopyButton = true
 }: CodeBlockProps) {
   const [copied, setCopied] = useState(false)
+  const [highlightedHtml, setHighlightedHtml] = useState<string>('')
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const highlight = async () => {
+      try {
+        const html = await highlightCode(code, language)
+        setHighlightedHtml(html)
+      } catch (error) {
+        console.error('Failed to highlight code:', error)
+        setHighlightedHtml(`<pre><code>${code}</code></pre>`)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    highlight()
+  }, [code, language])
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(code)
@@ -25,24 +41,21 @@ export function CodeBlock({
     setTimeout(() => setCopied(false), 2000)
   }
 
-  return (
-    <div className="relative overflow-hidden bg-[#1e1e1e] text-[#d4d4d4] rounded-md">
-      <div className="relative">
-        <SyntaxHighlighter
-          language={language || 'text'}
-          style={atomOneDark}
-          customStyle={{
-            margin: 0,
-            padding: '1rem',
-            height: 'auto',
-            borderRadius: 0,
-            fontSize: '0.9rem',
-            backgroundColor: '#030712',
-          }}
-        >
-          {code}
-        </SyntaxHighlighter>
+  if (isLoading) {
+    return (
+      <div className="relative overflow-hidden bg-[#030712] text-[#d4d4d4] rounded-md min-h-[100px] flex items-center justify-center">
+        <div className="text-gray-400 text-sm">Loading...</div>
       </div>
+    )
+  }
+
+  return (
+    <div className="relative overflow-hidden  text-[#d4d4d4]">
+      <div
+        className="relative [&>pre]:m-0 [&>pre]:p-4 [&>pre]:overflow-auto [&>pre]:text-sm [&>pre]:bg-transparent"
+        data-rehype-pretty-code-fragment
+        dangerouslySetInnerHTML={{ __html: highlightedHtml }}
+      />
       {showCopyButton && (
         <button
           onClick={handleCopy}

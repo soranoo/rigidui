@@ -351,7 +351,7 @@ export default function MyComponent() {
                 </div>
 
                 <div className="bg-white dark:bg-background rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
-                  <Tabs defaultValue="preview" className="w-full pb-4">
+                  <Tabs defaultValue="preview" className="w-full">
                     <TabsList className="flex justify-start border-b border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900/70">
                       <TabsTrigger
                         value="preview"

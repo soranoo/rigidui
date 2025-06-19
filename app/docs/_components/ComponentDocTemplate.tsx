@@ -150,7 +150,7 @@ export default function ComponentDocTemplate({
           {usageDescription}
         </p>
 
-        <div className="mt-8 pb-4 bg-white dark:bg-background rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
+        <div className="mt-8 bg-white dark:bg-background rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
           <Tabs defaultValue="preview" className="w-full">
             <TabsList className="flex justify-start border-b border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900/70">
               <TabsTrigger
@@ -173,7 +173,7 @@ export default function ComponentDocTemplate({
             <TabsContent value="code" className="max-h-[500px] overflow-auto">
               <CodeBlock
                 code={usageCode}
-                language='typescript'
+                language='jsx'
                 filename={codeFilename}
               />
             </TabsContent>

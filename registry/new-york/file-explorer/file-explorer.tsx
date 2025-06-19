@@ -32,7 +32,6 @@ type FolderType = {
 
 type FileSystemItemType = FileType | FolderType
 
-// Error Boundary for the FileExplorer component
 class FileExplorerErrorBoundary extends React.Component<
   { children: React.ReactNode },
   { hasError: boolean; error?: Error }
@@ -272,7 +271,7 @@ const FileTreeItem = ({
       <>
         <div
           className={cn(
-            "flex items-center py-1 mb-1 px-2 rounded-md cursor-pointer hover:bg-accent/50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50",
+            "flex items-center py-1 mb-1 px-2 rounded-md cursor-pointer hover:bg-accent/50 transition-colors",
             { "bg-accent/30": item.expanded }
           )}
           style={{ paddingLeft: `${indent}px` }}
@@ -315,7 +314,7 @@ const FileTreeItem = ({
     return (
       <div
         className={cn(
-          "flex items-center py-1 px-2 rounded-md cursor-pointer hover:bg-accent/50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50",
+          "flex items-center py-1 px-2 rounded-md cursor-pointer hover:bg-accent/50 transition-colors",
           { "bg-primary/10 text-primary": selectedFileId === item.id }
         )}
         style={{ paddingLeft: `${indent + 20}px` }}

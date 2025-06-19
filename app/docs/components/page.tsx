@@ -8,7 +8,8 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { PasswordStrengthMeter } from '@/registry/new-york/strength-meter/strength-meter'
 import { SmartSearch } from '@/registry/new-york/smart-search/smart-search'
-import { Check, FileCode, FolderClosed, FolderOpen, MapPin, Bell } from 'lucide-react'
+import DraggableDashboard, { DraggableWrapper } from '@/registry/new-york/draggable-dashboard/draggable-dashboard'
+import { Check, FileCode, FolderClosed, FolderOpen, MapPin, Bell, TrendingUp, Users, DollarSign, Activity } from 'lucide-react'
 
 const componentsData = [
   {
@@ -32,6 +33,12 @@ const componentsData = [
         description: 'Intelligent search component with suggestions, history, filters, and keyboard navigation',
         image: '/window.svg'
       },
+      {
+        name: 'Draggable Dashboard',
+        href: '/docs/components/draggable-dashboard',
+        description: 'Create customizable, drag-and-drop dashboards with resizable widgets',
+        image: '/dashboard.svg'
+      }
     ]
   },
   {
@@ -326,6 +333,67 @@ const ComponentCard = ({ name, description, image, href }: ComponentCardProps) =
                   <span>✨ Intelligent search with suggestions</span>
                 </div>
               </div>
+            </Card>
+          </div>
+        )
+      case 'Draggable Dashboard':
+        return (
+          <div className="p-2 h-full">
+            <Card className="p-2 shadow-sm bg-white dark:bg-transparent h-full">
+              <DraggableDashboard
+                showLockToggle={false}
+                showHandles={true}
+                gridCols={2}
+                gap={2}
+                defaultLocked={false}
+                className="space-y-2"
+              >
+                <DraggableWrapper id="revenue-mini" gridSize={{ cols: 1, rows: 1 }}>
+                  <Card className="h-full p-2">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-medium text-slate-700 dark:text-slate-200">Revenue</span>
+                      <DollarSign className="h-3 w-3 text-muted-foreground" />
+                    </div>
+                    <div className="text-sm font-bold">$45.2K</div>
+                    <div className="flex items-center text-xs text-green-600">
+                      <TrendingUp className="mr-1 h-2 w-2" />
+                      +20%
+                    </div>
+                  </Card>
+                </DraggableWrapper>
+
+                <DraggableWrapper id="users-mini" gridSize={{ cols: 1, rows: 1 }}>
+                  <Card className="h-full p-2">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-medium text-slate-700 dark:text-slate-200">Users</span>
+                      <Users className="h-3 w-3 text-muted-foreground" />
+                    </div>
+                    <div className="text-sm font-bold">2.3K</div>
+                    <div className="flex items-center text-xs text-green-600">
+                      <TrendingUp className="mr-1 h-2 w-2" />
+                      +18%
+                    </div>
+                  </Card>
+                </DraggableWrapper>
+
+                <DraggableWrapper id="activity-mini" gridSize={{ cols: 2, rows: 1 }}>
+                  <Card className="h-full p-2">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="text-xs font-medium text-slate-700 dark:text-slate-200">Activity</span>
+                      <Activity className="h-3 w-3 text-muted-foreground" />
+                    </div>
+                    <div className="flex justify-between items-center space-x-1">
+                      {[40, 60, 30, 80].map((height, i) => (
+                        <div
+                          key={i}
+                          className="w-2 bg-primary rounded-t-sm"
+                          style={{ height: `${height / 2}px` }}
+                        />
+                      ))}
+                    </div>
+                  </Card>
+                </DraggableWrapper>
+              </DraggableDashboard>
             </Card>
           </div>
         )
