@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useEffect } from 'react'
 import { Check, Copy } from 'lucide-react'
 import { highlightCode } from '@/lib/highlight-code'
