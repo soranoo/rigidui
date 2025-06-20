@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, ReactNode, Children, isValidElement } from 'react'
+import React, { useState, ReactNode, Children, isValidElement, useEffect, useCallback } from 'react'
 import {
   DndContext,
   closestCenter,
@@ -53,6 +53,7 @@ interface DraggableDashboardProps {
   gap?: number
   defaultLocked?: boolean
   onOrderChange?: (newOrder: string[]) => void
+  persistenceKey?: string
 }
 
 export function DraggableWrapper({
@@ -149,13 +150,15 @@ export default function DraggableDashboard({
   gridCols = 3,
   gap = 6,
   defaultLocked = false,
-  onOrderChange
+  onOrderChange,
+  persistenceKey = 'draggable-dashboard-order'
 }: DraggableDashboardProps) {
   const [isLocked, setIsLocked] = useState(defaultLocked)
   const [activeId, setActiveId] = useState<string | null>(null)
 
   const childrenArray = Children.toArray(children)
-  const [itemOrder, setItemOrder] = useState<string[]>(() => {
+
+  const getInitialOrder = (): string[] => {
     return childrenArray
       .map((child, index) => {
         if (isValidElement(child) && child.props && typeof child.props === 'object' && 'id' in child.props) {
@@ -163,7 +166,48 @@ export default function DraggableDashboard({
         }
         return `item-${index}`
       })
-  })
+  }
+
+  const loadPersistedOrder = useCallback((): string[] => {
+    if (typeof window === 'undefined') return getInitialOrder()
+
+    try {
+      const savedOrder = localStorage.getItem(persistenceKey)
+      if (savedOrder) {
+        const parsedOrder = JSON.parse(savedOrder)
+        const initialOrder = getInitialOrder()
+
+        const isValidOrder = parsedOrder.length === initialOrder.length &&
+          parsedOrder.every((id: string) => initialOrder.includes(id)) &&
+          initialOrder.every((id: string) => parsedOrder.includes(id))
+
+        if (isValidOrder) {
+          return parsedOrder
+        }
+      }
+    } catch (error) {
+      console.warn('Failed to load persisted dashboard order:', error)
+    }
+
+    return getInitialOrder()
+  }, [persistenceKey])
+
+  const [itemOrder, setItemOrder] = useState<string[]>(getInitialOrder)
+
+  useEffect(() => {
+    const persistedOrder = loadPersistedOrder()
+    setItemOrder(persistedOrder)
+  }, [loadPersistedOrder, persistenceKey])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem(persistenceKey, JSON.stringify(itemOrder))
+      } catch (error) {
+        console.warn('Failed to save dashboard order:', error)
+      }
+    }
+  }, [itemOrder, persistenceKey])
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
