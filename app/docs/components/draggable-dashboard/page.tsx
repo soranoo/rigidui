@@ -138,6 +138,7 @@ const DraggableDashboardDemo = () => {
         gridCols={3}
         gap={4}
         defaultLocked={false}
+        persistenceKey="demo-dashboard"
       >
         <DraggableWrapper id="revenue" gridSize={{ cols: 1, rows: 1 }}>
           <RevenueCard />
@@ -217,6 +218,12 @@ export default function DraggableDashboardPage() {
       defaultValue: 'undefined',
       description: 'Callback function called when item order changes',
     },
+    {
+      name: 'persistenceKey',
+      type: 'string',
+      defaultValue: "'draggable-dashboard-order'",
+      description: 'Unique key for localStorage to persist item order across sessions',
+    },
   ]
 
   const wrapperPropsData = [
@@ -294,6 +301,15 @@ export default function DraggableDashboardPage() {
       ),
       title: "Flexible Sizing",
       description: "Components can span multiple columns and rows to create complex dashboard layouts."
+    },
+    {
+      icon: (
+        <svg className="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      ),
+      title: "State Persistence",
+      description: "Dashboard layout is automatically saved to localStorage and persists across page reloads and browser sessions."
     }
   ]
 
@@ -308,6 +324,7 @@ export default function MyDashboard() {
         gridCols={3}
         gap={4}
         defaultLocked={false}
+        persistenceKey="my-dashboard"
       >
         <DraggableWrapper id="revenue" gridSize={{ cols: 1, rows: 1 }}>
           <RevenueCard />
@@ -344,7 +361,7 @@ export default function MyDashboard() {
       previewComponent={<DraggableDashboardDemo />}
       githubPath="registry/new-york/draggable-dashboard/draggable-dashboard.tsx"
       usageCode={usageCode}
-      usageDescription="The Draggable Dashboard component provides a grid-based layout system where users can drag and drop items to customize their dashboard arrangement. It includes lock/unlock functionality and flexible grid sizing options."
+      usageDescription="The Draggable Dashboard component provides a grid-based layout system where users can drag and drop items to customize their dashboard arrangement. It includes lock/unlock functionality, flexible grid sizing options, and automatic state persistence using localStorage to maintain layout across sessions."
       propsData={propsData}
       features={features}
       componentName="https://rigidui.com/registry/draggable-dashboard"
