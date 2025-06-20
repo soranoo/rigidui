@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import path from "path"
 import { promises as fs } from "fs"
 import { registryItemSchema } from "shadcn/registry"
+import { PostHog } from "posthog-node";
 // This route shows an example for serving a component using a route handler.
 export async function GET(
   request: Request,
@@ -9,6 +10,16 @@ export async function GET(
 ) {
   try {
     const { name } = await params
+
+    const posthog = new PostHog(process.env.POSTHOG_API_KEY!, {
+      host: process.env.POSTHOG_HOST,
+      flushAt: 1,
+      flushInterval: 0,
+      privacyMode: true,
+      disableGeoip: true,
+      disabled: process.env.NODE_ENV !== "production",
+    });
+
     // Cache the registry import
     const registryData = await import("@/registry.json")
     const registry = registryData.default
@@ -43,6 +54,19 @@ export async function GET(
         return { ...file, content }
       })
     )
+
+    const sessionId = crypto.randomUUID().replace(/-/g, "")
+
+    posthog.capture({
+      distinctId: sessionId,
+      event: "component_downloaded",
+      properties: {
+        title: registryItem.title,
+        node_version: process.version,
+        platform: process.platform,
+        $ip: null,
+      },
+    });
 
     // Return the component with the files.
     return NextResponse.json({ ...registryItem, files: filesWithContent })
