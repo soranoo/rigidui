@@ -50,6 +50,9 @@ Add RigidUI components to your project with a single command:
 # Currency Manager
 npx shadcn@latest add https://rigidui.com/registry/currency-manager
 
+# Draggable Dashboard
+npx shadcn@latest add https://rigidui.com/registry/draggable-dashboard
+
 # File Explorer
 npx shadcn@latest add https://rigidui.com/registry/file-explorer
 
@@ -71,6 +74,11 @@ npx shadcn@latest add https://rigidui.com/registry/notification-center
 # Password Strength Meter
 npx shadcn@latest add https://rigidui.com/registry/strength-meter
 
+# Smart Form
+npx shadcn@latest add https://rigidui.com/registry/smart-form
+
+# Smart Search
+npx shadcn@latest add https://rigidui.com/registry/smart-search
 ```
 
 That's it! Components will be added to your `components/ui` directory and are fully customizable.
