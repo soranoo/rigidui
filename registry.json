@@ -236,6 +236,19 @@
         }
       ],
       "author": "Nitish Singh <devxnitish@gmail.com>"
+    },
+    {
+      "name": "image-loader",
+      "type": "registry:component",
+      "title": "Image Loader",
+      "description": "An advanced image loading component with beautiful loading effect and error handling",
+      "files": [
+        {
+          "path": "registry/new-york/image-loader/image-loader.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "author": "Nitish Singh <devxnitish@gmail.com>"
     }
   ]
 }

@@ -5,51 +5,13 @@ import React, { useEffect, useState } from 'react'
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
 import { useRouter } from 'next/navigation'
 import { DialogTitle } from '@/components/ui/dialog'
-
-interface NavigationItem {
-  title: string
-  href: string
-  items?: NavigationItem[]
-}
+import { navigationItems } from '@/lib/constants'
 
 interface SearchItem {
   title: string
   href: string
   category: string
 }
-
-const navigationItems: NavigationItem[] = [
-  {
-    title: 'Getting Started',
-    href: '/docs',
-    items: [
-      { title: 'Docs', href: '/docs' },
-      { title: 'Getting Started', href: '/docs/getting-started' },
-    ]
-  },
-  {
-    title: 'Components',
-    href: '/docs/components',
-    items: [
-      { title: 'Currency Manager', href: '/docs/components/currency-manager' },
-      { title: 'File Explorer', href: '/docs/components/file-explorer' },
-      { title: 'File Uploader', href: '/docs/components/file-uploader' },
-      { title: 'Infinite Scroll', href: '/docs/components/infinite-scroll' },
-      { title: 'Location Picker', href: '/docs/components/location-picker' },
-      { title: 'Multi-Step Form Wrapper', href: '/docs/components/multi-step-form-wrapper' },
-      { title: 'Notification Center', href: '/docs/components/notification-center' },
-      { title: 'Password Strength Meter', href: '/docs/components/strength-meter' },
-      { title: 'Smart Form', href: '/docs/components/smart-form' },
-    ]
-  },
-  {
-    title: 'Hooks',
-    href: '/docs/hooks',
-    items: [
-      { title: 'useLocation', href: '/docs/hooks/use-location' },
-    ]
-  },
-]
 
 const DocsSearch = ({ collapsed }: { collapsed?: boolean }) => {
   const [open, setOpen] = useState(false);

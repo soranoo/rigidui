@@ -9,6 +9,7 @@ import { Card } from '@/components/ui/card'
 import { PasswordStrengthMeter } from '@/registry/new-york/strength-meter/strength-meter'
 import { SmartSearch } from '@/registry/new-york/smart-search/smart-search'
 import DraggableDashboard, { DraggableWrapper } from '@/registry/new-york/draggable-dashboard/draggable-dashboard'
+import { ImageLoader } from '@/registry/new-york/image-loader/image-loader'
 import { Check, FileCode, FolderClosed, FolderOpen, MapPin, Bell, TrendingUp, Users, DollarSign, Activity } from 'lucide-react'
 
 const componentsData = [
@@ -19,6 +20,18 @@ const componentsData = [
         name: 'Currency Manager',
         href: '/docs/components/currency-manager',
         description: 'Manage and convert between different currencies with real-time exchange rates',
+        image: '/window.svg'
+      },
+      {
+        name: 'Draggable Dashboard',
+        href: '/docs/components/draggable-dashboard',
+        description: 'Create customizable, drag-and-drop dashboards with resizable widgets',
+        image: '/dashboard.svg'
+      },
+      {
+        name: 'Image Loader',
+        href: '/docs/components/image-loader',
+        description: 'Advanced image loading component with beautiful loading states and error handling',
         image: '/window.svg'
       },
       {
@@ -33,12 +46,6 @@ const componentsData = [
         description: 'Intelligent search component with suggestions, history, filters, and keyboard navigation',
         image: '/window.svg'
       },
-      {
-        name: 'Draggable Dashboard',
-        href: '/docs/components/draggable-dashboard',
-        description: 'Create customizable, drag-and-drop dashboards with resizable widgets',
-        image: '/dashboard.svg'
-      }
     ]
   },
   {
@@ -113,6 +120,18 @@ const ComponentCard = ({ name, description, image, href }: ComponentCardProps) =
               showRequirements={false}
               segments={4}
               className="max-w-[220px]"
+            />
+          </div>
+        )
+      case 'Image Loader':
+        return (
+          <div className="p-3 h-full">
+            <ImageLoader
+              src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=250&h=180&fit=crop"
+              alt="Component preview"
+              width={250}
+              height={180}
+              className="rounded-lg shadow-sm"
             />
           </div>
         )
