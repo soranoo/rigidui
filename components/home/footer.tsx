@@ -39,7 +39,7 @@ const Footer = () => {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                <span>10 Components</span>
+                <span>13 Components</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />

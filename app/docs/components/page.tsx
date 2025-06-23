@@ -10,7 +10,7 @@ import { PasswordStrengthMeter } from '@/registry/new-york/strength-meter/streng
 import { SmartSearch } from '@/registry/new-york/smart-search/smart-search'
 import DraggableDashboard, { DraggableWrapper } from '@/registry/new-york/draggable-dashboard/draggable-dashboard'
 import { ImageLoader } from '@/registry/new-york/image-loader/image-loader'
-import { Check, FileCode, FolderClosed, FolderOpen, MapPin, Bell, TrendingUp, Users, DollarSign, Activity } from 'lucide-react'
+import { Check, FileCode, FolderClosed, FolderOpen, MapPin, Bell, TrendingUp, Users, DollarSign, Activity, Grid2X2 } from 'lucide-react'
 
 const componentsData = [
   {
@@ -81,6 +81,12 @@ const componentsData = [
     category: 'Data Display',
     items: [
       {
+        name: 'Content Grid',
+        href: '/docs/components/content-grid',
+        description: 'Flexible grid/list component with view toggle functionality and customizable card rendering',
+        image: '/window.svg'
+      },
+      {
         name: 'File Explorer',
         href: '/docs/components/file-explorer',
         description: 'Interactive file system explorer with syntax highlighting and directory navigation',
@@ -133,6 +139,42 @@ const ComponentCard = ({ name, description, image, href }: ComponentCardProps) =
               height={180}
               className="rounded-lg shadow-sm"
             />
+          </div>
+        )
+      case 'Content Grid':
+        return (
+          <div className="p-2 h-full">
+            <Card className="p-3 shadow-sm bg-white dark:bg-transparent h-full">
+              <div className="flex items-center justify-between mb-3 border-b border-slate-200 dark:border-slate-700 pb-2">
+                <div className="flex items-center gap-2">
+                  <Grid2X2 className="h-4 w-4 text-primary" />
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Content Grid</span>
+                </div>
+                <div className="flex border rounded-md p-0.5 gap-0.5">
+                  <Button variant="default" size="sm" className="h-6 w-6 p-0">
+                    <Grid2X2 className="h-3 w-3" />
+                  </Button>
+                  <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                    <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                    </svg>
+                  </Button>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="bg-slate-100 dark:bg-slate-800 rounded-md p-2">
+                  <div className="w-full h-3 bg-slate-200 dark:bg-slate-700 rounded mb-1" />
+                  <div className="w-3/4 h-2 bg-slate-200 dark:bg-slate-700 rounded" />
+                </div>
+                <div className="bg-slate-100 dark:bg-slate-800 rounded-md p-2">
+                  <div className="w-full h-3 bg-slate-200 dark:bg-slate-700 rounded mb-1" />
+                  <div className="w-3/4 h-2 bg-slate-200 dark:bg-slate-700 rounded" />
+                </div>
+              </div>
+              <div className="mt-2 text-xs text-slate-500 dark:text-slate-400 text-center">
+                Switch between grid & list views
+              </div>
+            </Card>
           </div>
         )
       case 'File Explorer':

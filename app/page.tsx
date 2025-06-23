@@ -331,7 +331,7 @@ export default function Home() {
               className="inline-flex items-center justify-center text-primary hover:text-primary/80 text-xl group font-semibold"
             >
               <span className="bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-                Explore All 10 Components
+                Explore All 13 Components
               </span>
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />
             </Link>

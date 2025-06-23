@@ -11,6 +11,7 @@ export const navigationItems: NavigationItem[] = [
     href: '/docs/components',
     isCollapsed: false,
     items: [
+      { title: 'Content Grid', href: '/docs/components/content-grid' },
       { title: 'Currency Manager', href: '/docs/components/currency-manager' },
       { title: 'Draggable Dashboard', href: '/docs/components/draggable-dashboard' },
       { title: 'File Explorer', href: '/docs/components/file-explorer' },
