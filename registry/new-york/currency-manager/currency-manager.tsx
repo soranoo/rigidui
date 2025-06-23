@@ -15,7 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { Loader, Check, ChevronsUpDown } from 'lucide-react'
+import { Loader, Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export type Currency = {
@@ -169,7 +169,7 @@ export function CurrencyProvider({
   initialRates,
   fetchRatesFunction,
   refetchIntervalMs,
-  defaultSelectedCurrencyCode = "INR",
+  defaultSelectedCurrencyCode = "inr",
 }: CurrencyProviderProps) {
   const [availableCurrencies, setAvailableCurrencies] = useState<Currency[]>([])
   const [loadingCurrencies, setLoadingCurrencies] = useState(true);
@@ -404,11 +404,11 @@ export function CurrencySelector({ className }: { className?: string }) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className={cn("w-[200px] justify-between", className)}
+          className={cn("w-fit justify-between", className)}
           disabled={loadingRates || availableCurrencies.length === 0}
         >
-          {currency ? `${currency.code} - ${currency.name}` : "Select currency..."}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          {currency ? `${currency.code} - ${currency.name.slice(0, 20)}` : "Select currency..."}
+          {/* <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" /> */}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[300px] p-0">
