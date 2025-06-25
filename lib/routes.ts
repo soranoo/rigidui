@@ -7,6 +7,7 @@ export const navigationItems = [
   { title: 'Draggable Dashboard', href: '/docs/components/draggable-dashboard' },
   { title: 'File Explorer', href: '/docs/components/file-explorer' },
   { title: 'File Uploader', href: '/docs/components/file-uploader' },
+  { title: 'Guided Tour', href: '/docs/components/guided-tour' },
   { title: 'Image Loader', href: '/docs/components/image-loader' },
   { title: 'Infinite Scroll', href: '/docs/components/infinite-scroll' },
   { title: 'Location Picker', href: '/docs/components/location-picker' },

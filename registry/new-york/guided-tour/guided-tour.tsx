@@ -4,6 +4,21 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 
+const useDisableMouseScroll = (isDisabled: boolean) => {
+  useEffect(() => {
+    if (isDisabled) {
+      const preventMouseScroll = (e: WheelEvent) => {
+        e.preventDefault();
+      };
+      window.addEventListener('wheel', preventMouseScroll, { passive: false });
+
+      return () => {
+        window.removeEventListener('wheel', preventMouseScroll);
+      };
+    }
+  }, [isDisabled]);
+};
+
 interface TourStepConfig {
   id: string;
   title: string;
@@ -44,8 +59,10 @@ export const useTour = () => {
 };
 
 const TourOverlay: React.FC = () => {
-  const { isActive, currentStepId, stopTour } = useTour();
+  const { isActive, currentStepId } = useTour();
   const [highlightRect, setHighlightRect] = useState<DOMRect | null>(null);
+
+  useDisableMouseScroll(isActive);
 
   useEffect(() => {
     if (isActive && currentStepId) {
@@ -84,7 +101,6 @@ const TourOverlay: React.FC = () => {
     >
       <div
         className="fixed inset-0 bg-black/30 z-[10001] backdrop-blur-sm pointer-events-auto"
-        onClick={stopTour}
       />
       <div
         className="absolute rounded-xl pointer-events-none"

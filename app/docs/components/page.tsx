@@ -10,7 +10,8 @@ import { PasswordStrengthMeter } from '@/registry/new-york/strength-meter/streng
 import { SmartSearch } from '@/registry/new-york/smart-search/smart-search'
 import DraggableDashboard, { DraggableWrapper } from '@/registry/new-york/draggable-dashboard/draggable-dashboard'
 import { ImageLoader } from '@/registry/new-york/image-loader/image-loader'
-import { Check, FileCode, FolderClosed, FolderOpen, MapPin, Bell, TrendingUp, Users, DollarSign, Activity, Grid2X2 } from 'lucide-react'
+import { TourProvider, TourStep, TourTrigger } from '@/registry/new-york/guided-tour/guided-tour'
+import { Check, FileCode, FolderClosed, FolderOpen, MapPin, Bell, TrendingUp, Users, DollarSign, Activity, Grid2X2, Route } from 'lucide-react'
 
 const componentsData = [
   {
@@ -39,6 +40,12 @@ const componentsData = [
         href: '/docs/components/location-picker',
         description: 'Interactive component for selecting geographic locations with map integration',
         image: '/globe.svg'
+      },
+      {
+        name: 'Guided Tour',
+        href: '/docs/components/guided-tour',
+        description: 'Interactive onboarding and feature introduction component with step-by-step guidance',
+        image: '/window.svg'
       },
       {
         name: 'Smart Search',
@@ -375,6 +382,45 @@ const ComponentCard = ({ name, description, image, href }: ComponentCardProps) =
             </Card>
           </div>
         )
+      case 'Guided Tour':
+        return (
+          <div className="p-3 h-full">
+            <Card className="p-3 shadow-sm bg-white dark:bg-transparent h-full">
+              <div className="flex items-center justify-between mb-3 border-b border-slate-200 dark:border-slate-700 pb-2">
+                <div className="flex items-center gap-2">
+                  <Route className="h-4 w-4 text-primary" />
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-200">Guided Tour</span>
+                </div>
+                <Badge variant="outline" className="text-xs px-1.5 py-0.5 border-slate-300 dark:border-slate-600 text-slate-600 dark:text-slate-300">
+                  Demo
+                </Badge>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 p-2 bg-blue-50 dark:bg-blue-950/20 rounded-md border border-blue-200 dark:border-blue-800">
+                  <div className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-semibold">
+                    1
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-xs font-medium text-slate-700 dark:text-slate-200">Welcome Step</div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400">Start your journey here</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 p-2 bg-slate-50 dark:bg-slate-800/50 rounded-md">
+                  <div className="w-5 h-5 rounded-full border border-slate-300 dark:border-slate-600 text-xs flex items-center justify-center text-slate-500 dark:text-slate-400">
+                    2
+                  </div>
+                  <div className="flex-1">
+                    <div className="text-xs text-slate-600 dark:text-slate-300">Feature Tour</div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400">Explore key features</div>
+                  </div>
+                </div>
+                <Button size="sm" className="w-full text-xs h-7">
+                  Start Interactive Tour
+                </Button>
+              </div>
+            </Card>
+          </div>
+        )
       case 'Smart Search':
         return (
           <div className="p-3 h-full">
@@ -500,70 +546,114 @@ const Components = () => {
     .filter(category => category.items.length > 0)
 
   return (
-    <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 min-h-screen">
-      <div className="mb-12 md:mb-16 text-center">
-        <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 text-slate-900 dark:text-slate-50">
-          Components
-        </h1>
-        <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto text-base sm:text-lg">
-          Explore our library of beautifully crafted UI components designed for building
-          modern, responsive interfaces with minimal effort.
-        </p>
-      </div>
-
-      <div className="mb-10 md:mb-12 flex justify-center">
-        <div className="relative w-full max-w-lg">
-          <Input
-            type="search"
-            placeholder="Search components (e.g., 'File Uploader', 'Location Picker')"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <svg
-            className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 dark:text-slate-500"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-        </div>
-      </div>
-
-      {filteredCategories.length > 0 ? (
-        <>
-          {filteredCategories.map((category) => (
-            <div key={category.category} className="mb-12 md:mb-16">
-              <div className="flex items-center mb-6 md:mb-8">
-                <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-slate-100">{category.category}</h2>
-                <div className="ml-4 h-px bg-slate-200 dark:bg-slate-700/50 flex-grow"></div>
-                <Badge variant="outline" className="ml-3 px-2.5 py-1 text-sm border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800">{category.items.length}</Badge>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                {category.items.map((item) => (
-                  <ComponentCard key={item.name} {...item} />
-                ))}
-              </div>
+    <TourProvider autoStart={false} persistent={true}>
+      <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 min-h-screen">
+        <TourStep
+          id="header"
+          title="Welcome to Components"
+          content="This is our comprehensive library of beautifully crafted UI components. Browse through different categories to find the perfect component for your project."
+          order={1}
+        >
+          <div className="mb-12 md:mb-16 text-center">
+            <div className="flex items-center justify-center gap-4 mb-4">
+              <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-slate-50">
+                Components
+              </h1>
+              <TourTrigger className="cursor-pointer">
+                <Button variant="outline" size="sm" className="flex items-center gap-2">
+                  <Route className="h-4 w-4" />
+                  Take Tour
+                </Button>
+              </TourTrigger>
             </div>
-          ))}
-        </>
-      ) : (
-        <div className="text-center py-16 md:py-20 bg-white dark:bg-slate-800/30 rounded-xl shadow-sm">
-          <svg
-            className="w-16 h-16 mx-auto text-slate-400 dark:text-slate-500/70 mb-5"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <p className="text-lg font-medium text-slate-600 dark:text-slate-300">No components found matching your search.</p>
-          <p className="text-slate-500 dark:text-slate-400 mt-1.5 text-sm">Try a different search term or explore all components.</p>
-        </div>
-      )}
-    </div>
+            <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto text-base sm:text-lg">
+              Explore our library of beautifully crafted UI components designed for building
+              modern, responsive interfaces with minimal effort.
+            </p>
+          </div>
+        </TourStep>
+
+        <TourStep
+          id="search"
+          title="Search Components"
+          content="Use this search bar to quickly find specific components. You can search by component name or description to filter the results instantly."
+          order={2}
+        >
+          <div className="mb-10 md:mb-12 flex justify-center">
+            <div className="relative w-full max-w-lg">
+              <Input
+                type="search"
+                placeholder="Search components (e.g., 'File Uploader', 'Location Picker')"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <svg
+                className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 dark:text-slate-500"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+          </div>
+        </TourStep>
+
+        {filteredCategories.length > 0 ? (
+          <>
+            {filteredCategories.map((category, categoryIndex) => (
+              <div key={category.category} className="mb-12 md:mb-16">
+                <TourStep
+                  id={`category-${category.category.toLowerCase().replace(' ', '-')}`}
+                  title={`${category.category} Components`}
+                  content={`This section contains ${category.items.length} components in the ${category.category} category. ${categoryIndex === 0 ? 'Click on any component to view detailed documentation and examples.' : `Each component includes interactive demos and usage examples.`}`}
+                  order={categoryIndex + 3}
+                >
+                  <div className="flex items-center mb-6 md:mb-8">
+                    <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-slate-100">{category.category}</h2>
+                    <div className="ml-4 h-px bg-slate-200 dark:bg-slate-700/50 flex-grow"></div>
+                    <Badge variant="outline" className="ml-3 px-2.5 py-1 text-sm border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-800">{category.items.length}</Badge>
+                  </div>
+                </TourStep>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                  {category.items.map((item, itemIndex) => (
+                    <div key={item.name}>
+                      {categoryIndex === 0 && itemIndex === 0 ? (
+                        <TourStep
+                          id="first-component"
+                          title="Component Cards"
+                          content="Each component card shows a live preview, description, and links to detailed documentation. Click on any card to learn more about implementation and usage."
+                          order={category.items.length + 4}
+                        >
+                          <ComponentCard {...item} />
+                        </TourStep>
+                      ) : (
+                        <ComponentCard {...item} />
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </>
+        ) : (
+          <div className="text-center py-16 md:py-20 bg-white dark:bg-slate-800/30 rounded-xl shadow-sm">
+            <svg
+              className="w-16 h-16 mx-auto text-slate-400 dark:text-slate-500/70 mb-5"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p className="text-lg font-medium text-slate-600 dark:text-slate-300">No components found matching your search.</p>
+            <p className="text-slate-500 dark:text-slate-400 mt-1.5 text-sm">Try a different search term or explore all components.</p>
+          </div>
+        )}
+      </div>
+    </TourProvider>
   )
 }
 
