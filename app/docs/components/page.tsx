@@ -546,7 +546,7 @@ const Components = () => {
     .filter(category => category.items.length > 0)
 
   return (
-    <TourProvider autoStart={false} persistent={true}>
+    <TourProvider autoStart={false}>
       <div className="container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 min-h-screen">
         <TourStep
           id="header"

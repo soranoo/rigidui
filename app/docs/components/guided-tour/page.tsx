@@ -19,6 +19,24 @@ export default function GuidedTourPage() {
       description: 'Whether to automatically start the tour when the component mounts',
     },
     {
+      name: 'ranOnce',
+      type: 'boolean',
+      defaultValue: 'true',
+      description: 'Whether the tour should only run once per user/device',
+    },
+    {
+      name: 'storageKey',
+      type: 'string',
+      defaultValue: "'rigidui-tour-completed'",
+      description: 'Key used to store tour completion status in localStorage',
+    },
+    {
+      name: 'shouldStart',
+      type: 'boolean',
+      defaultValue: 'true',
+      description: 'Whether the tour should start based on external conditions (e.g., user preferences)',
+    },
+    {
       name: 'onTourComplete',
       type: '() => void',
       defaultValue: 'undefined',

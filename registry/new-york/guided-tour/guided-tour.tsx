@@ -30,6 +30,9 @@ interface TourStepConfig {
 interface TourProviderProps {
   children: ReactNode;
   autoStart?: boolean;
+  ranOnce?: boolean;
+  storageKey?: string;
+  shouldStart?: boolean;
   onTourComplete?: () => void;
   onTourSkip?: () => void;
 }
@@ -41,6 +44,7 @@ interface TourContextType {
   stopTour: () => void;
   nextStep: () => void;
   prevStep: () => void;
+  resetTourCompletion: () => void;
   isActive: boolean;
   currentStepId: string | null;
   currentStepIndex: number;
@@ -297,6 +301,9 @@ const GlobalTourPopover: React.FC = () => {
 export const TourProvider: React.FC<TourProviderProps> = ({
   children,
   autoStart = false,
+  ranOnce = true,
+  storageKey = 'rigidui-tour-completed',
+  shouldStart = true,
   onTourComplete,
   onTourSkip
 }) => {
@@ -323,9 +330,8 @@ export const TourProvider: React.FC<TourProviderProps> = ({
   }, []);
 
   useEffect(() => {
-    if (autoStart && !hasAutoStarted && steps.size > 0) {
-      // Check if tour was already completed
-      const tourCompleted = localStorage.getItem('rigidui-tour-completed') === 'true';
+    if (autoStart && !hasAutoStarted && steps.size > 0 && shouldStart) {
+      const tourCompleted = ranOnce ? localStorage.getItem(storageKey) === 'true' : false;
 
       if (!tourCompleted) {
         const timer = setTimeout(() => {
@@ -344,7 +350,7 @@ export const TourProvider: React.FC<TourProviderProps> = ({
         setHasAutoStarted(true);
       }
     }
-  }, [autoStart, hasAutoStarted, steps]);
+  }, [autoStart, hasAutoStarted, steps, ranOnce, storageKey, shouldStart]);
 
   const startTour = () => {
     const filteredSteps = Array.from(steps.values())
@@ -365,9 +371,15 @@ export const TourProvider: React.FC<TourProviderProps> = ({
     setActiveSteps([]);
 
     if (wasActive) {
-      if (completed && onTourComplete) {
-        onTourComplete();
-        window.dispatchEvent(new CustomEvent('tourCompleted'));
+      if (completed) {
+        // Only store completion state if ranOnce is true
+        if (ranOnce) {
+          localStorage.setItem(storageKey, 'true');
+        }
+        if (onTourComplete) {
+          onTourComplete();
+        }
+        window.dispatchEvent(new CustomEvent('tourCompleted', { detail: { storageKey } }));
       } else if (!completed && onTourSkip) {
         onTourSkip();
       }
@@ -390,6 +402,14 @@ export const TourProvider: React.FC<TourProviderProps> = ({
     }
   };
 
+  const resetTourCompletion = () => {
+    if (ranOnce) {
+      localStorage.removeItem(storageKey);
+      setHasAutoStarted(false);
+      window.dispatchEvent(new CustomEvent('tourReset', { detail: { storageKey } }));
+    }
+  };
+
   return (
     <TourContext.Provider value={{
       registerStep,
@@ -398,6 +418,7 @@ export const TourProvider: React.FC<TourProviderProps> = ({
       stopTour: () => stopTour(false),
       nextStep,
       prevStep,
+      resetTourCompletion,
       isActive,
       currentStepId: activeSteps[currentStep]?.id || null,
       currentStepIndex: currentStep,
@@ -455,22 +476,31 @@ export const TourTrigger: React.FC<{
   children: ReactNode;
   className?: string;
   hideAfterComplete?: boolean;
-}> = ({ children, className, hideAfterComplete = false }) => {
+  storageKey?: string;
+}> = ({ children, className, hideAfterComplete = false, storageKey = 'rigidui-tour-completed' }) => {
   const { startTour } = useTour();
   const [tourCompleted, setTourCompleted] = useState(false);
 
   useEffect(() => {
     if (hideAfterComplete) {
-      const completed = localStorage.getItem('rigidui-tour-completed') === 'true';
+      const completed = localStorage.getItem(storageKey) === 'true';
       setTourCompleted(completed);
 
-      const handleTourComplete = () => {
-        localStorage.setItem('rigidui-tour-completed', 'true');
-        setTourCompleted(true);
+      const handleTourComplete = (event: Event) => {
+        const customEvent = event as CustomEvent;
+        const eventStorageKey = customEvent.detail?.storageKey || 'rigidui-tour-completed';
+        if (eventStorageKey === storageKey) {
+          localStorage.setItem(storageKey, 'true');
+          setTourCompleted(true);
+        }
       };
 
-      const handleTourReset = () => {
-        setTourCompleted(false);
+      const handleTourReset = (event: Event) => {
+        const customEvent = event as CustomEvent;
+        const eventStorageKey = customEvent.detail?.storageKey || 'rigidui-tour-completed';
+        if (eventStorageKey === storageKey) {
+          setTourCompleted(false);
+        }
       };
 
       window.addEventListener('tourCompleted', handleTourComplete);
@@ -481,7 +511,7 @@ export const TourTrigger: React.FC<{
         window.removeEventListener('tourReset', handleTourReset);
       };
     }
-  }, [hideAfterComplete]);
+  }, [hideAfterComplete, storageKey]);
 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
