@@ -30,7 +30,6 @@ interface TourStepConfig {
 interface TourProviderProps {
   children: ReactNode;
   autoStart?: boolean;
-  persistent?: boolean;
   onTourComplete?: () => void;
   onTourSkip?: () => void;
 }
@@ -298,7 +297,6 @@ const GlobalTourPopover: React.FC = () => {
 export const TourProvider: React.FC<TourProviderProps> = ({
   children,
   autoStart = false,
-  persistent = false,
   onTourComplete,
   onTourSkip
 }) => {
@@ -338,12 +336,6 @@ export const TourProvider: React.FC<TourProviderProps> = ({
             setActiveSteps(filteredSteps);
             setCurrentStep(0);
             setIsActive(true);
-
-            if (persistent) {
-              localStorage.setItem('rigidui-tour-state', JSON.stringify({
-                stepIndex: 0
-              }));
-            }
           }
           setHasAutoStarted(true);
         }, 500);
@@ -352,37 +344,7 @@ export const TourProvider: React.FC<TourProviderProps> = ({
         setHasAutoStarted(true);
       }
     }
-  }, [autoStart, hasAutoStarted, steps, persistent]);
-
-  useEffect(() => {
-    if (persistent && steps.size > 0) {
-      const tourCompleted = localStorage.getItem('rigidui-tour-completed') === 'true';
-
-      if (!tourCompleted) {
-        const savedTourState = localStorage.getItem('rigidui-tour-state');
-        if (savedTourState) {
-          try {
-            const { stepIndex } = JSON.parse(savedTourState);
-            if (stepIndex >= 0) {
-              setTimeout(() => {
-                const filteredSteps = Array.from(steps.values())
-                  .sort((a, b) => a.order - b.order);
-
-                if (filteredSteps.length > stepIndex) {
-                  setActiveSteps(filteredSteps);
-                  setCurrentStep(stepIndex);
-                  setIsActive(true);
-                }
-              }, 100);
-            }
-          } catch (error) {
-            console.warn('Failed to restore tour state:', error);
-            localStorage.removeItem('rigidui-tour-state');
-          }
-        }
-      }
-    }
-  }, [persistent, steps]);
+  }, [autoStart, hasAutoStarted, steps]);
 
   const startTour = () => {
     const filteredSteps = Array.from(steps.values())
@@ -392,12 +354,6 @@ export const TourProvider: React.FC<TourProviderProps> = ({
       setActiveSteps(filteredSteps);
       setCurrentStep(0);
       setIsActive(true);
-
-      if (persistent) {
-        localStorage.setItem('rigidui-tour-state', JSON.stringify({
-          stepIndex: 0
-        }));
-      }
     }
   };
 
@@ -407,10 +363,6 @@ export const TourProvider: React.FC<TourProviderProps> = ({
     setIsActive(false);
     setCurrentStep(0);
     setActiveSteps([]);
-
-    if (persistent) {
-      localStorage.removeItem('rigidui-tour-state');
-    }
 
     if (wasActive) {
       if (completed && onTourComplete) {
@@ -426,12 +378,6 @@ export const TourProvider: React.FC<TourProviderProps> = ({
     if (currentStep < activeSteps.length - 1) {
       const newStepIndex = currentStep + 1;
       setCurrentStep(newStepIndex);
-
-      if (persistent) {
-        localStorage.setItem('rigidui-tour-state', JSON.stringify({
-          stepIndex: newStepIndex
-        }));
-      }
     } else {
       stopTour(true);
     }
@@ -441,12 +387,6 @@ export const TourProvider: React.FC<TourProviderProps> = ({
     if (currentStep > 0) {
       const newStepIndex = currentStep - 1;
       setCurrentStep(newStepIndex);
-
-      if (persistent) {
-        localStorage.setItem('rigidui-tour-state', JSON.stringify({
-          stepIndex: newStepIndex
-        }));
-      }
     }
   };
 

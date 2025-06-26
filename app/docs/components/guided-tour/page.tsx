@@ -19,12 +19,6 @@ export default function GuidedTourPage() {
       description: 'Whether to automatically start the tour when the component mounts',
     },
     {
-      name: 'persistent',
-      type: 'boolean',
-      defaultValue: 'false',
-      description: 'Whether to persist tour state in localStorage across sessions',
-    },
-    {
       name: 'onTourComplete',
       type: '() => void',
       defaultValue: 'undefined',
@@ -126,11 +120,11 @@ export default function GuidedTourPage() {
     {
       icon: (
         <svg className="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       ),
-      title: "Persistent State",
-      description: "Optional state persistence allows users to resume tours where they left off, even after closing the browser."
+      title: "Completion Tracking",
+      description: "Tracks tour completion status to prevent showing the tour repeatedly to users who have already completed it."
     },
     {
       icon: (
@@ -161,62 +155,91 @@ export default function GuidedTourPage() {
     }
   ]
 
-  const usageCode = `import { TourProvider, TourStep, TourTrigger } from "@/components/guided-tour"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+  const usageCode = `"use client"
+import React from 'react'
+import { TourProvider, TourStep, TourTrigger } from '@/registry/new-york/guided-tour/guided-tour'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Star, Play, Settings, User } from 'lucide-react'
 
-export default function MyComponent() {
+const DemoComponent = () => {
   return (
     <TourProvider
       autoStart={false}
-      persistent={true}
       onTourComplete={() => console.log('Tour completed!')}
+      onTourSkip={() => console.log('Tour skipped!')}
     >
-      <div className="space-y-6">
-        {/* Trigger to start the tour */}
-        <TourTrigger>
-          <Button>Start Tour</Button>
-        </TourTrigger>
+      <div className="w-full max-w-4xl mx-auto space-y-6">
+        <Card>
+          <CardHeader className="text-center">
+            <CardTitle className="flex items-center justify-center gap-2">
+              <Star className="h-5 w-5 text-yellow-500" />
+              Interactive Dashboard Demo
+            </CardTitle>
+            <CardDescription>
+              Take a guided tour to learn about all the features
+            </CardDescription>
+            <TourTrigger className="w-fit mx-auto">
+              <Button className="mt-4">
+                <Play className="h-4 w-4 mr-2" />
+                Start Guided Tour
+              </Button>
+            </TourTrigger>
+          </CardHeader>
+        </Card>
 
-        {/* First step of the tour */}
-        <TourStep
-          id="welcome-card"
-          title="Welcome!"
-          content="This is your dashboard where you can manage all your activities."
-          order={1}
-          position="bottom"
-        >
-          <Card>
-            <CardHeader>
-              <CardTitle>Dashboard</CardTitle>
-            </CardHeader>
-            <CardContent>
-              Welcome to your dashboard!
-            </CardContent>
-          </Card>
-        </TourStep>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-        {/* Second step of the tour */}
-        <TourStep
-          id="settings-section"
-          title="Settings"
-          content="Click here to access your account settings and preferences."
-          order={2}
-          position="top"
-        >
-          <Card>
-            <CardHeader>
-              <CardTitle>Settings</CardTitle>
-            </CardHeader>
-            <CardContent>
-              Manage your preferences here.
-            </CardContent>
-          </Card>
-        </TourStep>
+          <TourStep
+            id="profile-card"
+            title="Welcome to Your Profile"
+            content="This is your profile card where you can view and edit your personal information. Click here to update your details anytime."
+            order={1}
+            position="bottom"
+          >
+            <CardOne />
+          </TourStep>
+
+          <TourStep
+            id="stats-card"
+            title="Your Statistics"
+            content="Here you can monitor your performance metrics and track your progress over time. These numbers update in real-time!"
+            order={2}
+            position="bottom"
+          >
+          <CardTwo />
+          </TourStep>
+
+          <TourStep
+            id="settings-card"
+            title="Customize Your Experience"
+            content="Access all your settings here. You can customize themes, notifications, privacy options, and much more to personalize your experience."
+            order={3}
+            position="left"
+          >
+            <CardThree />
+          </TourStep>
+
+          <TourStep
+            id="activities-card"
+            title="Recent Activities"
+            content="Stay up to date with your recent activities and interactions. This timeline shows your most important events and updates."
+            order={4}
+            position="top"
+          >
+            <CardFour />
+          </TourStep>
+        </div>
       </div>
     </TourProvider>
   )
-}`
+}
+
+export default DemoComponent
+`
 
   return (
     <ComponentDocTemplate

@@ -12,7 +12,6 @@ const DemoComponent = () => {
   return (
     <TourProvider
       autoStart={false}
-      persistent={false}
       onTourComplete={() => console.log('Tour completed!')}
       onTourSkip={() => console.log('Tour skipped!')}
     >
