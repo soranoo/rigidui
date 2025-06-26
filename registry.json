@@ -249,6 +249,23 @@
         }
       ],
       "author": "Nitish Singh <devxnitish@gmail.com>"
+    },
+    {
+      "name": "guided-tour",
+      "type": "registry:component",
+      "title": "Guided Tour",
+      "description": "An interactive guided tour component to onboard users and showcase features.",
+      "registryDependencies": [
+        "button",
+        "card"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york/guided-tour/guided-tour.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "author": "Nitish Singh <devxnitish@gmail.com>"
     }
   ]
 }
