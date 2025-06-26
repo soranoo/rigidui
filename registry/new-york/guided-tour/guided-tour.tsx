@@ -132,52 +132,106 @@ const GlobalTourPopover: React.FC = () => {
 
   const [currentStepData, setCurrentStepData] = useState<TourStepConfig | null>(null);
   const [targetElement, setTargetElement] = useState<HTMLElement | null>(null);
-  const [popoverPosition, setPopoverPosition] = useState({ top: 0, left: 0, position: 'bottom' });
+  const [popoverPosition, setPopoverPosition] = useState<{
+    top: number;
+    left: number;
+    position: 'top' | 'bottom' | 'left' | 'right';
+  }>({ top: 0, left: 0, position: 'bottom' });
   const popoverRef = useRef<HTMLDivElement>(null);
 
-  const calculateOptimalPosition = (targetRect: DOMRect) => {
-    const popoverWidth = 320;
-    const popoverHeight = 300;
+  const calculateOptimalPosition = useCallback((targetRect: DOMRect, preferredPosition: 'top' | 'bottom' | 'left' | 'right' = 'bottom') => {
+    const popoverWidth = popoverRef.current?.offsetWidth || 320;
+    const popoverHeight = popoverRef.current?.offsetHeight || 200;
     const margin = 16;
 
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+    const isMobile = viewportWidth < 768;
 
     const spaceTop = targetRect.top;
     const spaceBottom = viewportHeight - targetRect.bottom;
-    const spaceLeft = targetRect.left;
-    const spaceRight = viewportWidth - targetRect.right;
 
-    let position = 'bottom';
+    let position: 'top' | 'bottom' | 'left' | 'right' = preferredPosition;
     let top = 0;
     let left = 0;
 
-    if (spaceBottom >= popoverHeight + margin) {
-      position = 'bottom';
-      top = targetRect.bottom + scrollTop + margin;
-      left = Math.max(margin, Math.min(targetRect.left + scrollLeft, viewportWidth - popoverWidth - margin));
-    } else if (spaceTop >= popoverHeight + margin) {
-      position = 'top';
-      top = targetRect.top + scrollTop - popoverHeight - margin;
-      left = Math.max(margin, Math.min(targetRect.left + scrollLeft, viewportWidth - popoverWidth - margin));
-    } else if (spaceRight >= popoverWidth + margin) {
-      position = 'right';
-      top = Math.max(margin, Math.min(targetRect.top + scrollTop, viewportHeight - popoverHeight - margin));
-      left = targetRect.right + scrollLeft + margin;
-    } else if (spaceLeft >= popoverWidth + margin) {
-      position = 'left';
-      top = Math.max(margin, Math.min(targetRect.top + scrollTop, viewportHeight - popoverHeight - margin));
-      left = targetRect.left + scrollLeft - popoverWidth - margin;
+    if (isMobile) {
+      left = (viewportWidth - popoverWidth) / 2;
+
+      const positionsToTry: ('top' | 'bottom')[] = ['bottom', 'top'];
+      if (preferredPosition === 'top') {
+        positionsToTry.reverse();
+      }
+
+      let placed = false;
+      for (const pos of positionsToTry) {
+        if (pos === 'bottom' && spaceBottom >= popoverHeight + margin) {
+          top = targetRect.bottom + margin;
+          position = 'bottom';
+          placed = true;
+          break;
+        }
+        if (pos === 'top' && spaceTop >= popoverHeight + margin) {
+          top = targetRect.top - popoverHeight - margin;
+          position = 'top';
+          placed = true;
+          break;
+        }
+      }
+
+      if (!placed) {
+        position = 'bottom';
+        top = viewportHeight - popoverHeight - margin;
+      }
     } else {
-      position = 'center';
-      top = scrollTop + (viewportHeight - popoverHeight) / 2;
-      left = scrollLeft + (viewportWidth - popoverWidth) / 2;
+      const spaceLeft = targetRect.left;
+      const spaceRight = viewportWidth - targetRect.right;
+      const positionsToTry: ('top' | 'bottom' | 'left' | 'right')[] = [preferredPosition, 'bottom', 'top', 'right', 'left'];
+      const uniquePositions = [...new Set(positionsToTry)];
+
+      let placed = false;
+      for (const p of uniquePositions) {
+        if (p === 'bottom' && spaceBottom >= popoverHeight + margin) {
+          position = 'bottom';
+          top = targetRect.bottom + margin;
+          left = targetRect.left + (targetRect.width / 2) - (popoverWidth / 2);
+          placed = true;
+          break;
+        }
+        if (p === 'top' && spaceTop >= popoverHeight + margin) {
+          position = 'top';
+          top = targetRect.top - popoverHeight - margin;
+          left = targetRect.left + (targetRect.width / 2) - (popoverWidth / 2);
+          placed = true;
+          break;
+        }
+        if (p === 'right' && spaceRight >= popoverWidth + margin) {
+          position = 'right';
+          top = targetRect.top + (targetRect.height / 2) - (popoverHeight / 2);
+          left = targetRect.right + margin;
+          placed = true;
+          break;
+        }
+        if (p === 'left' && spaceLeft >= popoverWidth + margin) {
+          position = 'left';
+          top = targetRect.top + (targetRect.height / 2) - (popoverHeight / 2);
+          left = targetRect.left - popoverWidth - margin;
+          placed = true;
+          break;
+        }
+      }
+
+      if (!placed) {
+        top = (viewportHeight - popoverHeight) / 2;
+        left = (viewportWidth - popoverWidth) / 2;
+      }
     }
 
+    top = Math.max(margin, Math.min(top, viewportHeight - popoverHeight - margin));
+    left = Math.max(margin, Math.min(left, viewportWidth - popoverWidth - margin));
+
     return { top, left, position };
-  };
+  }, []);
 
   useEffect(() => {
     const updatePosition = () => {
@@ -185,7 +239,8 @@ const GlobalTourPopover: React.FC = () => {
         const stepElement = document.querySelector(`[data-tour-step="${currentStepId}"]`) as HTMLElement;
         if (stepElement) {
           const rect = stepElement.getBoundingClientRect();
-          const newPosition = calculateOptimalPosition(rect);
+          const stepData = JSON.parse(stepElement.getAttribute('data-tour-config') || '{}');
+          const newPosition = calculateOptimalPosition(rect, stepData.position);
           setPopoverPosition(newPosition);
         }
       }
@@ -194,7 +249,7 @@ const GlobalTourPopover: React.FC = () => {
     if (isActive && currentStepId) {
       const stepElement = document.querySelector(`[data-tour-step="${currentStepId}"]`) as HTMLElement;
       if (stepElement) {
-        const stepData = JSON.parse(stepElement.getAttribute('data-tour-config') || '{}');
+        const stepData = JSON.parse(stepElement.getAttribute('data-tour-config') || 'null');
         setCurrentStepData(stepData);
         setTargetElement(stepElement);
 
@@ -220,7 +275,7 @@ const GlobalTourPopover: React.FC = () => {
       setCurrentStepData(null);
       setTargetElement(null);
     }
-  }, [isActive, currentStepId]);
+  }, [isActive, currentStepId, calculateOptimalPosition]);
 
   if (!currentStepData || !targetElement) {
     return null;
@@ -372,7 +427,6 @@ export const TourProvider: React.FC<TourProviderProps> = ({
 
     if (wasActive) {
       if (completed) {
-        // Only store completion state if ranOnce is true
         if (ranOnce) {
           localStorage.setItem(storageKey, 'true');
         }
