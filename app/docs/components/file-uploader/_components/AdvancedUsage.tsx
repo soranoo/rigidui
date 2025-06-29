@@ -120,6 +120,105 @@ export default function MediaExample() {
     ),
   },
   {
+    title: "Image Cropping - Free Aspect",
+    description:
+      "Enable image cropping with free aspect ratio for profile pictures and image editing.",
+    code: `import { FileUploader } from "@/components/file-uploader"
+
+export default function ImageCroppingExample() {
+  return (
+    <FileUploader
+      maxFiles={3}
+      accept={['image/*']}
+      enableCropping={true}
+      maxSize={1024 * 1024 * 5} // 5MB
+      onFilesReady={(files) => console.log('Cropped images:', files)}
+      className="w-full max-w-lg border-dashed border-2 border-green-300/50"
+    />
+  )
+}`,
+    component: (
+      <FileUploader
+        maxFiles={3}
+        accept={['image/*']}
+        enableCropping={true}
+        maxSize={1024 * 1024 * 5}
+        onFilesReady={(files) => console.log('Cropped images:', files)}
+        className="w-full max-w-lg border-dashed border-2 border-green-300/50"
+      />
+    ),
+  },
+  {
+    title: "Image Cropping - Fixed Aspect Ratio",
+    description:
+      "Crop images with a fixed aspect ratio, perfect for social media posts or specific layouts.",
+    code: `import { FileUploader } from "@/components/file-uploader"
+
+export default function FixedAspectCroppingExample() {
+  return (
+    <FileUploader
+      maxFiles={1}
+      accept={['image/*']}
+      enableCropping={true}
+      cropAspectRatio={16/9} // Fixed 16:9 aspect ratio
+      cropMinWidth={100}
+      cropMinHeight={56}
+      maxSize={1024 * 1024 * 5} // 5MB
+      onFilesReady={(files) => console.log('16:9 cropped image:', files)}
+      className="w-full max-w-lg border-dashed border-2 border-cyan-300/50"
+    />
+  )
+}`,
+    component: (
+      <FileUploader
+        maxFiles={1}
+        accept={['image/*']}
+        enableCropping={true}
+        cropAspectRatio={16 / 9}
+        cropMinWidth={100}
+        cropMinHeight={56}
+        maxSize={1024 * 1024 * 5}
+        onFilesReady={(files) => console.log('16:9 cropped image:', files)}
+        className="w-full max-w-lg border-dashed border-2 border-cyan-300/50"
+      />
+    ),
+  },
+  {
+    title: "Square Image Cropping",
+    description:
+      "Crop images to perfect squares, ideal for profile pictures and thumbnails.",
+    code: `import { FileUploader } from "@/components/file-uploader"
+
+export default function SquareCroppingExample() {
+  return (
+    <FileUploader
+      maxFiles={1}
+      accept={['image/*']}
+      enableCropping={true}
+      cropAspectRatio={1} // Perfect square (1:1)
+      cropMinWidth={80}
+      cropMinHeight={80}
+      maxSize={1024 * 1024 * 3} // 3MB
+      onFilesReady={(files) => console.log('Square cropped image:', files)}
+      className="w-full max-w-md border-dashed border-2 border-pink-300/50"
+    />
+  )
+}`,
+    component: (
+      <FileUploader
+        maxFiles={1}
+        accept={['image/*']}
+        enableCropping={true}
+        cropAspectRatio={1}
+        cropMinWidth={80}
+        cropMinHeight={80}
+        maxSize={1024 * 1024 * 3}
+        onFilesReady={(files) => console.log('Square cropped image:', files)}
+        className="w-full max-w-md border-dashed border-2 border-pink-300/50"
+      />
+    ),
+  },
+  {
     title: "Complete Upload Flow",
     description:
       "Full implementation with server upload, progress tracking, and success/error handling.",

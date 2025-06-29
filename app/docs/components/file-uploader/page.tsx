@@ -39,6 +39,30 @@ export default function FileUploaderPage() {
       defaultValue: "undefined",
       description: 'Additional class names for styling',
     },
+    {
+      name: 'enableCropping',
+      type: 'boolean',
+      defaultValue: 'false',
+      description: 'Enable image cropping functionality for uploaded images',
+    },
+    {
+      name: 'cropAspectRatio',
+      type: 'number',
+      defaultValue: 'undefined',
+      description: 'Fixed aspect ratio for cropping (e.g., 16/9, 1, 4/3). If undefined, free cropping is allowed',
+    },
+    {
+      name: 'cropMinWidth',
+      type: 'number',
+      defaultValue: '50',
+      description: 'Minimum width for the crop area in pixels',
+    },
+    {
+      name: 'cropMinHeight',
+      type: 'number',
+      defaultValue: '50',
+      description: 'Minimum height for the crop area in pixels',
+    },
   ]
 
   const features = [
@@ -77,6 +101,15 @@ export default function FileUploaderPage() {
       ),
       title: "Image Previews",
       description: "Automatically generates preview thumbnails for uploaded image files."
+    },
+    {
+      icon: (
+        <svg className="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" />
+        </svg>
+      ),
+      title: "Image Cropping",
+      description: "Built-in image cropping functionality with customizable aspect ratios and minimum dimensions."
     },
     {
       icon: (
@@ -122,6 +155,11 @@ export default function MyComponent() {
       accept={['image/*', 'application/pdf']}
       onFilesReady={handleFilesReady}
       className="w-full max-w-lg"
+      // Optional: Enable image cropping
+      enableCropping={true}
+      cropAspectRatio={16/9} // Fixed aspect ratio (optional)
+      cropMinWidth={100}
+      cropMinHeight={56}
     />
   )
 }`
@@ -192,23 +230,24 @@ export default function MyComponent() {
   return (
     <ComponentDocTemplate
       title="File Uploader"
-      description="A comprehensive file upload component with drag & drop support, progress tracking, and file validation."
+      description="A comprehensive file upload component with drag & drop support, progress tracking, file validation, and image cropping functionality."
       previewComponent={
         <div className="w-full max-w-xl mx-auto">
           <FileUploader
             maxFiles={3}
             accept={['image/*', 'application/pdf']}
             maxSize={1024 * 1024 * 5}
+            enableCropping={true}
             className="w-full"
           />
         </div>
       }
       githubPath="registry/new-york/file-uploader/file-uploader.tsx"
       usageCode={usageCode}
-      usageDescription="The File Uploader component provides a complete file upload interface with drag & drop, progress tracking, and validation. It handles file selection, validation, and preview generation."
+      usageDescription="The File Uploader component provides a complete file upload interface with drag & drop, progress tracking, validation, and optional image cropping. It handles file selection, validation, preview generation, and allows users to crop images before upload. Note: The cropping functionality requires the react-image-crop dependency which is included automatically."
       propsData={propsData}
       features={features}
-      componentName="file-uploader"
+      componentName="https://rigidui.com/registry/file-uploader"
       additionalSections={additionalSections}
     />
   )
