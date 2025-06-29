@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Upload, X, File, FileText, FileVideo, FileAudio, Check, AlertCircle, Image as ImageIcon, Crop as CropIcon, RotateCcw } from 'lucide-react';
+import { Upload, X, File, FileText, FileVideo, FileAudio, Check, AlertCircle, Image as ImageIcon, Crop as CropIcon } from 'lucide-react';
 import ReactCrop, { type Crop, centerCrop, makeAspectCrop, convertToPixelCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 
@@ -282,32 +282,6 @@ export function FileUploader({
     setCropDialogOpen(true);
   }, []);
 
-  const resetCrop = useCallback((file: FileWithPreview) => {
-    if (!file.originalFile) return;
-
-    setFiles(prevFiles =>
-      prevFiles.map(f =>
-        f.id === file.id
-          ? {
-            ...f,
-            file: file.originalFile!,
-            size: file.originalFile!.size,
-            croppedPreview: undefined
-          }
-          : f
-      )
-    );
-
-    const updatedFiles = files.map(f =>
-      f.id === file.id ? file.originalFile! : f.file
-    );
-
-    if (onFilesReady) {
-      const validFiles = updatedFiles.filter((_, index) => !files[index].error);
-      onFilesReady(validFiles);
-    }
-  }, [files, onFilesReady]);
-
   const handleDrag = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -505,17 +479,6 @@ export function FileUploader({
                         >
                           <CropIcon className="w-4 h-4" />
                         </Button>
-                        {fileData.croppedPreview && (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => resetCrop(fileData)}
-                            className="flex-shrink-0 h-8 w-8 rounded-full opacity-70 hover:opacity-100"
-                            title="Reset to original"
-                          >
-                            <RotateCcw className="w-4 h-4" />
-                          </Button>
-                        )}
                       </>
                     )}
                     <Button

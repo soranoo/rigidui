@@ -106,7 +106,11 @@
       "registryDependencies": [
         "button",
         "card",
-        "badge"
+        "badge",
+        "dialog"
+      ],
+      "dependencies": [
+        "react-image-crop"
       ],
       "files": [
         {
