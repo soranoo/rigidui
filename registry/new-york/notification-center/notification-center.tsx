@@ -53,6 +53,7 @@ export interface NotificationCenterProps {
   showMarkAllRead?: boolean
   enableRealTimeUpdates?: boolean
   updateInterval?: number
+  enableBrowserNotifications?: boolean
   emptyState?: {
     title?: string
     description?: string
@@ -235,6 +236,7 @@ export function NotificationCenter({
   showMarkAllRead = true,
   enableRealTimeUpdates = false,
   updateInterval = 30000,
+  enableBrowserNotifications = false,
   emptyState = {
     title: "No notifications",
     description: "New notifications will appear here."
@@ -243,6 +245,14 @@ export function NotificationCenter({
   const [filter, setFilter] = useState<'all' | 'unread'>('all')
   const [isPopoverOpen, setIsPopoverOpen] = useState(false)
   const queryClient = useQueryClient()
+
+  useEffect(() => {
+    if (enableBrowserNotifications && typeof window !== 'undefined' && 'Notification' in window) {
+      if (Notification.permission === 'default') {
+        Notification.requestPermission();
+      }
+    }
+  }, [enableBrowserNotifications]);
 
   useEffect(() => {
     if (!enableRealTimeUpdates) return
@@ -263,6 +273,29 @@ export function NotificationCenter({
   })
 
   const displayNotifications = staticNotifications || notifications
+  const prevDisplayNotificationsRef = React.useRef<Notification[]>(null);
+
+  useEffect(() => {
+    if (enableBrowserNotifications && typeof window !== 'undefined' && 'Notification' in window && Notification.permission === 'granted') {
+      const oldNotifications = prevDisplayNotificationsRef.current;
+
+      if (oldNotifications) {
+        const newNotifications = displayNotifications.filter(
+          (n) => !oldNotifications.some((on) => on.id === n.id)
+        );
+
+        newNotifications.forEach((notification) => {
+          if (!notification.isRead) {
+            new Notification(notification.title, {
+              body: notification.message,
+              icon: '/short-logo.png'
+            });
+          }
+        });
+      }
+    }
+    prevDisplayNotificationsRef.current = displayNotifications;
+  }, [displayNotifications, enableBrowserNotifications]);
 
   const markAsReadMutation = useMutation({
     mutationFn: onMarkAsRead,

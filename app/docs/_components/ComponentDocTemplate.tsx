@@ -168,7 +168,9 @@ export default function ComponentDocTemplate({
             </TabsList>
             <TabsContent value="preview" className="px-8 flex flex-col justify-start">
               <div className="mb-4 mt-4 text-sm font-medium text-gray-500 dark:text-gray-400">Live Preview</div>
-              {previewComponent}
+              <div className='py-4'>
+                {previewComponent}
+              </div>
             </TabsContent>
             <TabsContent value="code" className="max-h-[500px] overflow-auto">
               <CodeBlock

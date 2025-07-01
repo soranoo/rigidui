@@ -4,33 +4,36 @@ import { Notification, NotificationCenter } from '@/registry/new-york/notificati
 import ComponentDocTemplate from '../../_components/ComponentDocTemplate'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
+let masterNotifications: Notification[] = [
+  {
+    id: '1',
+    title: 'Welcome to the Team',
+    message: 'Your account has been successfully created and you have been added to the design team.',
+    isRead: false,
+    createdAt: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
+    priority: 'high' as const
+  },
+  {
+    id: '2',
+    title: 'New Project Assignment',
+    message: 'You have been assigned to the new mobile app redesign project starting next week.',
+    isRead: false,
+    createdAt: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
+    priority: 'medium' as const
+  },
+  {
+    id: '3',
+    title: 'System Maintenance',
+    message: 'Scheduled maintenance will occur tonight from 11 PM to 1 AM EST. Some features may be unavailable.',
+    isRead: true,
+    createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
+    priority: 'low' as const
+  }
+];
+let nextId = 4;
+
+
 export default function NotificationCenterPage() {
-  const sampleNotifications = [
-    {
-      id: '1',
-      title: 'Welcome to the Team',
-      message: 'Your account has been successfully created and you have been added to the design team.',
-      isRead: false,
-      createdAt: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
-      priority: 'high' as const
-    },
-    {
-      id: '2',
-      title: 'New Project Assignment',
-      message: 'You have been assigned to the new mobile app redesign project starting next week.',
-      isRead: false,
-      createdAt: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
-      priority: 'medium' as const
-    },
-    {
-      id: '3',
-      title: 'System Maintenance',
-      message: 'Scheduled maintenance will occur tonight from 11 PM to 1 AM EST. Some features may be unavailable.',
-      isRead: true,
-      createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-      priority: 'low' as const
-    }
-  ]
 
   const propsData = [
     {
@@ -80,6 +83,12 @@ export default function NotificationCenterPage() {
       type: '(notification: Notification) => void',
       defaultValue: 'undefined',
       description: 'Callback function called when a notification is clicked',
+    },
+    {
+      name: 'enableBrowserNotifications',
+      type: 'boolean',
+      defaultValue: 'false',
+      description: 'If true, the component will ask for permission and send browser notifications for new updates.',
     },
     {
       name: 'maxHeight',
@@ -174,116 +183,133 @@ export default function NotificationCenterPage() {
       ),
       title: "Notification Management",
       description: "Complete CRUD operations with mark as read, mark all as read, and delete functionality."
+    },
+    {
+      icon: (
+        <svg className="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 21h7a2 2 0 002-2V5a2 2 0 00-2-2h-7l-3 3v11a2 2 0 002 2z" />
+        </svg>
+      ),
+      title: "Browser Notifications",
+      description: "Opt-in to receive native browser notifications for new updates, keeping you informed even when the app is in the background."
     }
   ]
 
-  const usageCode = `import { Notification, NotificationCenter } from "@/components/notification-center"
+  const usageCode = `import React from 'react';
+import { Notification, NotificationCenter } from "@/components/notification-center";
+import { QueryClient, QueryClientProvider, useQueryClient } from '@tanstack/react-query';
 
- const sampleNotifications = [
-    {
-      id: '1',
-      title: 'Welcome to the Team',
-      message: 'Your account has been successfully created and you have been added to the design team.',
-      isRead: false,
-      createdAt: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
-      priority: 'high' as const
-    },
-    {
-      id: '2',
-      title: 'New Project Assignment',
-      message: 'You have been assigned to the new mobile app redesign project starting next week.',
-      isRead: false,
-      createdAt: new Date(Date.now() - 15 * 60 * 1000).toISOString(),
-      priority: 'medium' as const
-    },
-    {
-      id: '3',
-      title: 'System Maintenance',
-      message: 'Scheduled maintenance will occur tonight from 11 PM to 1 AM EST. Some features may be unavailable.',
-      isRead: true,
-      createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-      priority: 'low' as const
-    }
-  ]
+// --- Simulated Backend API ---
+let masterNotifications = [ /* ... initial notifications ... */ ];
+let nextId = masterNotifications.length + 1;
+
+const fetchNotifications = async () => {
+  await new Promise(resolve => setTimeout(resolve, 500)); // Simulate network delay
+  return [...masterNotifications];
+};
+
+const markAsRead = async (id) => {
+  masterNotifications = masterNotifications.map(n => n.id === id ? { ...n, isRead: true } : n);
+};
+
+const markAllAsRead = async () => {
+  masterNotifications = masterNotifications.map(n => ({ ...n, isRead: true }));
+};
+
+const deleteNotification = async (id) => {
+  masterNotifications = masterNotifications.filter(n => n.id !== id);
+};
+// --- End of Simulated API ---
 
 export default function MyComponent() {
- const [notificationsData, setNotificationsData] = React.useState<Notification[]>(sampleNotifications)
+  const queryClient = useQueryClient();
 
-  const fetchNotifications = async (): Promise<Notification[]> => {
-    await new Promise(resolve => setTimeout(resolve, 300))
-    return notificationsData
-  }
+  // Simulate real-time updates by adding a new notification every 10 seconds
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      const newNotification = {
+        id: String(nextId++),
+        title: 'New Real-time Update!',
+        message: 'This notification was added automatically.',
+        isRead: false,
+        createdAt: new Date().toISOString(),
+        priority: 'medium',
+      };
+      masterNotifications.unshift(newNotification);
+      // Invalidate the query to trigger a refetch and show the new notification
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+    }, 10000);
 
-  const markAsRead = async (id: string): Promise<void> => {
-    await new Promise(resolve => setTimeout(resolve, 200))
-    setNotificationsData(prev =>
-      prev.map(n => n.id === id ? { ...n, isRead: true } : n)
-    )
-  }
-
-  const markAllAsRead = async (): Promise<void> => {
-    await new Promise(resolve => setTimeout(resolve, 500))
-    setNotificationsData(prev =>
-      prev.map(n => ({ ...n, isRead: true }))
-    )
-  }
-
-  const deleteNotification = async (id: string): Promise<void> => {
-    await new Promise(resolve => setTimeout(resolve, 200))
-    setNotificationsData(prev =>
-      prev.filter(n => n.id !== id)
-    )
-  }
-  const handleNotificationClick = (notification: Notification) => {
-    console.log('Clicked notification:', notification.title)
-  }
+    return () => clearInterval(interval);
+  }, [queryClient]);
 
   return (
-    <QueryClientProvider client={new QueryClient()}>
+    <QueryClientProvider client={queryClient}>
       <NotificationCenter
         variant="popover"
         fetchNotifications={fetchNotifications}
-        onNotificationClick={handleNotificationClick}
         onMarkAsRead={markAsRead}
         onMarkAllAsRead={markAllAsRead}
         onDeleteNotification={deleteNotification}
-        showFilter={true}
-        showMarkAllRead={true}
+        enableRealTimeUpdates={true}
+        updateInterval={15000} // Refetch every 15 seconds
+        enableBrowserNotifications={true}
       />
     </QueryClientProvider>
-  )
+  );
 }`
 
-  const [notificationsData, setNotificationsData] = React.useState<Notification[]>(sampleNotifications)
 
   const fetchNotifications = async (): Promise<Notification[]> => {
-    await new Promise(resolve => setTimeout(resolve, 300))
-    return notificationsData
-  }
+
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return [...masterNotifications];
+  };
 
   const markAsRead = async (id: string): Promise<void> => {
-    await new Promise(resolve => setTimeout(resolve, 200))
-    setNotificationsData(prev =>
-      prev.map(n => n.id === id ? { ...n, isRead: true } : n)
-    )
-  }
+    await new Promise(resolve => setTimeout(resolve, 200));
+    masterNotifications = masterNotifications.map(n =>
+      n.id === id ? { ...n, isRead: true } : n
+    );
+  };
 
   const markAllAsRead = async (): Promise<void> => {
-    await new Promise(resolve => setTimeout(resolve, 500))
-    setNotificationsData(prev =>
-      prev.map(n => ({ ...n, isRead: true }))
-    )
-  }
+    await new Promise(resolve => setTimeout(resolve, 500));
+    masterNotifications = masterNotifications.map(n => ({ ...n, isRead: true }));
+  };
 
   const deleteNotification = async (id: string): Promise<void> => {
-    await new Promise(resolve => setTimeout(resolve, 200))
-    setNotificationsData(prev =>
-      prev.filter(n => n.id !== id)
-    )
-  }
+    await new Promise(resolve => setTimeout(resolve, 200));
+    masterNotifications = masterNotifications.filter(n => n.id !== id);
+  };
+
   const handleNotificationClick = (notification: Notification) => {
-    console.log(`Clicked notification: ${notification.title}`)
-  }
+    console.log(`Clicked notification: ${notification.title}`);
+    if (!notification.isRead) {
+      markAsRead(notification.id);
+    }
+  };
+
+  const [queryClient] = React.useState(() => new QueryClient());
+
+  React.useEffect(() => {
+    const intervalId = setInterval(() => {
+      const newNotification: Notification = {
+        id: String(nextId++),
+        title: 'Real-time Event',
+        message: `A new event occurred at ${new Date().toLocaleTimeString()}`,
+        isRead: false,
+        createdAt: new Date().toISOString(),
+        priority: 'medium',
+      };
+      masterNotifications.unshift(newNotification);
+
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+
+    }, 10000);
+
+    return () => clearInterval(intervalId);
+  }, [queryClient]);
 
 
   return (
@@ -291,7 +317,7 @@ export default function MyComponent() {
       title="Notification Center"
       description="A comprehensive notification management system with both full and popover variants for different UI contexts."
       previewComponent={
-        <QueryClientProvider client={new QueryClient()}>
+        <QueryClientProvider client={queryClient}>
           <NotificationCenter
             variant="popover"
             fetchNotifications={fetchNotifications}
@@ -299,8 +325,11 @@ export default function MyComponent() {
             onMarkAsRead={markAsRead}
             onMarkAllAsRead={markAllAsRead}
             onDeleteNotification={deleteNotification}
+            enableRealTimeUpdates={true}
+            updateInterval={15000}
             showFilter={true}
             showMarkAllRead={true}
+            enableBrowserNotifications={true}
           />
         </QueryClientProvider>
       }
