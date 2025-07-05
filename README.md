@@ -1,121 +1,118 @@
-# RigidUI
+# RigidUI Examples
 
-<p align="center">
-  <img src="public/logo.png" alt="RigidUI Logo" width="300" />
-</p>
+Interactive examples showcase for RigidUI components - a collection of complex, customizable UI components built with shadcn/ui and React.
 
-<p align="center">
-  A collection of enterprise-grade UI components for React and Next.js applications, built on top of shadcn/ui.
-</p>
+## 🌟 Overview
 
-## Features
+This repository contains interactive examples and demonstrations of all RigidUI components. It's designed to be deployed as a subdomain (`examples.rigidui.com`) to provide developers with hands-on experience with each component.
 
-- 🧩 **Enterprise-ready components** - Complex components for real-world applications
-- 🔌 **Powered by shadcn/ui** - Built on the shadcn/ui methodology
-- 📦 **Registry-based** - Install only what you need
-- 🎨 **Customizable** - Tailwind CSS for styling flexibility
-- 🌓 **Dark mode support** - Beautiful in light and dark
-- ⚡ **Fast development** - Speed up your workflow with pre-built complex components
-- 📱 **Responsive** - Mobile-first design approach
-- ♿ **Accessible** - Built with accessibility in mind
+## 🚀 Features
 
-## Components
+- **Interactive Examples**: Live demonstrations of all RigidUI components
+- **Modern Stack**: Built with Next.js 15, React 19, and TypeScript
+- **Beautiful Design**: Consistent with RigidUI's design system
+- **Responsive**: Works perfectly on all devices
+- **Dark Mode**: Full dark mode support
 
-RigidUI extends shadcn/ui with additional enterprise-grade components:
+## 🧩 Components Showcased
 
-- **Currency Manager** - Multi-currency conversion and display system
-- **File Explorer** - Hierarchical file system browser with syntax highlighting
-- **File Uploader** - Drag and drop file upload with previews and validation
-- **Infinite Scroll** - Efficiently load large datasets with infinite scrolling
-- **Location Picker** - Geographic location selection with search functionality
-- **Multi-Step Form Wrapper** - Guided step-by-step form interfaces
-- **Notification Center** - Notification management system
-- **Password Strength Meter** - Visual password strength evaluation component
+### Core Components
 
-## Installation
+- **Currency Manager** - Currency conversion and management
+- **Location Picker** - Interactive location selection
+- **Multi-Step Form Wrapper** - Form with progress tracking
+- **File Uploader** - Drag & drop file uploads with image cropping
+- **Strength Meter** - Password strength validation
+- **Infinite Scroll** - Efficient large dataset handling
+- **Notification Center** - Real-time notifications
+- **Smart Form** - Intelligent form with validation
+- **Smart Search** - Advanced search with autocomplete
+- **Draggable Dashboard** - Customizable dashboard widgets
+- **Image Loader** - Advanced image loading with effects
+- **File Explorer** - File system navigation
+- **Guided Tour** - Interactive user onboarding
+
+### Custom Hooks
+
+- **useLocation** - Location management
+- **useCurrency** - Currency operations
+
+## 🛠️ Development
 
 ### Prerequisites
 
-RigidUI components require a project with the following setup:
+- Node.js 18+
+- pnpm (recommended)
 
-- ✅ **Tailwind CSS** installed and configured
-- ✅ **shadcn/ui** initialized in your project
-- ✅ **TypeScript** support
-
-### Install Components
-
-Add RigidUI components to your project with a single command:
-
-```bash
-# Currency Manager
-npx shadcn@latest add https://rigidui.com/registry/currency-manager
-
-# Draggable Dashboard
-npx shadcn@latest add https://rigidui.com/registry/draggable-dashboard
-
-# File Explorer
-npx shadcn@latest add https://rigidui.com/registry/file-explorer
-
-# File Uploader
-npx shadcn@latest add https://rigidui.com/registry/file-uploader
-
-# Infinite Scroll
-npx shadcn@latest add https://rigidui.com/registry/infinite-scroll
-
-# Location Picker
-npx shadcn@latest add https://rigidui.com/registry/location-picker
-
-# Multi-Step Form Wrapper
-npx shadcn@latest add https://rigidui.com/registry/multi-step-form-wrapper
-
-# Notification Center
-npx shadcn@latest add https://rigidui.com/registry/notification-center
-
-# Password Strength Meter
-npx shadcn@latest add https://rigidui.com/registry/strength-meter
-
-# Smart Form
-npx shadcn@latest add https://rigidui.com/registry/smart-form
-
-# Smart Search
-npx shadcn@latest add https://rigidui.com/registry/smart-search
-```
-
-That's it! Components will be added to your `components/ui` directory and are fully customizable.
-
-## Next Steps
-
-Once you have RigidUI components installed:
-
-- **Browse Components** - Explore all available components with live examples in our [documentation](https://rigidui.com/docs/components)
-- **View on GitHub** - Star the repo and contribute to the project at [github.com/FgrReloaded/rigidui](https://github.com/FgrReloaded/rigidui)
-
-## Documentation
-
-Visit our documentation site for detailed usage examples and API references:
-
-[RigidUI Documentation](https://rigidui.com/docs)
-
-## Development
-
-To set up the development environment:
+### Installation
 
 ```bash
 # Clone the repository
-git clone https://github.com/FgrReloaded/rigidui.git
+git clone https://github.com/fgrrelaoded/rigidui.git
 cd rigidui
 
+# Switch to examples branch
+git checkout examples
+
 # Install dependencies
-npm install
+pnpm install
 
 # Start development server
-npm run dev
+pnpm dev
 ```
 
-## Contributing
+Open [http://localhost:3000](http://localhost:3000) to view the examples.
 
-We welcome contributions! Please see our [Contributing Guidelines](./CONTRIBUTING.md) for details on how to submit components, report issues, and more.
+## 🏗️ Project Structure
 
-## License
+```
+├── app/
+│   ├── examples/           # Individual component examples
+│   │   ├── currency-manager/
+│   │   ├── location-picker/
+│   │   └── ...
+│   ├── layout.tsx          # Root layout
+│   └── page.tsx            # Examples homepage
+├── components/
+│   ├── ui/                 # shadcn/ui components
+│   └── example-template.tsx # Example page template
+├── registry/
+│   └── new-york/           # RigidUI components
+└── ...
+```
 
-RigidUI is licensed under the [MIT License](./LICENSE).
+## 🎨 Tech Stack
+
+- **Framework**: Next.js 15
+- **React**: React 19
+- **TypeScript**: Full type safety
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui + RigidUI
+- **Animations**: Framer Motion
+- **Icons**: Lucide React
+
+## 📱 Deployment
+
+This project is designed to be deployed as `examples.rigidui.com`. The deployment process:
+
+1. Build the project: `pnpm build`
+2. Deploy to your hosting platform
+3. Configure subdomain DNS settings
+
+## 🤝 Contributing
+
+This is an examples showcase branch. For component contributions or issues, please refer to the main RigidUI repository.
+
+## 📄 License
+
+MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🔗 Links
+
+- [Main RigidUI Site](https://rigidui.com)
+- [GitHub Repository](https://github.com/fgrreloaded/rigidui)
+- [Documentation](https://rigidui.com/docs)
+
+---
+
+Built with ❤️ by [Nitish Singh](https://devxnitish.me)
