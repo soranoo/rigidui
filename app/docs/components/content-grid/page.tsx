@@ -94,12 +94,14 @@ export default function ContentGridPage() {
       type: 'ContentItem[]',
       defaultValue: '[]',
       description: 'Array of items to display in the grid/list',
+      required: true,
     },
     {
       name: 'renderCard',
       type: '(item: ContentItem, viewMode: ViewMode) => React.ReactNode',
       defaultValue: 'undefined',
       description: 'Function to render each card item. Receives the item and current view mode.',
+      required: true,
     },
     {
       name: 'defaultViewMode',

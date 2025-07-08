@@ -175,6 +175,7 @@ export default function DraggableDashboardPage() {
       type: 'ReactNode',
       defaultValue: 'undefined',
       description: 'The draggable wrapper components to be rendered in the dashboard',
+      required: true,
     },
     {
       name: 'className',
@@ -232,12 +233,14 @@ export default function DraggableDashboardPage() {
       type: 'string',
       defaultValue: 'undefined',
       description: 'Unique identifier for the draggable item',
+      required: true,
     },
     {
       name: 'children',
       type: 'ReactNode',
       defaultValue: 'undefined',
       description: 'The content to be wrapped and made draggable',
+      required: true,
     },
     {
       name: 'gridSize',

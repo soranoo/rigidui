@@ -8,11 +8,7 @@
       "type": "registry:component",
       "title": "Location Picker",
       "description": "A location locator component",
-      "registryDependencies": [
-        "button",
-        "input",
-        "popover"
-      ],
+      "registryDependencies": ["button", "input", "popover"],
       "files": [
         {
           "path": "registry/new-york/location-picker/location-picker.tsx",
@@ -26,9 +22,7 @@
       "type": "registry:component",
       "title": "Currency Manager",
       "description": "A currency manager component",
-      "registryDependencies": [
-        "select"
-      ],
+      "registryDependencies": ["select"],
       "files": [
         {
           "path": "registry/new-york/currency-manager/currency-manager.tsx",
@@ -42,15 +36,8 @@
       "type": "registry:component",
       "title": "File Explorer",
       "description": "A file system explorer component with code preview",
-      "registryDependencies": [
-        "button",
-        "card",
-        "input"
-      ],
-      "dependencies": [
-        "react-syntax-highlighter",
-        "lucide-react"
-      ],
+      "registryDependencies": ["button", "card", "input"],
+      "dependencies": ["react-syntax-highlighter", "lucide-react"],
       "files": [
         {
           "path": "registry/new-york/file-explorer/file-explorer.tsx",
@@ -58,21 +45,14 @@
         }
       ],
       "author": "Nitish Singh <devxnitish@gmail.com>"
-
     },
     {
       "name": "multi-step-form-wrapper",
       "type": "registry:component",
       "title": "Multi Step Form Wrapper",
       "description": "A multi step form wrapper component",
-      "registryDependencies": [
-        "button"
-      ],
-      "dependencies": [
-        "react-hook-form",
-        "zod",
-        "@hookform/resolvers"
-      ],
+      "registryDependencies": ["button"],
+      "dependencies": ["react-hook-form", "zod", "@hookform/resolvers"],
       "files": [
         {
           "path": "registry/new-york/multi-step-form-wrapper/multi-step-form-wrapper.tsx",
@@ -80,16 +60,13 @@
         }
       ],
       "author": "Nitish Singh <devxnitish@gmail.com>"
-
     },
     {
       "name": "strength-meter",
       "type": "registry:component",
       "title": "Strength Meter",
       "description": "A password strength meter component",
-      "registryDependencies": [
-        "button"
-      ],
+      "registryDependencies": ["button"],
       "files": [
         {
           "path": "registry/new-york/strength-meter/strength-meter.tsx",
@@ -103,15 +80,8 @@
       "type": "registry:component",
       "title": "File Uploader",
       "description": "A file uploader component",
-      "registryDependencies": [
-        "button",
-        "card",
-        "badge",
-        "dialog"
-      ],
-      "dependencies": [
-        "react-image-crop"
-      ],
+      "registryDependencies": ["button", "card", "badge", "dialog"],
+      "dependencies": ["react-image-crop"],
       "files": [
         {
           "path": "registry/new-york/file-uploader/file-uploader.tsx",
@@ -159,9 +129,7 @@
         "scroll-area",
         "dropdown-menu"
       ],
-      "dependencies": [
-        "@tanstack/react-query"
-      ],
+      "dependencies": ["@tanstack/react-query"],
       "files": [
         {
           "path": "registry/new-york/notification-center/notification-center.tsx",
@@ -204,12 +172,8 @@
       "type": "registry:component",
       "title": "Smart Search",
       "description": "A smart search component",
-      "registryDependencies": [
-        "input"
-      ],
-      "dependencies": [
-        "@tanstack/react-pacer"
-      ],
+      "registryDependencies": ["input"],
+      "dependencies": ["@tanstack/react-pacer"],
       "files": [
         {
           "path": "registry/new-york/smart-search/smart-search.tsx",
@@ -223,11 +187,7 @@
       "type": "registry:component",
       "title": "Draggable Dashboard",
       "description": "A draggable dashboard component",
-      "registryDependencies": [
-        "switch",
-        "label",
-        "separator"
-      ],
+      "registryDependencies": ["switch", "label", "separator"],
       "dependencies": [
         "@dnd-kit/core",
         "@dnd-kit/sortable",
@@ -259,13 +219,24 @@
       "type": "registry:component",
       "title": "Guided Tour",
       "description": "An interactive guided tour component to onboard users and showcase features.",
-      "registryDependencies": [
-        "button",
-        "card"
-      ],
+      "registryDependencies": ["button", "card"],
       "files": [
         {
           "path": "registry/new-york/guided-tour/guided-tour.tsx",
+          "type": "registry:component"
+        }
+      ],
+      "author": "Nitish Singh <devxnitish@gmail.com>"
+    },
+    {
+      "name": "content-grid",
+      "type": "registry:component",
+      "title": "Content Grid",
+      "description": "A content grid component that supports both grid and list views.",
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "registry/new-york/content-grid/content-grid.tsx",
           "type": "registry:component"
         }
       ],

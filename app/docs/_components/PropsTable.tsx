@@ -13,9 +13,18 @@ interface PropsTableProps {
 }
 
 export function PropsTable({ props }: PropsTableProps) {
+  const hasRequiredProps = props.some(prop => prop.required)
+
   return (
     <div className="rounded-lg overflow-hidden border border-gray-200 dark:border-gray-800 shadow-sm">
-      <div className="overflow-x-auto">
+      {hasRequiredProps && (
+        <div className="px-4 py-2 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
+          <p className="text-xs text-gray-600 dark:text-gray-400">
+            <span className="text-red-500">*</span> Required prop
+          </p>
+        </div>
+      )}
+      <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-gray-100 dark:scrollbar-track-gray-800">
         <table className="w-full">
           <thead>
             <tr className="bg-gray-50 dark:bg-gray-950">
@@ -40,7 +49,7 @@ export function PropsTable({ props }: PropsTableProps) {
                   {prop.name}
                   {prop.required && <span className="ml-1 text-red-500">*</span>}
                 </td>
-                <td className="md:px-6 px-3 py-4 text-sm text-gray-600 dark:text-gray-300 font-mono whitespace-nowrap">
+                <td className="md:px-6 px-3 py-4 text-sm text-gray-600 dark:text-gray-300 font-mono whitespace-nowrap max-w-1/2">
                   {prop.type}
                 </td>
                 <td className="md:px-6 px-3 py-4 text-sm text-gray-600 dark:text-gray-300 font-mono whitespace-nowrap">

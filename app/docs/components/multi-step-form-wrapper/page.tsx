@@ -13,6 +13,7 @@ export default function MultiStepFormWrapperPage() {
       type: 'React.ReactNode',
       defaultValue: '-',
       description: 'Step components to render within the form',
+      required: true,
     },
     {
       name: 'onComplete',

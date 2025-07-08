@@ -27,14 +27,23 @@ export default function SmartFormPage() {
     {
       name: 'schema',
       type: 'z.ZodSchema<T>',
-      defaultValue: 'Required',
+      defaultValue: 'undefined',
       description: 'Zod schema for form validation and type safety',
+      required: true,
     },
     {
       name: 'mutationFn',
       type: '(data: T) => Promise<any>',
-      defaultValue: 'Required',
+      defaultValue: 'undefined',
       description: 'Async function to handle form submission (API call)',
+      required: true,
+    },
+    {
+      name: 'children',
+      type: '(form: UseFormReturn<T>) => React.ReactNode',
+      defaultValue: 'undefined',
+      description: 'Render function that receives the form instance for building form fields',
+      required: true,
     },
     {
       name: 'queryKey',
@@ -78,32 +87,29 @@ export default function SmartFormPage() {
       defaultValue: "''",
       description: 'Additional CSS classes for the form container',
     },
-    {
-      name: 'children',
-      type: '(form: UseFormReturn<T>) => React.ReactNode',
-      defaultValue: 'Required',
-      description: 'Render function that receives the form instance for building form fields',
-    },
   ]
 
   const fieldPropsData = [
     {
       name: 'form',
       type: 'UseFormReturn<T>',
-      defaultValue: 'Required',
+      defaultValue: 'undefined',
       description: 'React Hook Form instance passed from SmartForm',
+      required: true,
     },
     {
       name: 'name',
       type: 'FieldPath<T>',
-      defaultValue: 'Required',
+      defaultValue: 'undefined',
       description: 'Field name that matches the schema property',
+      required: true,
     },
     {
       name: 'type',
       type: "'text' | 'email' | 'password' | 'number' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'color'",
-      defaultValue: 'Required',
+      defaultValue: 'undefined',
       description: 'Input type that determines the rendered field component',
+      required: true,
     },
     {
       name: 'label',
@@ -147,20 +153,22 @@ export default function SmartFormPage() {
     {
       name: 'title',
       type: 'string',
-      defaultValue: 'Required',
+      defaultValue: 'undefined',
       description: 'The title text displayed for the form section',
+      required: true,
+    },
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      defaultValue: 'undefined',
+      description: 'Form fields and other content to display in the section',
+      required: true,
     },
     {
       name: 'description',
       type: 'string',
       defaultValue: 'undefined',
       description: 'Optional description text displayed below the title',
-    },
-    {
-      name: 'children',
-      type: 'React.ReactNode',
-      defaultValue: 'Required',
-      description: 'Form fields and other content to display in the section',
     },
     {
       name: 'className',
@@ -174,26 +182,30 @@ export default function SmartFormPage() {
     {
       name: 'form',
       type: 'UseFormReturn<T>',
-      defaultValue: 'Required',
+      defaultValue: 'undefined',
       description: 'React Hook Form instance passed from SmartForm',
+      required: true,
     },
     {
       name: 'when',
       type: 'FieldPath<T>',
-      defaultValue: 'Required',
+      defaultValue: 'undefined',
       description: 'The field name to watch for changes',
+      required: true,
     },
     {
       name: 'equals',
       type: 'any',
-      defaultValue: 'Required',
+      defaultValue: 'undefined',
       description: 'The value to compare against the watched field',
+      required: true,
     },
     {
       name: 'children',
       type: 'React.ReactNode',
-      defaultValue: 'Required',
+      defaultValue: 'undefined',
       description: 'Content to render when the condition is met',
+      required: true,
     },
   ]
 

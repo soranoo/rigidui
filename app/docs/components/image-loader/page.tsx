@@ -10,12 +10,14 @@ export default function ImageLoaderPage() {
       type: 'string',
       defaultValue: 'undefined',
       description: 'The source URL of the image to load',
+      required: true,
     },
     {
       name: 'alt',
       type: 'string',
       defaultValue: 'undefined',
       description: 'Alternative text for the image (required for accessibility)',
+      required: true,
     },
     {
       name: 'className',

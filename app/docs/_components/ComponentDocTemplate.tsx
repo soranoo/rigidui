@@ -10,6 +10,7 @@ import { navigationItems } from '@/lib/routes'
 import Link from 'next/link'
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { OpenInV0Button } from '@/components/open-in-v0-button'
 
 export interface Feature {
   icon: React.ReactNode;
@@ -152,19 +153,26 @@ export default function ComponentDocTemplate({
 
         <div className="mt-8 bg-white dark:bg-background rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
           <Tabs defaultValue="preview" className="w-full">
-            <TabsList className="flex justify-start border-b border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900/70">
-              <TabsTrigger
-                value="preview"
-                className="px-6 py-1 text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-950 transition-all duration-200"
-              >
-                Preview
-              </TabsTrigger>
-              <TabsTrigger
-                value="code"
-                className="px-6 py-1 text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-950 transition-all duration-200"
-              >
-                Code
-              </TabsTrigger>
+            <TabsList className="flex justify-between border-b border-gray-200 dark:border-gray-800 bg-gray-100 dark:bg-gray-900/70">
+              <div className="flex">
+                <TabsTrigger
+                  value="preview"
+                  className="px-6 py-1 text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-950 transition-all duration-200"
+                >
+                  Preview
+                </TabsTrigger>
+                <TabsTrigger
+                  value="code"
+                  className="px-6 py-1 text-sm font-medium data-[state=active]:bg-white dark:data-[state=active]:bg-gray-950 transition-all duration-200"
+                >
+                  Code
+                </TabsTrigger>
+              </div>
+              <div className="flex items-center pr-2">
+                <OpenInV0Button
+                  name={componentName ? componentName.split('/').pop() || title.toLowerCase().replace(/\s+/g, '-') : title.toLowerCase().replace(/\s+/g, '-')}
+                />
+              </div>
             </TabsList>
             <TabsContent value="preview" className="px-8 flex flex-col justify-start">
               <div className="mb-4 mt-4 text-sm font-medium text-gray-500 dark:text-gray-400">Live Preview</div>
