@@ -187,11 +187,7 @@ export function MultiStepFormWrapper<T extends FormData = FormData>({
 
   React.useEffect(() => {
     if (stepSchema) {
-      form.clearErrors()
-      const firstFieldName = Object.keys(stepSchema.shape)[0] as keyof T;
-      if (firstFieldName) {
-        form.setFocus(firstFieldName as any);
-      }
+      form.clearErrors();
     }
   }, [currentStep, form, stepSchema])
 
@@ -201,7 +197,6 @@ export function MultiStepFormWrapper<T extends FormData = FormData>({
       return newData;
     });
 
-    // Update form state with new data
     Object.entries(stepData).forEach(([key, value]) => {
       form.setValue(key as any, value as any);
     });
