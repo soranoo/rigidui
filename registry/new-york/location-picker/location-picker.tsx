@@ -24,6 +24,25 @@ type LocationSuggestion = {
   };
 }
 
+// Theme interface for complete customization
+interface LocationPickerTheme {
+  container?: string;
+  input?: string;
+  searchButton?: string;
+  locateButton?: string;
+  currentLocation?: string;
+  suggestionsContainer?: string;
+  suggestionItem?: string;
+  suggestionIcon?: string;
+  errorContainer?: string;
+  loadingContainer?: string;
+  popoverContent?: string;
+  popoverHeader?: string;
+  popoverTitle?: string;
+  popoverDescription?: string;
+  popoverTrigger?: string;
+}
+
 interface LocationPickerProps {
   className?: string;
   autoDetectOnLoad?: boolean;
@@ -31,7 +50,7 @@ interface LocationPickerProps {
   onChange?: (location: string) => void;
   variant?: 'popover' | 'inline';
   placeholder?: string;
-  showLabel?: boolean;
+  theme?: LocationPickerTheme;
 }
 
 export function LocationPicker({
@@ -41,7 +60,7 @@ export function LocationPicker({
   onChange,
   variant = 'popover',
   placeholder = "Enter city, district, or area",
-  showLabel = true,
+  theme,
 }: LocationPickerProps) {
   const [activeCity, setActiveCity] = useState(defaultLocation)
   const [isLoading, setIsLoading] = useState(false)
@@ -52,6 +71,27 @@ export function LocationPicker({
   const [error, setError] = useState<string | null>(null)
 
   const API_URL = "https://nominatim.openstreetmap.org"
+
+  const defaultTheme: LocationPickerTheme = {
+    container: "space-y-4",
+    input: "border-border focus:border-primary focus:ring-primary/20 bg-background text-foreground",
+    searchButton: "rounded-md h-10 w-10 p-0 bg-primary hover:bg-primary/90 text-primary-foreground",
+    locateButton: "rounded-md h-10 w-10 p-0 bg-secondary hover:bg-secondary/80 text-secondary-foreground",
+    currentLocation: "flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 p-2 rounded-md",
+    suggestionsContainer: "w-full bg-background rounded-md border border-border shadow-lg max-h-60 overflow-y-auto",
+    suggestionItem: "px-4 py-2 hover:bg-muted cursor-pointer border-b border-border last:border-0 transition-colors",
+    suggestionIcon: "text-primary",
+    errorContainer: "w-full bg-destructive/10 rounded-md border border-destructive/20 p-3 text-center",
+    loadingContainer: "w-full bg-background rounded-md border border-border shadow-md p-4 text-center",
+    popoverContent: "w-80 p-0 shadow-lg dark:bg-background",
+    popoverHeader: "p-4 border-b dark:border-border",
+    popoverTitle: "font-medium text-lg mb-1 dark:text-foreground",
+    popoverDescription: "text-sm text-muted-foreground",
+    popoverTrigger: "flex items-center gap-2 text-muted-foreground hover:text-foreground border-b border-transparent hover:border-primary cursor-pointer px-3 py-2 transition-colors"
+  }
+
+  // Merge with provided theme
+  const appliedTheme = { ...defaultTheme, ...theme }
 
   const getLocation = async (lat: number, long: number) => {
     setIsLoading(true)
@@ -200,14 +240,7 @@ export function LocationPicker({
 
   if (variant === 'inline') {
     return (
-      <div className={cn("space-y-4", className)}>
-        {showLabel && (
-          <div className="space-y-1">
-            <h4 className="font-medium text-sm">Location</h4>
-            <p className="text-xs text-muted-foreground">Find products near you</p>
-          </div>
-        )}
-
+      <div className={cn(appliedTheme.container, className)}>
         <div className="space-y-3">
           <div className="flex items-center gap-2">
             <div className="relative flex-1">
@@ -218,11 +251,12 @@ export function LocationPicker({
                 onKeyUp={(e) => e.key === 'Enter' && suggestions.length === 0 && searchLocation()}
                 aria-label="Search for location"
                 aria-describedby={suggestions.length > 0 ? "suggestions-list" : undefined}
+                className={appliedTheme.input}
               />
             </div>
 
             <Button
-              className="rounded-md h-10 w-10 p-0"
+              className={appliedTheme.searchButton}
               variant="outline"
               onClick={searchLocation}
               disabled={isLoading || !locationSearch.trim()}
@@ -238,7 +272,7 @@ export function LocationPicker({
             <Button
               variant="outline"
               onClick={getCurrentLocation}
-              className="rounded-md h-10 w-10 p-0"
+              className={appliedTheme.locateButton}
               title="Use Current Location"
             >
               <Locate className="h-4 w-4" />
@@ -246,8 +280,8 @@ export function LocationPicker({
           </div>
 
           {activeCity && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/50 p-2 rounded-md">
-              <MapPin size={14} className="text-primary" />
+            <div className={appliedTheme.currentLocation}>
+              <MapPin size={14} className={cn("text-primary", appliedTheme.suggestionIcon)} />
               <span>Current: {activeCity}</span>
             </div>
           )}
@@ -257,7 +291,7 @@ export function LocationPicker({
               id="suggestions-list"
               role="listbox"
               aria-label="Location suggestions"
-              className="w-full bg-background rounded-md border border-border shadow-lg max-h-60 overflow-y-auto"
+              className={appliedTheme.suggestionsContainer}
             >
               {suggestions.map((suggestion) => (
                 <div
@@ -265,7 +299,7 @@ export function LocationPicker({
                   role="option"
                   aria-selected={false}
                   tabIndex={0}
-                  className="px-4 py-2 hover:bg-muted cursor-pointer border-b border-border last:border-0 transition-colors"
+                  className={appliedTheme.suggestionItem}
                   onClick={() => selectSuggestion(suggestion)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
@@ -275,7 +309,7 @@ export function LocationPicker({
                   }}
                 >
                   <div className="flex items-start">
-                    <MapPinned size={16} className="text-primary mt-0.5 mr-2 shrink-0" />
+                    <MapPinned size={16} className={cn("mt-0.5 mr-2 shrink-0", appliedTheme.suggestionIcon)} />
                     <div>
                       <p className="text-sm font-medium text-foreground">
                         {formatLocationName(suggestion)}
@@ -291,20 +325,20 @@ export function LocationPicker({
           )}
 
           {isFetchingSuggestions && locationSearch.length >= 2 && suggestions.length === 0 && (
-            <div className="w-full bg-background rounded-md border border-border shadow-md p-4 text-center">
-              <LoaderCircle size={20} className="animate-spin mx-auto text-primary" />
+            <div className={appliedTheme.loadingContainer}>
+              <LoaderCircle size={20} className={cn("animate-spin mx-auto", appliedTheme.suggestionIcon)} />
               <p className="text-sm text-muted-foreground mt-1">Searching locations...</p>
             </div>
           )}
 
           {locationSearch.length >= 2 && !isFetchingSuggestions && suggestions.length === 0 && (
-            <div className="w-full bg-background rounded-md border border-border p-4 text-center">
+            <div className={appliedTheme.loadingContainer}>
               <p className="text-sm text-muted-foreground">No locations found for &quot;{locationSearch}&quot;</p>
             </div>
           )}
 
           {error && (
-            <div className="w-full bg-destructive/10 rounded-md border border-destructive/20 p-3 text-center">
+            <div className={appliedTheme.errorContainer}>
               <p className="text-sm text-destructive">{error}</p>
             </div>
           )}
@@ -316,11 +350,8 @@ export function LocationPicker({
   return (
     <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
-        <div className={cn(
-          "flex items-center gap-2 text-muted-foreground hover:text-foreground border-b border-transparent hover:border-primary cursor-pointer px-3 py-2 transition-colors",
-          className
-        )}>
-          <MapPin size={16} className="text-primary" />
+        <div className={cn(appliedTheme.popoverTrigger, className)}>
+          <MapPin size={16} className={cn("text-primary", appliedTheme.suggestionIcon)} />
           {isLoading ? (
             <div className="flex items-center gap-1">
               <LoaderCircle size={14} className="animate-spin" />
@@ -333,10 +364,10 @@ export function LocationPicker({
           )}
         </div>
       </PopoverTrigger>
-      <PopoverContent className="w-80 p-0 shadow-lg dark:bg-background" side="bottom" align="start" sideOffset={4}>
-        <div className="p-4 border-b dark:border-border">
-          <h4 className="font-medium text-lg mb-1 dark:text-foreground">Change location</h4>
-          <p className="text-sm text-muted-foreground">Find products near you</p>
+      <PopoverContent className={appliedTheme.popoverContent} side="bottom" align="start" sideOffset={4}>
+        <div className={appliedTheme.popoverHeader}>
+          <h4 className={appliedTheme.popoverTitle}>Change location</h4>
+          <p className={appliedTheme.popoverDescription}>Find products near you</p>
         </div>
 
         <div className="p-4">
@@ -349,11 +380,12 @@ export function LocationPicker({
                 onKeyUp={(e) => e.key === 'Enter' && suggestions.length === 0 && searchLocation()}
                 aria-label="Search for location"
                 aria-describedby={suggestions.length > 0 ? "suggestions-list" : undefined}
+                className={appliedTheme.input}
               />
             </div>
 
             <Button
-              className="rounded-md h-10 w-10 p-0"
+              className={appliedTheme.searchButton}
               variant="outline"
               onClick={searchLocation}
               disabled={isLoading || !locationSearch.trim()}
@@ -369,7 +401,7 @@ export function LocationPicker({
             <Button
               variant="outline"
               onClick={getCurrentLocation}
-              className="rounded-md h-10 w-10 p-0"
+              className={appliedTheme.locateButton}
               title="Use Current Location"
             >
               <Locate className="h-4 w-4" />
@@ -377,15 +409,15 @@ export function LocationPicker({
           </div>
 
           {suggestions.length > 0 && (
-            <div className="z-50 w-full bg-background rounded-md border border-border shadow-lg max-h-60 overflow-y-auto mt-1 mb-4">
+            <div className={cn("z-50 mt-1 mb-4", appliedTheme.suggestionsContainer)}>
               {suggestions.map((suggestion) => (
                 <div
                   key={suggestion.place_id}
-                  className="px-4 py-2 hover:bg-muted cursor-pointer border-b border-border last:border-0 transition-colors"
+                  className={appliedTheme.suggestionItem}
                   onClick={() => selectSuggestion(suggestion)}
                 >
                   <div className="flex items-start">
-                    <MapPinned size={16} className="text-primary mt-0.5 mr-2 shrink-0" />
+                    <MapPinned size={16} className={cn("mt-0.5 mr-2 shrink-0", appliedTheme.suggestionIcon)} />
                     <div>
                       <p className="text-sm font-medium text-foreground">
                         {formatLocationName(suggestion)}
@@ -401,20 +433,20 @@ export function LocationPicker({
           )}
 
           {isFetchingSuggestions && locationSearch.length >= 2 && suggestions.length === 0 && (
-            <div className="z-50 w-full bg-background rounded-md border border-border shadow-md p-4 text-center mt-1 mb-4">
-              <LoaderCircle size={20} className="animate-spin mx-auto text-primary" />
+            <div className={cn("z-50 mt-1 mb-4", appliedTheme.loadingContainer)}>
+              <LoaderCircle size={20} className={cn("animate-spin mx-auto", appliedTheme.suggestionIcon)} />
               <p className="text-sm text-muted-foreground mt-1">Searching locations...</p>
             </div>
           )}
 
           {locationSearch.length >= 2 && !isFetchingSuggestions && suggestions.length === 0 && (
-            <div className="w-full bg-background rounded-md border border-border p-4 text-center">
+            <div className={appliedTheme.loadingContainer}>
               <p className="text-sm text-muted-foreground">No locations found for &quot;{locationSearch}&quot;</p>
             </div>
           )}
 
           {error && (
-            <div className="w-full bg-destructive/10 rounded-md border border-destructive/20 p-3 text-center">
+            <div className={appliedTheme.errorContainer}>
               <p className="text-sm text-destructive">{error}</p>
             </div>
           )}
